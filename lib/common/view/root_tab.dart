@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
+import 'package:knu_helper/notice/view/notice_screen.dart';
 
 class RootTab extends StatefulWidget {
   static String get routeName => 'root';
@@ -41,7 +42,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
         physics: NeverScrollableScrollPhysics(),
         controller: controller,
         children: [
-          Container(child: Text('2'),),
+          NoticeScreen(),
           Container(child: Text('2'),),
           Container(child: Text('2'),),
           Container(child: Text('2'),),

@@ -5,10 +5,12 @@ class DefaultLayout extends StatelessWidget {
   final Color? backgroundColor;
   final String? title;
   final Widget? bottomNavigationBar;
+  final List<Widget>? actions;
   const DefaultLayout({
     required this.child,
     this.backgroundColor,
     this.title,
+    this.actions,
     this.bottomNavigationBar,
     Key? key
   }) : super(key: key);
@@ -40,6 +42,7 @@ class DefaultLayout extends StatelessWidget {
       ),
       centerTitle: true,
       foregroundColor: Colors.black,
+      actions: actions,
     );
   }
 }

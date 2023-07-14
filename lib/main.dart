@@ -6,11 +6,12 @@ import 'package:knu_helper/common/provider/go_router.dart';
 import 'firebase_options.dart';
 
 void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    ProviderScope(
+    const ProviderScope(
       child: _App(),
     ),
   );
