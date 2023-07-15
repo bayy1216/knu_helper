@@ -193,9 +193,9 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
   $NoticesTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
       'id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
@@ -301,7 +301,7 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Notice(
       id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
       title: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
       site: attachedDatabase.typeMapping
@@ -326,7 +326,7 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
 }
 
 class Notice extends DataClass implements Insertable<Notice> {
-  final int id;
+  final String id;
   final String title;
   final String site;
   final String type;
@@ -346,7 +346,7 @@ class Notice extends DataClass implements Insertable<Notice> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
+    map['id'] = Variable<String>(id);
     map['title'] = Variable<String>(title);
     map['site'] = Variable<String>(site);
     map['type'] = Variable<String>(type);
@@ -374,7 +374,7 @@ class Notice extends DataClass implements Insertable<Notice> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Notice(
-      id: serializer.fromJson<int>(json['id']),
+      id: serializer.fromJson<String>(json['id']),
       title: serializer.fromJson<String>(json['title']),
       site: serializer.fromJson<String>(json['site']),
       type: serializer.fromJson<String>(json['type']),
@@ -388,7 +388,7 @@ class Notice extends DataClass implements Insertable<Notice> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
+      'id': serializer.toJson<String>(id),
       'title': serializer.toJson<String>(title),
       'site': serializer.toJson<String>(site),
       'type': serializer.toJson<String>(type),
@@ -400,7 +400,7 @@ class Notice extends DataClass implements Insertable<Notice> {
   }
 
   Notice copyWith(
-          {int? id,
+          {String? id,
           String? title,
           String? site,
           String? type,
@@ -451,7 +451,7 @@ class Notice extends DataClass implements Insertable<Notice> {
 }
 
 class NoticesCompanion extends UpdateCompanion<Notice> {
-  final Value<int> id;
+  final Value<String> id;
   final Value<String> title;
   final Value<String> site;
   final Value<String> type;
@@ -472,7 +472,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
     this.rowid = const Value.absent(),
   });
   NoticesCompanion.insert({
-    required int id,
+    required String id,
     required String title,
     required String site,
     required String type,
@@ -490,7 +490,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
         day = Value(day),
         content = Value(content);
   static Insertable<Notice> custom({
-    Expression<int>? id,
+    Expression<String>? id,
     Expression<String>? title,
     Expression<String>? site,
     Expression<String>? type,
@@ -514,7 +514,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
   }
 
   NoticesCompanion copyWith(
-      {Value<int>? id,
+      {Value<String>? id,
       Value<String>? title,
       Value<String>? site,
       Value<String>? type,
@@ -540,7 +540,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<int>(id.value);
+      map['id'] = Variable<String>(id.value);
     }
     if (title.present) {
       map['title'] = Variable<String>(title.value);

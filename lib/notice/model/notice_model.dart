@@ -6,7 +6,7 @@ part 'notice_model.g.dart';
 
 @JsonSerializable()
 class NoticeModel {
-  final int id;
+  final String id;
   final String content;
 
   final String title;
@@ -36,7 +36,7 @@ class NoticeModel {
 
 
 class Notices extends Table{
-  IntColumn get id => integer()();
+  TextColumn get id => text()();
   TextColumn get title =>text()();
   TextColumn get site =>text()();
   TextColumn get type =>text()();
