@@ -2,15 +2,31 @@
 
 경북대 학생들을 위한 자유 주제 개발입니다
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Contents
+1. [Skills](#Skills)
+2. [TechStacks](#TechStacks)
+3. [Challenges](#Challenges)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+## Skills
+### Frontend
+- Flutter
+
+### Backend
+- Firebase
+- Python Script (Crawling to Firebase)
+
+---
+## Challenges
+- TODO..
+
+---
+## TechStacks
+- riverpod
+- firebase
+- inappwebview
+- drift
+- firebase
