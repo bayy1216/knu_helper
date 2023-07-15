@@ -13,7 +13,7 @@ class NoticeModel {
   final String site;
   final String type;
   final String url;
-  final String views;
+  final int views;
   final DateTime day;
 
   NoticeModel({

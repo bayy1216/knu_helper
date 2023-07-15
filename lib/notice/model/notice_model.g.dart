@@ -13,7 +13,7 @@ NoticeModel _$NoticeModelFromJson(Map<String, dynamic> json) => NoticeModel(
       site: json['site'] as String,
       type: json['type'] as String,
       url: json['url'] as String,
-      views: json['views'] as String,
+      views: json['views'] as int,
       day: DateTime.parse(json['day'] as String),
     );
 
