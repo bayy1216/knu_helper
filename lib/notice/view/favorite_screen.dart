@@ -22,7 +22,6 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(favoriteProvider);
-    final x = ref.watch(noticeProvider);
     print("[favo]REBUILD");
 
     return ListView.separated(

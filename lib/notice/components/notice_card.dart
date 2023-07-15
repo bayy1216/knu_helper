@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:knu_helper/common/utils/data_utils.dart';
 import 'package:knu_helper/notice/model/notice_model.dart';
+import 'package:knu_helper/notice/view/notice_web_view.dart';
 
 class NoticeCard extends StatelessWidget {
   final String content;
@@ -51,72 +52,95 @@ class NoticeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isSelect = isFavorite;
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8.0),
-      padding: const EdgeInsets.only(left: 4.0, right: 0.0, top: 8.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: Offset(0, 0), // 그림자의 위치 조정 (수평, 수직)
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NoticeWebView(
+              title: title,
+              url: url,
+              isFavorite: isSelect,
+              onStarClick: onStarClick,
+              offStarClick: offStarClick,
+            ),
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding:
-                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6.0),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.only(left: 4.0, right: 0.0, top: 8.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(0, 0), // 그림자의 위치 조정 (수평, 수직)
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 4.0, horizontal: 4.0),
+                    decoration: BoxDecoration(
+                      color: Colors.deepOrangeAccent,
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                    child: Text(site, style: TextStyle(color: Colors.white)),
+                  ),
+                  SizedBox(width: 6.0),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 4.0, horizontal: 4.0),
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                    child: Text(type, style: TextStyle(color: Colors.white)),
+                  ),
+                  Expanded(child: SizedBox()),
+                  Text(DataUtils.dateTimeToString(day))
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(title, style: TextStyle(fontWeight: FontWeight.w600)),
+            ),
+            Text(content),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(width: 4.0),
+                Text('조회수 : $views'),
+                Expanded(child: SizedBox()),
+                _IconBtn(
+                  isSelect: isSelect,
+                  onStarClick: (){
+                    onStarClick();
+                    isSelect = true;
+                    print(isSelect);
+                  },
+                  offStarClick: (){
+                    isSelect = false;
+                    offStarClick();
+                    print(isSelect);
+                  },
                 ),
-                child: Text(site),
-              ),
-              Container(
-                padding:
-                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(6.0),
-                ),
-                child: Text(type, style: TextStyle(color: Colors.white)),
-              ),
-              Text(DataUtils.dateTimeToString(day))
-            ],
-          ),
-          Text(title),
-          Text(content),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('조회수 : $views'),
-              _IconBtn(
-                isSelect: isSelect,
-                onStarClick: onStarClick,
-                offStarClick: offStarClick,
-              ),
-              // GestureDetector(
-              //   onTap: onStarClick,
-              //   child: SizedBox(
-              //     height: 45,
-              //     width: 45,
-              //     child: Icon(
-              //       Icons.star_outline_rounded,
-              //       color: Colors.grey,
-              //       size: 30,
-              //     ),
-              //   ),
-              // ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -157,24 +181,22 @@ class _IconBtnState extends State<_IconBtn> {
           widget.onStarClick();
         }
         isSelect = !isSelect;
-        setState(() {
-          print('click');
-        });
+        setState(() {});
       },
       child: SizedBox(
         height: 45,
         width: 45,
         child: isSelect
             ? Icon(
-          Icons.star_rounded,
-          color: Colors.red,
-          size: 30,
-        )
+                Icons.star_rounded,
+                color: Colors.red,
+                size: 30,
+              )
             : Icon(
-          Icons.star_outline_rounded,
-          color: Colors.grey,
-          size: 30,
-        ),
+                Icons.star_outline_rounded,
+                color: Colors.grey,
+                size: 30,
+              ),
       ),
     );
   }

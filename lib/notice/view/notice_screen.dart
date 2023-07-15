@@ -112,30 +112,17 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
             }
 
 
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => NoticeWebView(
-                      model: cp.data[index],
-                      onTap: () {},
-                    ),
-                  ),
-                );
+            return NoticeCard.fromModel(
+              model: cp.data[index],
+              onStarClick: () {
+                ref.read(databaseProvider).insertNotice(cp.data[index]);
+                ref.read(noticeProvider.notifier).toggleStar(model: cp.data[index], value: true);
               },
-              child: NoticeCard.fromModel(
-                model: cp.data[index],
-                onStarClick: () {
-                  ref.read(databaseProvider).insertNotice(cp.data[index]);
-                  ref.read(noticeProvider.notifier).toggleStar(model: cp.data[index], value: true);
-                },
-                offStarClick: () {
-                  ref.read(databaseProvider).deleteNotice(cp.data[index]);
-                  ref.read(noticeProvider.notifier).toggleStar(model: cp.data[index], value: false);
-                },
-                isFavorite: cp.isFavorite![index],
-              ),
+              offStarClick: () {
+                ref.read(databaseProvider).deleteNotice(cp.data[index]);
+                ref.read(noticeProvider.notifier).toggleStar(model: cp.data[index], value: false);
+              },
+              isFavorite: cp.isFavorite![index],
             );
           },
           separatorBuilder: (context, index) {
