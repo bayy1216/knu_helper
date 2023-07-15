@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knu_helper/notice/components/notice_card.dart';
 import 'package:knu_helper/notice/database/drift_database.dart';
 import 'package:knu_helper/notice/provider/favorite_provider.dart';
+import 'package:knu_helper/notice/provider/notice_provider.dart';
 
 class FavoriteScreen extends ConsumerStatefulWidget {
   const FavoriteScreen({Key? key}) : super(key: key);
@@ -21,7 +22,8 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(favoriteProvider);
-    print("REBUILD");
+    final x = ref.watch(noticeProvider);
+    print("[favo]REBUILD");
 
     return ListView.separated(
       itemCount: state.length,
@@ -30,9 +32,12 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
           model: state[index],
           onStarClick: (){
             ref.read(databaseProvider).insertNotice(state[index]);
+            ref.read(noticeProvider.notifier).toggleStar(model: state[index], value: true);
+            print("[favo]onstar");
           },
           offStarClick: () {
             ref.read(databaseProvider).deleteNotice(state[index]);
+            ref.read(noticeProvider.notifier).toggleStar(model: state[index], value: false);
           },
           isFavorite: true,
         );

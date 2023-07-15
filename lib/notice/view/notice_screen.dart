@@ -54,7 +54,7 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(noticeProvider);
-    print("REBUILD");
+    print("[noti]REBUILD");
     if (state is CursorPaginationLoading) {
       return Center(child: CircularProgressIndicator());
     }
@@ -111,6 +111,7 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
               );
             }
 
+
             return GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -127,11 +128,13 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
                 model: cp.data[index],
                 onStarClick: () {
                   ref.read(databaseProvider).insertNotice(cp.data[index]);
+                  ref.read(noticeProvider.notifier).toggleStar(model: cp.data[index], value: true);
                 },
                 offStarClick: () {
                   ref.read(databaseProvider).deleteNotice(cp.data[index]);
+                  ref.read(noticeProvider.notifier).toggleStar(model: cp.data[index], value: false);
                 },
-                isFavorite: false,
+                isFavorite: cp.isFavorite![index],
               ),
             );
           },

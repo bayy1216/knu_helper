@@ -1,34 +1,43 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knu_helper/common/model/cursor_pagination_model.dart';
 import 'package:knu_helper/common/utils/data_utils.dart';
+import 'package:knu_helper/notice/database/drift_database.dart';
 import 'package:knu_helper/notice/model/notice_model.dart';
 import 'package:knu_helper/notice/repository/notice_repository.dart';
 
 final noticeProvider =
     StateNotifierProvider<NoticeStateNotifier, CursorPaginationBase>((ref) {
   final repo = ref.watch(noticeRepositoryProvider);
-  return NoticeStateNotifier(repository: repo);
+  final db = ref.watch(databaseProvider);
+  return NoticeStateNotifier(repository: repo,database: db);
 });
 
 class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
   final NoticeRepository repository;
+  final LocalDatabase database;
 
-  NoticeStateNotifier({required this.repository})
+  NoticeStateNotifier({required this.repository,required this.database})
       : super(CursorPaginationLoading()){
     paginate();
   }
 
-  customSetState(){
-    final temp = state as CursorPagination<NoticeModel>;
-    state = CursorPaginationRefetchingMore<NoticeModel>(
-      data: temp.data
-    );
-    state = temp;
+
+  toggleStar({required NoticeModel model,required bool value}){
+    final pState = state as CursorPagination<NoticeModel>;
+    int idx = pState.data.indexWhere((element) => element.id==model.id);
+    print(pState.data);
+    if(idx==-1){
+      print("없음");
+      return;
+    }
+    pState.isFavorite![idx] = value;
+    print('누름 $idx, $value');
+    state = pState;
   }
 
   updateToEnd(){
     final pState = state as CursorPagination<NoticeModel>;
-    state = CursorPaginationEnd(data: pState.data);
+    state = CursorPaginationEnd(data: pState.data,isFavorite: pState.isFavorite);
   }
 
 
@@ -65,6 +74,7 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
           final pState = state as CursorPagination<NoticeModel>;
           state = CursorPaginationRefetching<NoticeModel>(
             data: pState.data,
+            isFavorite: pState.isFavorite,
           );
         } else {
           //나머지 로딩 상황
@@ -77,6 +87,11 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
         afterDay: afterDay,
         periodDay: periodDay,
       );
+      final List<bool> isFavorite = [];
+      for(var e in resp){
+        final isIn = await database.isIn(id: e.id);
+        isFavorite.add(isIn);
+      }
 
       if (state is CursorPaginationRefetchingMore) {
 
@@ -85,10 +100,14 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
           data: [
             ...pState.data,
             ...resp
-          ]
+          ],
+          isFavorite: [
+            ...pState.isFavorite!,
+            ...isFavorite,
+          ],
         );
       } else {
-        state = CursorPagination(data: [...resp]);
+        state = CursorPagination(data: [...resp],isFavorite: [...isFavorite]);
       }
       return resp.length;
     } catch (e) {
