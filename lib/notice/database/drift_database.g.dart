@@ -218,9 +218,9 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
       type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _viewsMeta = const VerificationMeta('views');
   @override
-  late final GeneratedColumn<String> views = GeneratedColumn<String>(
+  late final GeneratedColumn<int> views = GeneratedColumn<int>(
       'views', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _dayMeta = const VerificationMeta('day');
   @override
   late final GeneratedColumn<DateTime> day = GeneratedColumn<DateTime>(
@@ -295,7 +295,7 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => const {};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Notice map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
@@ -311,7 +311,7 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
       url: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}url'])!,
       views: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}views'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}views'])!,
       day: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}day'])!,
       content: attachedDatabase.typeMapping
@@ -331,7 +331,7 @@ class Notice extends DataClass implements Insertable<Notice> {
   final String site;
   final String type;
   final String url;
-  final String views;
+  final int views;
   final DateTime day;
   final String content;
   const Notice(
@@ -351,7 +351,7 @@ class Notice extends DataClass implements Insertable<Notice> {
     map['site'] = Variable<String>(site);
     map['type'] = Variable<String>(type);
     map['url'] = Variable<String>(url);
-    map['views'] = Variable<String>(views);
+    map['views'] = Variable<int>(views);
     map['day'] = Variable<DateTime>(day);
     map['content'] = Variable<String>(content);
     return map;
@@ -379,7 +379,7 @@ class Notice extends DataClass implements Insertable<Notice> {
       site: serializer.fromJson<String>(json['site']),
       type: serializer.fromJson<String>(json['type']),
       url: serializer.fromJson<String>(json['url']),
-      views: serializer.fromJson<String>(json['views']),
+      views: serializer.fromJson<int>(json['views']),
       day: serializer.fromJson<DateTime>(json['day']),
       content: serializer.fromJson<String>(json['content']),
     );
@@ -393,7 +393,7 @@ class Notice extends DataClass implements Insertable<Notice> {
       'site': serializer.toJson<String>(site),
       'type': serializer.toJson<String>(type),
       'url': serializer.toJson<String>(url),
-      'views': serializer.toJson<String>(views),
+      'views': serializer.toJson<int>(views),
       'day': serializer.toJson<DateTime>(day),
       'content': serializer.toJson<String>(content),
     };
@@ -405,7 +405,7 @@ class Notice extends DataClass implements Insertable<Notice> {
           String? site,
           String? type,
           String? url,
-          String? views,
+          int? views,
           DateTime? day,
           String? content}) =>
       Notice(
@@ -456,7 +456,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
   final Value<String> site;
   final Value<String> type;
   final Value<String> url;
-  final Value<String> views;
+  final Value<int> views;
   final Value<DateTime> day;
   final Value<String> content;
   final Value<int> rowid;
@@ -477,7 +477,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
     required String site,
     required String type,
     required String url,
-    required String views,
+    required int views,
     required DateTime day,
     required String content,
     this.rowid = const Value.absent(),
@@ -495,7 +495,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
     Expression<String>? site,
     Expression<String>? type,
     Expression<String>? url,
-    Expression<String>? views,
+    Expression<int>? views,
     Expression<DateTime>? day,
     Expression<String>? content,
     Expression<int>? rowid,
@@ -519,7 +519,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
       Value<String>? site,
       Value<String>? type,
       Value<String>? url,
-      Value<String>? views,
+      Value<int>? views,
       Value<DateTime>? day,
       Value<String>? content,
       Value<int>? rowid}) {
@@ -555,7 +555,7 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
       map['url'] = Variable<String>(url.value);
     }
     if (views.present) {
-      map['views'] = Variable<String>(views.value);
+      map['views'] = Variable<int>(views.value);
     }
     if (day.present) {
       map['day'] = Variable<DateTime>(day.value);

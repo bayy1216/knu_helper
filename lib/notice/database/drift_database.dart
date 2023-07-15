@@ -19,10 +19,45 @@ final databaseProvider = Provider<LocalDatabase>((ref) => LocalDatabase());
 class LocalDatabase extends _$LocalDatabase {
   LocalDatabase() : super(_openConnection());
 
-  Future<int> createNotice(NoticesCompanion data) => into(notices).insert(data);
+  Future<int> insertNotice(NoticeModel model) {
+    final data = NoticesCompanion(
+      url: Value(model.url),
+      site: Value(model.site),
+      content: Value(model.content),
+      title: Value(model.title),
+      day: Value(model.day),
+      views: Value(model.views),
+      type: Value(model.type),
+      id: Value(model.id),
+    );
+    return into(notices).insert(data);
+  }
+
+  Future<int> deleteNotice(NoticeModel model) {
+    final data = NoticesCompanion(
+      url: Value(model.url),
+      site: Value(model.site),
+      content: Value(model.content),
+      title: Value(model.title),
+      day: Value(model.day),
+      views: Value(model.views),
+      type: Value(model.type),
+      id: Value(model.id),
+    );
+    return delete(notices).delete(data);
+  }
+
+  Future<bool> isIn({required String id})async{
+    final x = await (select(notices)..where((tbl) => tbl.id.equals(id))).get();
+    return x.isNotEmpty;
+  }
+
+
 
   Future<int> createSiteColor(SiteColorsCompanion data) =>
       into(siteColors).insert(data);
+
+  Future<List<Notice>> getNotices() => select(notices).get();
 
   Future<List<SiteColor>> getSiteColors() => select(siteColors).get();
 

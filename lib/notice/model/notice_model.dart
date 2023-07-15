@@ -41,7 +41,11 @@ class Notices extends Table{
   TextColumn get site =>text()();
   TextColumn get type =>text()();
   TextColumn get url =>text()();
-  TextColumn get views=>text()();
+  IntColumn get views=>integer()();
   DateTimeColumn get day =>dateTime()();
   TextColumn get content =>text()();
+
+
+  @override
+  Set<Column> get primaryKey => {id}; // id를 기본 키로 지정
 }

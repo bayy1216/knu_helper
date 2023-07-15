@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
+import 'package:knu_helper/notice/view/favorite_screen.dart';
 import 'package:knu_helper/notice/view/notice_screen.dart';
 
 class RootTab extends StatefulWidget {
@@ -43,7 +44,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
         controller: controller,
         children: [
           NoticeScreen(),
-          Container(child: Text('2'),),
+          FavoriteScreen(),
           Container(child: Text('2'),),
           Container(child: Text('2'),),
         ],

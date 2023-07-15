@@ -18,9 +18,13 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
     paginate();
   }
 
-  // getNotice() async {
-  //   state = await repository.getNotice();
-  // }
+  customSetState(){
+    final temp = state as CursorPagination<NoticeModel>;
+    state = CursorPaginationRefetchingMore<NoticeModel>(
+      data: temp.data
+    );
+    state = temp;
+  }
 
   updateToEnd(){
     final pState = state as CursorPagination<NoticeModel>;

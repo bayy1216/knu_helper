@@ -3,8 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:knu_helper/common/model/cursor_pagination_model.dart';
 import 'package:knu_helper/notice/components/notice_card.dart';
+import 'package:knu_helper/notice/database/drift_database.dart';
 import 'package:knu_helper/notice/model/notice_model.dart';
 import 'package:knu_helper/notice/provider/notice_provider.dart';
+import 'package:knu_helper/notice/view/notice_web_view.dart';
+
 
 class NoticeScreen extends ConsumerStatefulWidget {
   const NoticeScreen({Key? key}) : super(key: key);
@@ -14,7 +17,6 @@ class NoticeScreen extends ConsumerStatefulWidget {
 }
 
 class _NoticeScreenState extends ConsumerState<NoticeScreen> {
-
   final ScrollController controller = ScrollController();
 
   int periodDay = 7;
@@ -25,16 +27,18 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
     controller.addListener(listener);
   }
 
-  void listener() async{
+  void listener() async {
     if (controller.offset > controller.position.maxScrollExtent - 300) {
-      int result = await ref.read(noticeProvider.notifier).paginate(fetchMore: true,periodDay: periodDay);
-      if(result == 0){
+      int result = await ref
+          .read(noticeProvider.notifier)
+          .paginate(fetchMore: true, periodDay: periodDay);
+      if (result == 0) {
         periodDay += 14;
-        if(periodDay >= 70){
+        if (periodDay >= 70) {
           print('마지막입니다');
           ref.read(noticeProvider.notifier).updateToEnd();
         }
-      }else if(result >0){
+      } else if (result > 0) {
         periodDay = 7;
       }
     }
@@ -47,15 +51,11 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
     super.dispose();
   }
 
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(noticeProvider);
-    if(state is CursorPaginationLoading){
+    print("REBUILD");
+    if (state is CursorPaginationLoading) {
       return Center(child: CircularProgressIndicator());
     }
     if (state is CursorPaginationError) {
@@ -88,7 +88,9 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
           IconButton(
             onPressed: () {
               print('gd');
-              ref.read(noticeProvider.notifier).paginate(fetchMore: true,periodDay: 5);
+              ref
+                  .read(noticeProvider.notifier)
+                  .paginate(fetchMore: true, periodDay: 5);
             },
             icon: const Icon(Icons.search),
           )
@@ -97,20 +99,41 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
           controller: controller,
           itemCount: cp.data.length + 1,
           itemBuilder: (context, index) {
-            if(index == cp.data.length){
+            if (index == cp.data.length) {
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Center(
-                  child: cp is CursorPaginationRefetchingMore ?
-                  CircularProgressIndicator() : Text('마지막 데이터 입니다.')
-                  ,
+                  child: cp is CursorPaginationRefetchingMore
+                      ? CircularProgressIndicator()
+                      : Text('마지막 데이터 입니다.'),
                 ),
               );
             }
 
-
-
-            return NoticeCard.fromModel(model: cp.data[index]);
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NoticeWebView(
+                      model: cp.data[index],
+                      onTap: () {},
+                    ),
+                  ),
+                );
+              },
+              child: NoticeCard.fromModel(
+                model: cp.data[index],
+                onStarClick: () {
+                  ref.read(databaseProvider).insertNotice(cp.data[index]);
+                },
+                offStarClick: () {
+                  ref.read(databaseProvider).deleteNotice(cp.data[index]);
+                },
+                isFavorite: false,
+              ),
+            );
           },
           separatorBuilder: (context, index) {
             return const SizedBox(height: 8.0);
