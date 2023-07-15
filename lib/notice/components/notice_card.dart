@@ -36,8 +36,25 @@ class NoticeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 0), // 그림자의 위치 조정 (수평, 수직)
+          ),
+        ],
+      ),
       child: Column(
-        children: [Text(title), Text(content)],
+        children: [
+          Text(title),
+          Text(content),
+          Text(day.toString())
+        ],
       ),
     );
   }
