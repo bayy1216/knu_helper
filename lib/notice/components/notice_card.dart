@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:knu_helper/common/const/color.dart';
 import 'package:knu_helper/common/utils/data_utils.dart';
+import 'package:knu_helper/notice/database/drift_database.dart';
 import 'package:knu_helper/notice/model/notice_model.dart';
 import 'package:knu_helper/notice/view/notice_web_view.dart';
 
@@ -89,24 +92,38 @@ class NoticeCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Row(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 4.0, horizontal: 4.0),
-                    decoration: BoxDecoration(
-                      color: Colors.deepOrangeAccent,
-                      borderRadius: BorderRadius.circular(6.0),
-                    ),
-                    child: Text(site, style: TextStyle(color: Colors.white)),
+                  Consumer(
+                    builder: (context, ref, child) {
+                      return FutureBuilder<String>(
+                        future: ref.read(databaseProvider).getColorOfSite(siteName: site),
+                        builder: (context, snapshot) {
+                          Color color = PRIMARY_COLOR;
+                          if (snapshot.hasData) {
+                            final hexCode = snapshot.data;
+                            color = Color(DataUtils.stringToColorCode(hexCode!));
+                          }
+
+                          return Container(
+                            padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                            decoration: BoxDecoration(
+                              color: color,
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            child: Text(site, style: TextStyle(color: Colors.white, fontSize: 12)),
+                          );
+                        },
+                      );
+                    },
                   ),
                   SizedBox(width: 6.0),
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 4.0, horizontal: 4.0),
+                        vertical: 4.0, horizontal: 8.0),
                     decoration: BoxDecoration(
                       color: Colors.grey,
-                      borderRadius: BorderRadius.circular(6.0),
+                      borderRadius: BorderRadius.circular(12.0),
                     ),
-                    child: Text(type, style: TextStyle(color: Colors.white)),
+                    child: Text(type, style: TextStyle(color: Colors.white,fontSize: 12)),
                   ),
                   Expanded(child: SizedBox()),
                   Text(DataUtils.dateTimeToString(day))
@@ -115,7 +132,7 @@ class NoticeCard extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(title, style: TextStyle(fontWeight: FontWeight.w600)),
+              child: Text(title, style: TextStyle(fontWeight: FontWeight.w600),maxLines: 2,overflow: TextOverflow.ellipsis,),
             ),
             Text(content),
             Row(

@@ -6,12 +6,14 @@ class DefaultLayout extends StatelessWidget {
   final String? title;
   final Widget? bottomNavigationBar;
   final List<Widget>? actions;
+  final double elevation;
   const DefaultLayout({
     required this.child,
     this.backgroundColor,
     this.title,
     this.actions,
     this.bottomNavigationBar,
+    this.elevation = 0,
     Key? key
   }) : super(key: key);
 
@@ -32,7 +34,7 @@ class DefaultLayout extends StatelessWidget {
 
     return AppBar(
       backgroundColor: Colors.white,
-      elevation: 0,
+      elevation: elevation,
       title: Text(
         title!,
         style: TextStyle(

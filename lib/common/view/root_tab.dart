@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:knu_helper/all/view/all_screen.dart';
+import 'package:knu_helper/common/const/color.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:knu_helper/notice/view/favorite_screen.dart';
 import 'package:knu_helper/notice/view/notice_screen.dart';
@@ -51,10 +52,11 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        // selectedItemColor: PRIMARY_COLOR,
-        // unselectedItemColor: BODY_TEXT_COLOR,
-        selectedFontSize: 10,
-        unselectedFontSize: 10,
+        selectedItemColor: PRIMARY_COLOR,
+        unselectedItemColor: BODY_TEXT_COLOR,
+        selectedFontSize: 12,
+        unselectedFontSize: 12,
+        iconSize: 28,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
           controller.animateTo(index);
@@ -66,16 +68,16 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
             label: '홈',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: '홈',
+            icon: Icon(Icons.star_outline_rounded),
+            label: '즐겨찾기',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: '홈',
+            icon: Icon(Icons.accessibility),
+            label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outlined),
-            label: '프로필',
+            icon: Icon(Icons.menu),
+            label: '전체',
           ),
         ],
       ),

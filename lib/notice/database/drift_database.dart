@@ -80,6 +80,11 @@ class LocalDatabase extends _$LocalDatabase {
 
   Future<List<SiteColor>> getSiteColors() => select(siteColors).get();
 
+  Future<String> getColorOfSite({required String siteName})async{
+    final x = await (select(siteColors)..where((tbl) => tbl.site.equals(siteName))).get();
+    return x.first.hexCode;
+  }
+
   Future<int> updateSiteColor(String hexCode, String site) =>
       (update(siteColors)..where((tbl) => tbl.site.equals(site)))
           .write(SiteColorsCompanion(site: Value(site),hexCode: Value(hexCode)));
