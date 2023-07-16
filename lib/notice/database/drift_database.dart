@@ -59,8 +59,8 @@ class LocalDatabase extends _$LocalDatabase {
       final result = await into(siteColors).insert(data);
       return result;
     } catch (e) {
-      // 예외 처리
-      print('오류 발생: $e');
+      updateSiteColor(data);
+      print('업데이트');
       return 0; // 또는 다른 값을 반환하거나 예외 상황을 나타내는 값으로 지정
     }
   }
@@ -85,9 +85,9 @@ class LocalDatabase extends _$LocalDatabase {
     return x.first.hexCode;
   }
 
-  Future<int> updateSiteColor(String hexCode, String site) =>
-      (update(siteColors)..where((tbl) => tbl.site.equals(site)))
-          .write(SiteColorsCompanion(site: Value(site),hexCode: Value(hexCode)));
+  Future<int> updateSiteColor(SiteColorsCompanion data) =>
+      (update(siteColors)..where((tbl) => tbl.site.equals(data.site.value)))
+          .write(data);
 
   Stream<List<Notice>> watchNotices() => select(notices).watch();
 
