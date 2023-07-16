@@ -54,8 +54,27 @@ class LocalDatabase extends _$LocalDatabase {
 
 
 
-  Future<int> createSiteColor(SiteColorsCompanion data) =>
-      into(siteColors).insert(data);
+  Future<int> createSiteColor(SiteColorsCompanion data) async {
+    try {
+      final result = await into(siteColors).insert(data);
+      return result;
+    } catch (e) {
+      // 예외 처리
+      print('오류 발생: $e');
+      return 0; // 또는 다른 값을 반환하거나 예외 상황을 나타내는 값으로 지정
+    }
+  }
+
+  Future<int> deleteSiteColor(SiteColorsCompanion data) async {
+    try {
+      final result = await delete(siteColors).delete(data);
+      return result;
+    } catch (e) {
+      // 예외 처리
+      print('오류 발생: $e');
+      return 0; // 또는 다른 값을 반환하거나 예외 상황을 나타내는 값으로 지정
+    }
+  }
 
   Future<List<Notice>> getNotices() => select(notices).get();
 

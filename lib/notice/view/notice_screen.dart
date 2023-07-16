@@ -95,39 +95,44 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
             icon: const Icon(Icons.search),
           )
         ],
-        child: ListView.separated(
-          controller: controller,
-          itemCount: cp.data.length + 1,
-          itemBuilder: (context, index) {
-            if (index == cp.data.length) {
-              return Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: Center(
-                  child: cp is CursorPaginationRefetchingMore
-                      ? CircularProgressIndicator()
-                      : Text('마지막 데이터 입니다.'),
-                ),
+        child: RefreshIndicator(
+          onRefresh: ()async{
+            ref.read(noticeProvider.notifier).paginate(forceRefetch: true);
+          },
+          child: ListView.separated(
+            controller: controller,
+            itemCount: cp.data.length + 1,
+            itemBuilder: (context, index) {
+              if (index == cp.data.length) {
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  child: Center(
+                    child: cp is CursorPaginationRefetchingMore
+                        ? CircularProgressIndicator()
+                        : Text('마지막 데이터 입니다.'),
+                  ),
+                );
+              }
+
+
+              return NoticeCard.fromModel(
+                model: cp.data[index],
+                onStarClick: () {
+                  ref.read(databaseProvider).insertNotice(cp.data[index]);
+                  ref.read(noticeProvider.notifier).toggleStar(model: cp.data[index], value: true);
+                },
+                offStarClick: () {
+                  ref.read(databaseProvider).deleteNotice(cp.data[index]);
+                  ref.read(noticeProvider.notifier).toggleStar(model: cp.data[index], value: false);
+                },
+                isFavorite: cp.isFavorite![index],
               );
-            }
-
-
-            return NoticeCard.fromModel(
-              model: cp.data[index],
-              onStarClick: () {
-                ref.read(databaseProvider).insertNotice(cp.data[index]);
-                ref.read(noticeProvider.notifier).toggleStar(model: cp.data[index], value: true);
-              },
-              offStarClick: () {
-                ref.read(databaseProvider).deleteNotice(cp.data[index]);
-                ref.read(noticeProvider.notifier).toggleStar(model: cp.data[index], value: false);
-              },
-              isFavorite: cp.isFavorite![index],
-            );
-          },
-          separatorBuilder: (context, index) {
-            return const SizedBox(height: 8.0);
-          },
+            },
+            separatorBuilder: (context, index) {
+              return const SizedBox(height: 8.0);
+            },
+          ),
         ),
       ),
     );

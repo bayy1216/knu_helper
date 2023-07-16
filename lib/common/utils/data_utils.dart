@@ -6,5 +6,9 @@ class DataUtils{
     return '$year-$month-$day';
   }
 
+  static int stringToColorCode(String value){
+    return int.parse('FF$value', radix: 16);
+  }
+
 
 }

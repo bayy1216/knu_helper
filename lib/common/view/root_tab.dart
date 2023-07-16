@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:knu_helper/all/view/all_screen.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:knu_helper/notice/view/favorite_screen.dart';
 import 'package:knu_helper/notice/view/notice_screen.dart';
@@ -46,7 +47,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           NoticeScreen(),
           FavoriteScreen(),
           Container(child: Text('2'),),
-          Container(child: Text('2'),),
+          AllScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
