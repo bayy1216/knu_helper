@@ -23,6 +23,18 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(favoriteProvider);
     print("[favo]REBUILD");
+    if(state.isEmpty){
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('asset/images/knu_cow_old.png',width: 160),
+            SizedBox(height: 10.0),
+            Text('즐겨찾기를 추가해 보세요',style: TextStyle(color: Colors.grey,fontSize: 18)),
+          ],
+        ),
+      );
+    }
 
     return ListView.separated(
       itemCount: state.length,

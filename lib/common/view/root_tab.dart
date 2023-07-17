@@ -22,7 +22,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    controller = TabController(length: 4, vsync: this);
+    controller = TabController(length: 3, vsync: this);
     controller.addListener(tabListener);
   }
 
@@ -47,7 +47,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
         children: [
           NoticeScreen(),
           FavoriteScreen(),
-          Container(child: Text('2'),),
+          // Container(child: Text('2'),),
           AllScreen(),
         ],
       ),
@@ -71,10 +71,10 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
             icon: Icon(Icons.star_outline_rounded),
             label: '즐겨찾기',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.accessibility),
-            label: '',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.accessibility),
+          //   label: '',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.menu),
             label: '전체',

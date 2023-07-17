@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:knu_helper/common/const/color.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:knu_helper/common/model/cursor_pagination_model.dart';
+import 'package:knu_helper/common/utils/data_utils.dart';
 import 'package:knu_helper/notice/components/notice_card.dart';
+import 'package:knu_helper/notice/components/modal_bottom_sheet.dart';
 import 'package:knu_helper/notice/database/drift_database.dart';
 import 'package:knu_helper/notice/model/notice_model.dart';
+import 'package:knu_helper/notice/model/site_color.dart';
+import 'package:knu_helper/notice/model/site_enum.dart';
 import 'package:knu_helper/notice/provider/notice_provider.dart';
 import 'package:knu_helper/notice/view/notice_web_view.dart';
-
+import 'package:knu_helper/user/provider/user_site_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NoticeScreen extends ConsumerStatefulWidget {
   const NoticeScreen({Key? key}) : super(key: key);
@@ -23,8 +29,32 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
 
   @override
   void initState() {
+    init();
     super.initState();
     controller.addListener(listener);
+
+
+  }
+
+  Future<void> init() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool isFirst = prefs.getBool('isFirst') ?? true;
+    if (isFirst) {
+      await prefs.setBool('isFirst', false);
+      ref.read(userSiteProvider.notifier).saveSite(
+            model: SiteColorModel(
+              site: SiteEnum.knu.koreaName,
+              hexCode: DataUtils.colorToHexCode(COLOR_SELECT_LIST[0]),
+            ),
+          );
+      showModalBottomSheet(
+        context: context,
+        useSafeArea: true,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) => ModalBottomSheet(),
+      );
+    }
   }
 
   void listener() async {
@@ -32,13 +62,20 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
       int result = await ref
           .read(noticeProvider.notifier)
           .paginate(fetchMore: true, periodDay: periodDay);
+      print('result:$result');
       if (result == 0) {
-        periodDay += 14;
-        if (periodDay >= 70) {
-          print('마지막입니다');
-          ref.read(noticeProvider.notifier).updateToEnd();
+        while(result == 0){
+          result = await ref
+              .read(noticeProvider.notifier)
+              .paginate(fetchMore: true, periodDay: periodDay);
+          print('result:$result');
+          periodDay += 14;
+          if (periodDay >= 98) {
+            print('마지막입니다');
+            ref.read(noticeProvider.notifier).updateToEnd();
+            return;
+          }
         }
-      } else if (result > 0) {
         periodDay = 7;
       }
     }
@@ -96,7 +133,7 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
           )
         ],
         child: RefreshIndicator(
-          onRefresh: ()async{
+          onRefresh: () async {
             ref.read(noticeProvider.notifier).paginate(forceRefetch: true);
           },
           child: ListView.separated(
@@ -105,8 +142,8 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
             itemBuilder: (context, index) {
               if (index == cp.data.length) {
                 return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
                   child: Center(
                     child: cp is CursorPaginationRefetchingMore
                         ? CircularProgressIndicator()
@@ -115,16 +152,19 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
                 );
               }
 
-
               return NoticeCard.fromModel(
                 model: cp.data[index],
                 onStarClick: () {
                   ref.read(databaseProvider).insertNotice(cp.data[index]);
-                  ref.read(noticeProvider.notifier).toggleStar(model: cp.data[index], value: true);
+                  ref
+                      .read(noticeProvider.notifier)
+                      .toggleStar(model: cp.data[index], value: true);
                 },
                 offStarClick: () {
                   ref.read(databaseProvider).deleteNotice(cp.data[index]);
-                  ref.read(noticeProvider.notifier).toggleStar(model: cp.data[index], value: false);
+                  ref
+                      .read(noticeProvider.notifier)
+                      .toggleStar(model: cp.data[index], value: false);
                 },
                 isFavorite: cp.isFavorite![index],
               );
