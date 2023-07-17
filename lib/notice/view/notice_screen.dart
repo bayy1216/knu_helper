@@ -41,19 +41,21 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
     final bool isFirst = prefs.getBool('isFirst') ?? true;
     if (isFirst) {
       await prefs.setBool('isFirst', false);
-      ref.read(userSiteProvider.notifier).saveSite(
-            model: SiteColorModel(
-              site: SiteEnum.knu.koreaName,
-              hexCode: DataUtils.colorToHexCode(COLOR_SELECT_LIST[0]),
-            ),
-          );
+
       showModalBottomSheet(
         context: context,
         useSafeArea: true,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (context) => ModalBottomSheet(),
-      );
+      ).then((value)async{
+        await ref.read(userSiteProvider.notifier).saveSite(
+          model: SiteColorModel(
+            site: SiteEnum.knu.koreaName,
+            hexCode: DataUtils.colorToHexCode(COLOR_SELECT_LIST[0]),
+          ),
+        );
+      });
     }
   }
 
@@ -93,12 +95,12 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
     final state = ref.watch(noticeProvider);
     print("[noti]REBUILD");
     if (state is CursorPaginationLoading) {
-      return Center(child: CircularProgressIndicator());
+      return Container(color: Colors.transparent);
     }
     if (state is CursorPaginationError) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             state.message,

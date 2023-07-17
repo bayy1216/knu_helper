@@ -27,7 +27,7 @@ class _App extends ConsumerWidget {
     final router = ref.watch(routerProvider);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'Knu Mate',
+      title: 'KNU Mate',
       theme: ThemeData(fontFamily: 'NotoSans'),
       routerConfig: router,
     );
