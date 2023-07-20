@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:knu_helper/common/const/color.dart';
 import 'package:knu_helper/common/utils/data_utils.dart';
 import 'package:knu_helper/notice/model/site_color.dart';
@@ -70,7 +69,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                                   setState(() {});
                                 },
                                 title: Text(e.koreaName),
-                                trailing: isSelect[e.index] ? const FaIcon(FontAwesomeIcons.check) : null,
+                                trailing: isSelect[e.index] ? const Icon(Icons.check) : null,
                               ),
                             );
                           },

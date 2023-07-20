@@ -128,7 +128,7 @@ enum SiteEnum {
   knu('경북대', 'knu', SiteCategory.knu),
   knujob('진로취업과', 'knujob', SiteCategory.knu),
   aic('인공지능', 'aic', SiteCategory.knu),
-  knucube('KunCube', 'knucube', SiteCategory.knu),
+  knucube('knucube', 'knucube', SiteCategory.knu),
   sw('소프트웨어교육원', 'sw', SiteCategory.sw);
 
   final String koreaName;
@@ -196,7 +196,7 @@ enum SiteEnum {
         '경북대': knu,
         '진로취업과': knujob,
         '인공지능': aic,
-        'KunCube': knucube,
+        'knucube': knucube,
         '소프트웨어교육원': sw,
       };
 }

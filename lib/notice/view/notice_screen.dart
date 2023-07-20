@@ -1,5 +1,6 @@
 import 'dart:io';
 
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -32,22 +33,30 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
 
   int periodDay = 7;
 
-  late BannerAd banner;
+  BannerAd? _bannerAd;
 
   @override
   void initState() {
     init();
     super.initState();
     controller.addListener(listener);
-    banner = BannerAd(
-      listener: BannerAdListener(
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {},
-        onAdLoaded: (_) {},
-      ),
-      size: AdSize.banner,
+    BannerAd(
       adUnitId: Platform.isIOS ? '' : androidAdmobId,
-      request: const AdRequest(),
-    )..load();
+      size: AdSize.banner,
+      request: AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          print('Ad loaded.');
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          print('Ad failed to load: $error');
+          ad.dispose();
+        },
+      ),
+    ).load();
   }
 
   Future<void> init() async {
@@ -101,6 +110,7 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
   void dispose() {
     controller.removeListener(listener);
     controller.dispose();
+    _bannerAd?.dispose();
     super.dispose();
   }
 
@@ -154,7 +164,7 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
           },
           child: ListView.separated(
             controller: controller,
-            itemCount: cp.data.length + 3,
+            itemCount: cp.data.length + 1,
             itemBuilder: (context, index) {
               if (index == cp.data.length) {
                 return Padding(
@@ -167,31 +177,37 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
                   ),
                 );
               }
-              if (index == 4 || index == 11) {
-                return Column(
-                  children: [
-                    AdWidget(
-                      ad: banner,
-                    ),
-                    NoticeCard.fromModel(
-                      model: cp.data[index],
-                      onStarClick: () {
-                        ref.read(databaseProvider).insertNotice(cp.data[index]);
-                        ref
-                            .read(noticeProvider.notifier)
-                            .toggleStar(model: cp.data[index], value: true);
-                      },
-                      offStarClick: () {
-                        ref.read(databaseProvider).deleteNotice(cp.data[index]);
-                        ref
-                            .read(noticeProvider.notifier)
-                            .toggleStar(model: cp.data[index], value: false);
-                      },
-                      isFavorite: cp.isFavorite![index],
-                    ),
-
-                  ],
-                );
+              if (index == 4) {
+                if (_bannerAd  != null) {
+                  return Column(
+                    children: [
+                      Text('광고'),
+                      Container(
+                        width: _bannerAd!.size.width.toDouble(),
+                        height: _bannerAd!.size.height.toDouble(),
+                        child: AdWidget(ad: _bannerAd!),
+                      ),
+                      NoticeCard.fromModel(
+                        model: cp.data[index],
+                        onStarClick: () {
+                          ref.read(databaseProvider).insertNotice(cp.data[index]);
+                          ref
+                              .read(noticeProvider.notifier)
+                              .toggleStar(model: cp.data[index], value: true);
+                        },
+                        offStarClick: () {
+                          ref.read(databaseProvider).deleteNotice(cp.data[index]);
+                          ref
+                              .read(noticeProvider.notifier)
+                              .toggleStar(model: cp.data[index], value: false);
+                        },
+                        isFavorite: cp.isFavorite![index],
+                      ),
+                    ],
+                  );
+                } else {
+                  return Container(); // 광고 로드 실패 시 빈 컨테이너를 반환하거나 다른 처리를 수행합니다.
+                }
               }
 
 

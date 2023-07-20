@@ -12,7 +12,7 @@ void main()async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  MobileAds.instance.initialize();
+  await MobileAds.instance.initialize();
   InitSettingRepository.init();
   runApp(
     const ProviderScope(

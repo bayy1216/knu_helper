@@ -21,7 +21,7 @@ class SettingScreen extends StatelessWidget {
         children: [
           ListTile(
             onTap: () => context.goNamed(OpensourceScreen.routeName),
-            title: const Text('오픈소스 라이브러리', style: TextStyle(fontSize: 15)),
+            title: const Text('오픈소스 라이선스', style: TextStyle(fontSize: 15)),
             trailing: const Icon(Icons.keyboard_arrow_right),
           ),
           ListTile(
