@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:knu_helper/all/view/select_site_screen.dart';
+import 'package:knu_helper/all/view/setting_screen.dart';
 import 'package:knu_helper/common/const/color.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:knu_helper/notice/components/modal_bottom_sheet.dart';
@@ -16,10 +17,9 @@ class AllScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return DefaultLayout(
       title: '전체',
-      elevation: 2.5,
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () => context.goNamed(SettingScreen.routeName),
           icon: const Icon(Icons.settings),
         ),
       ],
