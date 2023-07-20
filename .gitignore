@@ -50,3 +50,4 @@ app.*.map.json
 /ios/firebase_app_id_file.json
 /android/app/google-services.json
 
+/lib/common/const/admob_id.dart

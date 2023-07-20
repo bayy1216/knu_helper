@@ -52,6 +52,7 @@ dependencies:
   freezed: ^2.3.4
   freezed_annotation: ^2.2.0
   package_info: ^2.0.2
+  google_mobile_ads: ^3.0.0
 
 
 dev_dependencies:

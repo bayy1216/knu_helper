@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:knu_helper/common/const/color.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:knu_helper/common/model/cursor_pagination_model.dart';
@@ -15,6 +18,8 @@ import 'package:knu_helper/notice/view/notice_web_view.dart';
 import 'package:knu_helper/user/provider/user_site_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../common/const/admob_id.dart';
+
 class NoticeScreen extends ConsumerStatefulWidget {
   const NoticeScreen({Key? key}) : super(key: key);
 
@@ -27,13 +32,22 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
 
   int periodDay = 7;
 
+  late BannerAd banner;
+
   @override
   void initState() {
     init();
     super.initState();
     controller.addListener(listener);
-
-
+    banner = BannerAd(
+      listener: BannerAdListener(
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {},
+        onAdLoaded: (_) {},
+      ),
+      size: AdSize.banner,
+      adUnitId: Platform.isIOS ? '' : androidAdmobId,
+      request: const AdRequest(),
+    )..load();
   }
 
   Future<void> init() async {
@@ -48,13 +62,13 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (context) => ModalBottomSheet(),
-      ).then((value)async{
+      ).then((value) async {
         await ref.read(userSiteProvider.notifier).saveSite(
-          model: SiteColorModel(
-            site: SiteEnum.knu.koreaName,
-            hexCode: DataUtils.colorToHexCode(COLOR_SELECT_LIST[0]),
-          ),
-        );
+              model: SiteColorModel(
+                site: SiteEnum.knu.koreaName,
+                hexCode: DataUtils.colorToHexCode(COLOR_SELECT_LIST[0]),
+              ),
+            );
       });
     }
   }
@@ -66,7 +80,7 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
           .paginate(fetchMore: true, periodDay: periodDay);
       print('result:$result');
       if (result == 0) {
-        while(result == 0){
+        while (result == 0) {
           result = await ref
               .read(noticeProvider.notifier)
               .paginate(fetchMore: true, periodDay: periodDay);
@@ -140,7 +154,7 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
           },
           child: ListView.separated(
             controller: controller,
-            itemCount: cp.data.length + 1,
+            itemCount: cp.data.length + 3,
             itemBuilder: (context, index) {
               if (index == cp.data.length) {
                 return Padding(
@@ -153,6 +167,33 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
                   ),
                 );
               }
+              if (index == 4 || index == 11) {
+                return Column(
+                  children: [
+                    AdWidget(
+                      ad: banner,
+                    ),
+                    NoticeCard.fromModel(
+                      model: cp.data[index],
+                      onStarClick: () {
+                        ref.read(databaseProvider).insertNotice(cp.data[index]);
+                        ref
+                            .read(noticeProvider.notifier)
+                            .toggleStar(model: cp.data[index], value: true);
+                      },
+                      offStarClick: () {
+                        ref.read(databaseProvider).deleteNotice(cp.data[index]);
+                        ref
+                            .read(noticeProvider.notifier)
+                            .toggleStar(model: cp.data[index], value: false);
+                      },
+                      isFavorite: cp.isFavorite![index],
+                    ),
+
+                  ],
+                );
+              }
+
 
               return NoticeCard.fromModel(
                 model: cp.data[index],

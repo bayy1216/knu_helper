@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:knu_helper/common/provider/go_router.dart';
 import 'package:knu_helper/common/repository/init_setting_repository.dart';
 
@@ -11,6 +12,7 @@ void main()async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  MobileAds.instance.initialize();
   InitSettingRepository.init();
   runApp(
     const ProviderScope(
