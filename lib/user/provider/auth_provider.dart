@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:knu_helper/all/view/open_source_screen.dart';
+import 'package:knu_helper/all/view/privacy_screen.dart';
 import 'package:knu_helper/all/view/select_site_screen.dart';
 import 'package:knu_helper/all/view/setting_screen.dart';
 import 'package:knu_helper/notice/view/notice_web_view.dart';
+import 'package:knu_helper/notice/view/search_notice_screen.dart';
 
 import '../../common/view/root_tab.dart';
 
@@ -26,6 +28,14 @@ class AuthProvider extends ChangeNotifier {
           builder: (context, state) => RootTab(),
           routes: [
             GoRoute(
+              path: 'search_notice',
+              name: SearchNoticeScreen.routeName,
+              builder: (context, state) => SearchNoticeScreen(),
+              routes: [
+
+              ],
+            ),
+            GoRoute(
               path: 'select_site',
               name: SelectSiteScreen.routeName,
               builder: (context, state) => SelectSiteScreen(),
@@ -40,6 +50,12 @@ class AuthProvider extends ChangeNotifier {
                   path: 'opensource',
                   name: OpensourceScreen.routeName,
                   builder: (context, state) => OpensourceScreen(),
+                  routes: [],
+                ),
+                GoRoute(
+                  path: 'privacy',
+                  name: PrivacyScreen.routeName,
+                  builder: (context, state) => PrivacyScreen(),
                   routes: [],
                 ),
               ],
