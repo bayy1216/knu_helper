@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knu_helper/common/model/cursor_pagination_model.dart';
-import 'package:knu_helper/common/utils/data_utils.dart';
 import 'package:knu_helper/notice/database/drift_database.dart';
 import 'package:knu_helper/notice/model/notice_model.dart';
 import 'package:knu_helper/notice/model/site_color.dart';
@@ -48,11 +47,26 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
         CursorPaginationEnd(data: pState.data, isFavorite: pState.isFavorite);
   }
 
+  searchNotice()async{
+    if (state is CursorPaginationEnd) {
+      return;
+    }
+    final resp = await repository.searchNotice(
+      siteList: siteList.map((e) => e.site).toList(),
+    );
+    final List<bool> isFavorite = [];
+    for (var e in resp) {
+      final isIn = await database.isIn(id: e.id);
+      isFavorite.add(isIn);
+    }
+    state = CursorPaginationEnd(data: [...resp], isFavorite: [...isFavorite]);
+  }
+
+
   Future<int> paginate({
     //-1 진행중,에러 /  0 이상 응답받은 데이터갯수
     bool fetchMore = false,
     bool forceRefetch = false,
-    int periodDay = 14,
   }) async {
     try {
       if (state is CursorPaginationEnd) {
@@ -65,8 +79,9 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
         return -1;
       }
 
-      DateTime afterDay = DateTime.now();
 
+
+      final limit = (state is CursorPagination) ? (state as CursorPagination).data.length + 10: 10;
       if (fetchMore) {
         //기존에 있는 상황
         final pState = state as CursorPagination<NoticeModel>;
@@ -74,7 +89,6 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
           data: pState.data,
           isFavorite: pState.isFavorite,
         );
-        afterDay = pState.data.last.day.subtract(const Duration(days: 1));
       } else {
         //데이터처음부터 가져오는 상황
         if (state is CursorPagination && !forceRefetch) {
@@ -89,10 +103,10 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
         }
       }
 
+
       final resp = await repository.paginate(
-        afterDay: afterDay,
-        periodDay: periodDay,
         siteList: siteList.map((e) => e.site).toList(),
+        limit: limit,
       );
       final List<bool> isFavorite = [];
       for (var e in resp) {
@@ -100,21 +114,13 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
         isFavorite.add(isIn);
       }
 
-      if (state is CursorPaginationRefetchingMore) {
-        final pState = state as CursorPagination<NoticeModel>;
-        state = pState.copywith(
-          data: [...pState.data, ...resp],
-          isFavorite: [
-            ...pState.isFavorite!,
-            ...isFavorite,
-          ],
-        );
-      } else {
-        state = CursorPagination(data: [...resp], isFavorite: [...isFavorite]);
-      }
+
+      state = CursorPagination(data: [...resp], isFavorite: [...isFavorite]);
+
       return resp.length;
     } catch (e) {
-      state = CursorPaginationError(message: '데이터를 가져오지 못했습니다.');
+      print(e);
+      state = CursorPaginationError(message: '$e : 데이터를 가져오지 못했습니다.');
       return -1;
     }
   }

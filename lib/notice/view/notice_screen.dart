@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:knu_helper/common/const/color.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
@@ -16,6 +17,7 @@ import 'package:knu_helper/notice/model/site_color.dart';
 import 'package:knu_helper/notice/model/site_enum.dart';
 import 'package:knu_helper/notice/provider/notice_provider.dart';
 import 'package:knu_helper/notice/view/notice_web_view.dart';
+import 'package:knu_helper/notice/view/search_notice_screen.dart';
 import 'package:knu_helper/user/provider/user_site_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,7 +33,6 @@ class NoticeScreen extends ConsumerStatefulWidget {
 class _NoticeScreenState extends ConsumerState<NoticeScreen> {
   final ScrollController controller = ScrollController();
 
-  int periodDay = 7;
 
   BannerAd? _bannerAd;
 
@@ -84,24 +85,11 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
 
   void listener() async {
     if (controller.offset > controller.position.maxScrollExtent - 300) {
-      int result = await ref
-          .read(noticeProvider.notifier)
-          .paginate(fetchMore: true, periodDay: periodDay);
-      print('result:$result');
-      if (result == 0) {
-        while (result == 0) {
-          result = await ref
-              .read(noticeProvider.notifier)
-              .paginate(fetchMore: true, periodDay: periodDay);
-          print('result:$result');
-          periodDay += 14;
-          if (periodDay >= 98) {
-            print('마지막입니다');
-            ref.read(noticeProvider.notifier).updateToEnd();
-            return;
-          }
-        }
-        periodDay = 7;
+      final len = (ref.read(noticeProvider) as CursorPagination).data.length;
+      final afterLen = await ref.read(noticeProvider.notifier).paginate(fetchMore: true);
+      print('after : $afterLen');
+      if(len == afterLen){
+        ref.read(noticeProvider.notifier).updateToEnd();
       }
     }
   }
@@ -150,10 +138,7 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              print('gd');
-              ref
-                  .read(noticeProvider.notifier)
-                  .paginate(fetchMore: true, periodDay: 5);
+              context.goNamed(SearchNoticeScreen.routeName);
             },
             icon: const Icon(Icons.search),
           )
@@ -181,7 +166,6 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
                 if (_bannerAd  != null) {
                   return Column(
                     children: [
-                      Text('광고'),
                       Container(
                         width: _bannerAd!.size.width.toDouble(),
                         height: _bannerAd!.size.height.toDouble(),
