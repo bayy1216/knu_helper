@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:knu_helper/all/view/all_screen.dart';
 import 'package:knu_helper/common/const/color.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
@@ -7,6 +9,7 @@ import 'package:knu_helper/notice/view/notice_screen.dart';
 
 class RootTab extends StatefulWidget {
   static String get routeName => 'root';
+
   const RootTab({Key? key}) : super(key: key);
 
   @override
@@ -14,10 +17,9 @@ class RootTab extends StatefulWidget {
 }
 
 class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
-
   late TabController controller;
   int index = 0;
-
+  late int _tapCount = 0;
 
   @override
   void initState() {
@@ -32,7 +34,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  void tabListener(){
+  void tabListener() {
     setState(() {
       index = controller.index;
     });
@@ -52,23 +54,29 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
         selectedItemColor: PRIMARY_COLOR,
         unselectedItemColor: BODY_TEXT_COLOR,
         selectedFontSize: 12,
         unselectedFontSize: 12,
-        iconSize: 28,
+        iconSize: 22,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
-          controller.animateTo(index);
+          _tapCount++;
+          controller.animateTo(index,duration: 200.ms);
         },
         currentIndex: index,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
+            icon: index == 0
+                ? FaIcon(FontAwesomeIcons.house).animate().scale(duration: 150.ms,begin: Offset(0.95, 0.95))
+                : FaIcon(FontAwesomeIcons.house),
             label: '홈',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.star_outline_rounded),
+            icon: index == 1
+                ? FaIcon(FontAwesomeIcons.solidStar).animate().scale(duration: 150.ms,begin: Offset(0.95, 0.95))
+                : FaIcon(FontAwesomeIcons.solidStar),
             label: '즐겨찾기',
           ),
           // BottomNavigationBarItem(
@@ -76,7 +84,9 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           //   label: '',
           // ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
+            icon: index == 2
+                ? FaIcon(FontAwesomeIcons.bars).animate().scale(duration: 150.ms,begin: Offset(0.95, 0.95))
+                : FaIcon(FontAwesomeIcons.bars),
             label: '전체',
           ),
         ],
