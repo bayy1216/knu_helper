@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "811177020381",
+    "project_id": "knu-helper",
+    "storage_bucket": "knu-helper.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:811177020381:android:cc8d15fa27bc48db16c434",
+        "android_client_info": {
+          "package_name": "com.reditus.knu_helper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "811177020381-4vlr0162vem6t88masg1fdhu2uj2blhu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe8a-y5dlGP5o2I1cVDreOm7MBYLqhc2Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "811177020381-4vlr0162vem6t88masg1fdhu2uj2blhu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
