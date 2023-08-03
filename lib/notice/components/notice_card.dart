@@ -59,14 +59,30 @@ class NoticeCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => NoticeWebView(
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 500),
+            pageBuilder: (context, animation, secondaryAnimation) => NoticeWebView(
               title: title,
               url: url,
               isFavorite: isSelect,
               onStarClick: onStarClick,
               offStarClick: offStarClick,
             ),
+
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              const curve = Curves.ease;
+              final tween = Tween(begin: Offset(0.0, 0.3), end: Offset(0.0, 0.0)).chain(CurveTween(curve: curve));
+              final offsetAnimation = animation.drive(tween);
+              final x= CurvedAnimation(
+                parent: animation,
+                curve: curve,
+              );
+              return SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              );
+
+            },
           ),
         );
       },

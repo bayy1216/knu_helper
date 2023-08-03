@@ -10,7 +10,7 @@ class PrivacyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultLayout(
       child : InAppWebView(
-        initialUrlRequest: URLRequest(url: Uri.parse('https://grave-foe-3c7.notion.site/KnuMate-5576f7bd2ced40868adca19ad06b9d5a?pvs=4')),
+        initialUrlRequest: URLRequest(url: Uri.parse('https://bayy1216.github.io/knu_mate_info.html')),
       ),
     );
   }
