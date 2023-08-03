@@ -44,10 +44,6 @@ app.*.map.json
 /android/app/release
 
 
-#firebase
-/lib/firebase_options.dart
-/ios/Runner/GoogleService-Info.plist
-/ios/firebase_app_id_file.json
-/android/app/google-services.json
+
 
 /lib/common/const/admob_id.dart
