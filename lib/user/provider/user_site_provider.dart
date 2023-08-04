@@ -5,32 +5,32 @@ import 'package:knu_helper/notice/database/drift_database.dart';
 import 'package:knu_helper/notice/model/site_color.dart';
 import 'package:knu_helper/notice/model/site_enum.dart';
 
-final userSiteProvider = StateNotifierProvider<UserSiteStateNotifier,List<SiteColorModel>>((ref) {
-  final db = ref.watch(databaseProvider);
-  return UserSiteStateNotifier(database: db);
+final userSiteProvider = NotifierProvider<UserSiteStateNotifier,List<SiteColorModel>>(() {
+  return UserSiteStateNotifier();
 });
 
-class UserSiteStateNotifier extends StateNotifier<List<SiteColorModel>> {
-  final LocalDatabase database;
+class UserSiteStateNotifier extends Notifier<List<SiteColorModel>> {
 
-  UserSiteStateNotifier({required this.database}) : super([]) {
+  @override
+  List<SiteColorModel> build() {
     getSite();
+    return [];
   }
 
   Future<void> getSite() async {
-    final resp = await database.getSiteColors();
-    state = resp
-        .map((e) => SiteColorModel(
-              site: e.site,
-              hexCode: e.hexCode,
-            ))
-        .toList();
+
+    final resp = await ref.watch(databaseProvider).getSiteColors();
+    state = resp.map((e) => SiteColorModel(
+      site: e.site,
+      hexCode: e.hexCode,
+    )).toList();
+    print("GET SITE $resp");
   }
 
   Future<void> saveSite({required SiteColorModel model}) async {
     print('구독 : ${SiteEnum.getType[model.site]!.englishName}');
     await FirebaseMessaging.instance.subscribeToTopic(SiteEnum.getType[model.site]!.englishName);
-    database.createSiteColor(
+    ref.watch(databaseProvider).createSiteColor(
       SiteColorsCompanion(
         site: Value(model.site),
         hexCode: Value(model.hexCode),
@@ -41,7 +41,7 @@ class UserSiteStateNotifier extends StateNotifier<List<SiteColorModel>> {
 
   Future<void> deleteSite({required SiteColorModel model}) async {
     await FirebaseMessaging.instance.unsubscribeFromTopic(SiteEnum.getType[model.site]!.englishName);
-    database.deleteSiteColor(
+    ref.watch(databaseProvider).deleteSiteColor(
       SiteColorsCompanion(
         site: Value(model.site),
         hexCode: Value(model.hexCode),
@@ -49,5 +49,6 @@ class UserSiteStateNotifier extends StateNotifier<List<SiteColorModel>> {
     );
     await getSite();
   }
+
 
 }
