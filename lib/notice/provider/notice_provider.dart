@@ -9,14 +9,13 @@ import 'package:knu_helper/user/provider/user_site_provider.dart';
 final noticeProvider = NotifierProvider<NoticeNotifier, CursorPaginationBase>(NoticeNotifier.new);
 
 class NoticeNotifier extends Notifier<CursorPaginationBase> {
-  late NoticeRepository repository;
-  late LocalDatabase database;
-  late List<SiteColorModel> siteList;
+  late final NoticeRepository repository;
+  late final LocalDatabase database;
+  late final List<SiteColorModel> siteList;
 
 
   @override
   CursorPaginationBase build() {
-    state = CursorPaginationLoading();
     repository = ref.watch(noticeRepositoryProvider);
     database = ref.watch(databaseProvider);
     siteList = ref.watch(userSiteProvider);
@@ -65,7 +64,6 @@ class NoticeNotifier extends Notifier<CursorPaginationBase> {
     bool forceRefetch = false,
   }) async {
     try {
-      print('PAGINATE');
       if (state is CursorPaginationEnd) {
         return -1;
       }
@@ -100,7 +98,7 @@ class NoticeNotifier extends Notifier<CursorPaginationBase> {
         }
       }
 
-      print("repository before ${siteList.map((e) => e.site).toList()}}");
+
       final resp = await repository.paginate(
         siteList: siteList.map((e) => e.site).toList(),
         limit: limit,
@@ -116,7 +114,7 @@ class NoticeNotifier extends Notifier<CursorPaginationBase> {
 
       return resp.length;
     } catch (e) {
-      print('[!!paginate ERROR] : $e');
+      print(e);
       state = CursorPaginationError(message: '$e : 데이터를 가져오지 못했습니다.');
       return -1;
     }
