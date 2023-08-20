@@ -6,21 +6,26 @@ import 'package:knu_helper/notice/model/site_color.dart';
 import 'package:knu_helper/notice/repository/notice_repository.dart';
 import 'package:knu_helper/user/provider/user_site_provider.dart';
 
-final noticeProvider = NotifierProvider<NoticeNotifier, CursorPaginationBase>(NoticeNotifier.new);
+final noticeProvider =
+    StateNotifierProvider<NoticeStateNotifier, CursorPaginationBase>((ref) {
+  final repo = ref.watch(noticeRepositoryProvider);
+  final db = ref.watch(databaseProvider);
+  final siteList = ref.watch(userSiteProvider);
+  return NoticeStateNotifier(
+      repository: repo, database: db, siteList: siteList);
+});
 
-class NoticeNotifier extends Notifier<CursorPaginationBase> {
-  late final NoticeRepository repository;
-  late final LocalDatabase database;
-  late final List<SiteColorModel> siteList;
+class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
+  final NoticeRepository repository;
+  final LocalDatabase database;
+  final List<SiteColorModel> siteList;
 
-
-  @override
-  CursorPaginationBase build() {
-    repository = ref.watch(noticeRepositoryProvider);
-    database = ref.watch(databaseProvider);
-    siteList = ref.watch(userSiteProvider);
+  NoticeStateNotifier({
+    required this.repository,
+    required this.database,
+    required this.siteList,
+  }) : super(CursorPaginationLoading()) {
     paginate();
-    return CursorPaginationLoading();
   }
 
   toggleStar({required NoticeModel model, required bool value}) {
@@ -119,5 +124,4 @@ class NoticeNotifier extends Notifier<CursorPaginationBase> {
       return -1;
     }
   }
-
 }
