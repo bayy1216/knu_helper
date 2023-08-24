@@ -83,13 +83,12 @@ class _MessagePopupState extends State<MessagePopup> {
                 );
               }).toList(),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 24),
             Row(
               children: [
                 Expanded(
                   flex: 4,
                   child: SizedBox(
-                    // width: MediaQuery.of(context).size.width * 0.34,
                     height: 60,
                     child: ElevatedButton(
                       onPressed: () => context.pop(),
