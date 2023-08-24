@@ -66,20 +66,22 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
     if (isFirst) {
       await prefs.setBool('isFirst', false);
 
-      showModalBottomSheet(
-        context: context,
-        useSafeArea: true,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        builder: (context) => ModalBottomSheet(),
-      ).then((value) async {
-        await ref.read(userSiteProvider.notifier).saveSite(
-              model: SiteColorModel(
-                site: SiteEnum.knu.koreaName,
-                hexCode: DataUtils.colorToHexCode(COLOR_SELECT_LIST[0]),
-              ),
-            );
-      });
+      if(mounted){
+        showModalBottomSheet(
+          context: context,
+          useSafeArea: true,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (context) => ModalBottomSheet(),
+        ).then((value) async {
+          await ref.read(userSiteProvider.notifier).saveSite(
+            model: SiteColorModel(
+              site: SiteEnum.knu.koreaName,
+              hexCode: DataUtils.colorToHexCode(COLOR_SELECT_LIST[0]),
+            ),
+          );
+        });
+      }
     }
   }
 
