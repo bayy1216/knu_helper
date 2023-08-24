@@ -129,8 +129,8 @@ enum SiteEnum {
   knujob('진로취업과', 'knujob', SiteCategory.knu),
   aic('인공지능', 'aic', SiteCategory.knu),
   knucube('knucube', 'knucube', SiteCategory.knu),
-  sw('소프트웨어교육원', 'sw', SiteCategory.sw);
-
+  sw('소프트웨어교육원', 'sw', SiteCategory.sw),
+  global('국제교류처', 'global', SiteCategory.knu);
   final String koreaName;
   final String englishName;
   final SiteCategory category;
@@ -198,5 +198,6 @@ enum SiteEnum {
         '인공지능': aic,
         'knucube': knucube,
         '소프트웨어교육원': sw,
+        '국제교류처' : global,
       };
 }
