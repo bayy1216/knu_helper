@@ -173,17 +173,10 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
                       ),
                       NoticeCard.fromModel(
                         model: cp.data[index],
-                        onStarClick: () {
-                          ref
-                              .read(noticeProvider.notifier)
-                              .toggleStar(model: cp.data[index], value: true);
-                        },
-                        offStarClick: () {
-                          ref
-                              .read(noticeProvider.notifier)
-                              .toggleStar(model: cp.data[index], value: false);
-                        },
                         isFavorite: cp.isFavorite![index],
+                        onStarClick: (value) {
+                          ref.read(noticeProvider.notifier).toggleStar(model: cp.data[index], value: value);
+                        },
                       ),
                     ],
                   );
@@ -195,17 +188,10 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
 
               return NoticeCard.fromModel(
                 model: cp.data[index],
-                onStarClick: () {
-                  ref
-                      .read(noticeProvider.notifier)
-                      .toggleStar(model: cp.data[index], value: true);
-                },
-                offStarClick: () {
-                  ref
-                      .read(noticeProvider.notifier)
-                      .toggleStar(model: cp.data[index], value: false);
-                },
                 isFavorite: cp.isFavorite![index],
+                onStarClick: (value) {
+                  ref.read(noticeProvider.notifier).toggleStar(model: cp.data[index], value: value);
+                },
               );
             },
             separatorBuilder: (context, index) {

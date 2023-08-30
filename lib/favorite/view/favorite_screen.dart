@@ -40,14 +40,11 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
       itemBuilder: (context, index) {
         return NoticeCard.fromModel(
           model: state[index],
-          onStarClick: (){
-            ref.read(noticeProvider.notifier).toggleStar(model: state[index], value: true);
-            print("[favo]onstar");
-          },
-          offStarClick: () {
-            ref.read(noticeProvider.notifier).toggleStar(model: state[index], value: false);
-          },
           isFavorite: true,
+          onStarClick: (value) {
+            ref.read(noticeProvider.notifier).toggleStar(model: state[index], value: value);
+            ref.read(favoriteProvider.notifier).getFavorite();
+          },
         );
       },
       separatorBuilder: (context, index) {

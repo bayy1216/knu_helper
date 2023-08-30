@@ -14,8 +14,7 @@ class NoticeCard extends StatelessWidget {
   final String url;
   final int views;
   final DateTime day;
-  final Function() onStarClick;
-  final Function() offStarClick;
+  final Function(bool) onStarClick;
   final bool isFavorite;
 
   const NoticeCard({
@@ -28,14 +27,12 @@ class NoticeCard extends StatelessWidget {
     required this.views,
     required this.day,
     required this.onStarClick,
-    required this.offStarClick,
     this.isFavorite = false,
   }) : super(key: key);
 
   factory NoticeCard.fromModel({
     required NoticeModel model,
-    required Function() onStarClick,
-    required Function() offStarClick,
+    required Function(bool) onStarClick,
     bool isFavorite = false,
   }) {
     return NoticeCard(
@@ -47,7 +44,6 @@ class NoticeCard extends StatelessWidget {
       views: model.views,
       day: model.day,
       onStarClick: onStarClick,
-      offStarClick: offStarClick,
       isFavorite: isFavorite,
     );
   }
@@ -66,7 +62,6 @@ class NoticeCard extends StatelessWidget {
               url: url,
               isFavorite: isSelect,
               onStarClick: onStarClick,
-              offStarClick: offStarClick,
             ),
 
             transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -157,18 +152,9 @@ class NoticeCard extends StatelessWidget {
                 SizedBox(width: 4.0),
                 Text('조회수 : $views'),
                 Expanded(child: SizedBox()),
-                _IconBtn(
+                IconBtn(
                   isSelect: isSelect,
-                  onStarClick: (){
-                    onStarClick();
-                    isSelect = true;
-                    print(isSelect);
-                  },
-                  offStarClick: (){
-                    isSelect = false;
-                    offStarClick();
-                    print(isSelect);
-                  },
+                  onStarClick: onStarClick,
                 ),
               ],
             ),
@@ -179,58 +165,33 @@ class NoticeCard extends StatelessWidget {
   }
 }
 
-class _IconBtn extends StatefulWidget {
+class IconBtn extends StatelessWidget {
   final bool isSelect;
-  final Function() onStarClick;
-  final Function() offStarClick;
-
-  const _IconBtn({
-    Key? key,
-    required this.isSelect,
-    required this.onStarClick,
-    required this.offStarClick,
-  }) : super(key: key);
-
-  @override
-  State<_IconBtn> createState() => _IconBtnState();
-}
-
-class _IconBtnState extends State<_IconBtn> {
-  late bool isSelect;
-
-  @override
-  void initState() {
-    super.initState();
-    isSelect = widget.isSelect;
-  }
+  final Function(bool) onStarClick;
+  const IconBtn({super.key, required this.isSelect, required this.onStarClick});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (isSelect) {
-          widget.offStarClick();
-        } else {
-          widget.onStarClick();
-        }
-        isSelect = !isSelect;
-        setState(() {});
+        onStarClick(isSelect);
       },
       child: SizedBox(
         height: 45,
         width: 45,
         child: isSelect
             ? Icon(
-                Icons.star_rounded,
-                color: Colors.red,
-                size: 30,
-              )
+          Icons.star_rounded,
+          color: Colors.red,
+          size: 30,
+        )
             : Icon(
-                Icons.star_outline_rounded,
-                color: Colors.grey,
-                size: 30,
-              ),
+          Icons.star_outline_rounded,
+          color: Colors.grey,
+          size: 30,
+        ),
       ),
     );
   }
 }
+

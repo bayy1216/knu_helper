@@ -26,7 +26,7 @@ class CursorPagination<T> extends CursorPaginationBase {
     this.isFavorite,
   });
 
-  CursorPagination copywith({
+  CursorPagination copyWith({
     List<T>? data,
     List<bool>? isFavorite,
   }) {

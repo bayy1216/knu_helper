@@ -42,14 +42,15 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
     int idx = pState.data.indexWhere((element) => element.id == model.id);
     if (idx == -1) return;
 
-    pState.isFavorite![idx] = value;
-    if (value) {//즐겨찾기에 추가
-      favoriteRepository.saveFavorite(model: model);
-    } else {//즐겨찾기에서 삭제
+    pState.isFavorite![idx] = !value;
+    final s = pState.copyWith(isFavorite: [...pState.isFavorite!]);
+    if (value) {//즐겨찾기에 삭제
       favoriteRepository.deleteFavorite(model: model);
+    } else {//즐겨찾기에서 추가
+      favoriteRepository.saveFavorite(model: model);
     }
     print('누름 $idx, $value');
-    state = pState;
+    state = s;
   }
 
   updateToEnd() {

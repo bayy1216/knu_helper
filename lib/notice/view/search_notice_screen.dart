@@ -73,17 +73,10 @@ class SearchNoticeScreen extends ConsumerWidget {
                 }
                 return NoticeCard.fromModel(
                   model: searchData.data[index],
-                  onStarClick: () {
-                    ref
-                        .read(noticeProvider.notifier)
-                        .toggleStar(model: searchData.data[index], value: true);
-                  },
-                  offStarClick: () {
-                    ref
-                        .read(noticeProvider.notifier)
-                        .toggleStar(model: searchData.data[index], value: false);
-                  },
                   isFavorite: searchData.isFavorite![index],
+                  onStarClick: (value) {
+                    ref.read(noticeProvider.notifier).toggleStar(model: searchData.data[index], value: value);
+                  },
                 );
               },
               separatorBuilder: (context, index) {
