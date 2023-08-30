@@ -6,9 +6,9 @@ import 'package:knu_helper/common/const/color.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:knu_helper/common/utils/data_utils.dart';
 import 'package:knu_helper/notice/database/drift_database.dart';
-import 'package:knu_helper/notice/model/site_color.dart';
 import 'package:knu_helper/notice/model/site_enum.dart';
-import 'package:knu_helper/user/provider/user_site_provider.dart';
+
+import '../../favorite/provider/user_site_provider.dart';
 
 class SelectSiteScreen extends StatefulWidget {
   static String get routeName => 'select_site';

@@ -5,10 +5,6 @@ import 'package:knu_helper/all/view/select_site_screen.dart';
 import 'package:knu_helper/all/view/setting_screen.dart';
 import 'package:knu_helper/common/const/color.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
-import 'package:knu_helper/notice/components/modal_bottom_sheet.dart';
-import 'package:knu_helper/notice/model/site_color.dart';
-import 'package:knu_helper/notice/model/site_enum.dart';
-import 'package:knu_helper/user/provider/user_site_provider.dart';
 
 class AllScreen extends ConsumerWidget {
   const AllScreen({Key? key}) : super(key: key);

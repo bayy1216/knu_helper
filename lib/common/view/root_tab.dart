@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:knu_helper/all/view/all_screen.dart';
 import 'package:knu_helper/common/const/color.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
-import 'package:knu_helper/notice/view/favorite_screen.dart';
+import 'package:knu_helper/favorite/view/favorite_screen.dart';
 import 'package:knu_helper/notice/view/notice_screen.dart';
 
 class RootTab extends StatefulWidget {
@@ -19,7 +19,6 @@ class RootTab extends StatefulWidget {
 class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
   late TabController controller;
   int index = 0;
-  late int _tapCount = 0;
 
   @override
   void initState() {
@@ -62,7 +61,6 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
         iconSize: 22,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
-          _tapCount++;
           controller.animateTo(index,duration: 200.ms);
         },
         currentIndex: index,

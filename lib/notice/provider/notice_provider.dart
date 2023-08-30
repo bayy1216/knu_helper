@@ -4,7 +4,8 @@ import 'package:knu_helper/notice/database/drift_database.dart';
 import 'package:knu_helper/notice/model/notice_model.dart';
 import 'package:knu_helper/notice/model/site_color.dart';
 import 'package:knu_helper/notice/repository/notice_repository.dart';
-import 'package:knu_helper/user/provider/user_site_provider.dart';
+
+import '../../favorite/provider/user_site_provider.dart';
 
 final noticeProvider =
     StateNotifierProvider<NoticeStateNotifier, CursorPaginationBase>((ref) {

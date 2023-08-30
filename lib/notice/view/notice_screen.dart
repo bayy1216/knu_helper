@@ -16,12 +16,11 @@ import 'package:knu_helper/notice/model/notice_model.dart';
 import 'package:knu_helper/notice/model/site_color.dart';
 import 'package:knu_helper/notice/model/site_enum.dart';
 import 'package:knu_helper/notice/provider/notice_provider.dart';
-import 'package:knu_helper/notice/view/notice_web_view.dart';
 import 'package:knu_helper/notice/view/search_notice_screen.dart';
-import 'package:knu_helper/user/provider/user_site_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../common/const/admob_id.dart';
+import '../../favorite/provider/user_site_provider.dart';
 
 class NoticeScreen extends ConsumerStatefulWidget {
   const NoticeScreen({Key? key}) : super(key: key);

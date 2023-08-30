@@ -4,9 +4,7 @@ import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:knu_helper/common/model/cursor_pagination_model.dart';
 import 'package:knu_helper/notice/model/notice_model.dart';
 import 'package:knu_helper/notice/provider/notice_provider.dart';
-import 'package:knu_helper/notice/repository/notice_repository.dart';
 
-import '../../user/provider/user_site_provider.dart';
 import '../components/notice_card.dart';
 import '../database/drift_database.dart';
 

@@ -5,19 +5,18 @@ import 'package:knu_helper/all/view/open_source_screen.dart';
 import 'package:knu_helper/all/view/privacy_screen.dart';
 import 'package:knu_helper/all/view/select_site_screen.dart';
 import 'package:knu_helper/all/view/setting_screen.dart';
-import 'package:knu_helper/notice/view/notice_web_view.dart';
 import 'package:knu_helper/notice/view/search_notice_screen.dart';
 
-import '../../common/view/root_tab.dart';
+import '../view/root_tab.dart';
 
-final authProvider = ChangeNotifierProvider<AuthProvider>((ref) {
-  return AuthProvider(ref: ref);
+final navigationProvider = ChangeNotifierProvider<NavigationProvider>((ref) {
+  return NavigationProvider(ref: ref);
 });
 
-class AuthProvider extends ChangeNotifier {
+class NavigationProvider extends ChangeNotifier {
   final Ref ref;
 
-  AuthProvider({
+  NavigationProvider({
     required this.ref,
   });
 
