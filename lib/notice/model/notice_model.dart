@@ -2,6 +2,8 @@
 import 'package:drift/drift.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../database/drift_database.dart';
+
 part 'notice_model.g.dart';
 
 @JsonSerializable()
@@ -31,6 +33,19 @@ class NoticeModel {
   => _$NoticeModelFromJson(json);
 
   Map<String, dynamic> toJson() =>_$NoticeModelToJson(this);
+
+  factory NoticeModel.fromNotice(Notice notice){
+    return NoticeModel(
+      id: notice.id,
+      content: notice.content,
+      title: notice.title,
+      site: notice.site,
+      type: notice.type,
+      url: notice.url,
+      views: notice.views,
+      day: notice.day,
+    );
+  }
 
 }
 
