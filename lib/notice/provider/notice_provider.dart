@@ -5,10 +5,9 @@ import 'package:knu_helper/notice/model/notice_model.dart';
 import 'package:knu_helper/notice/model/site_color.dart';
 import 'package:knu_helper/notice/repository/notice_repository.dart';
 
-import '../../favorite/provider/user_site_provider.dart';
+import '../../all/provider/user_site_provider.dart';
 
-final noticeProvider =
-    StateNotifierProvider<NoticeStateNotifier, CursorPaginationBase>((ref) {
+final noticeProvider = StateNotifierProvider<NoticeStateNotifier, CursorPaginationBase>((ref) {
   final repo = ref.watch(noticeRepositoryProvider);
   final db = ref.watch(databaseProvider);
   final siteList = ref.watch(userSiteProvider);

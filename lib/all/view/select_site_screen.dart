@@ -1,4 +1,3 @@
-import 'package:drift/drift.dart' hide Column;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knu_helper/all/component/message_popup.dart';
@@ -8,7 +7,8 @@ import 'package:knu_helper/common/utils/data_utils.dart';
 import 'package:knu_helper/notice/database/drift_database.dart';
 import 'package:knu_helper/notice/model/site_enum.dart';
 
-import '../../favorite/provider/user_site_provider.dart';
+import '../../notice/model/site_color.dart';
+import '../provider/user_site_provider.dart';
 
 class SelectSiteScreen extends StatefulWidget {
   static String get routeName => 'select_site';
@@ -68,11 +68,7 @@ class _SelectSiteScreenState extends State<SelectSiteScreen> {
                           key: Key(e.site), // 고유한 키를 설정합니다.
                           direction: DismissDirection.horizontal, // 오른쪽에서 왼쪽으로 밀어서 실행합니다.
                           onDismissed: (direction) {
-                            final data = SiteColorsCompanion(
-                              hexCode: Value(e.hexCode),
-                              site: Value(e.site),
-                            );
-                            ref.read(databaseProvider).deleteSiteColor(data);
+                            ref.read(databaseProvider).deleteSiteColor(e);
                             ref.read(userSiteProvider.notifier).getSite();
                           },
                           background: Container(
@@ -98,12 +94,11 @@ class _SelectSiteScreenState extends State<SelectSiteScreen> {
                                   title: e.site,
                                   subTitle: "색상을 선택해주세요",
                                   okCallback: (colorHexCode) {
-                                    ref.read(databaseProvider).createSiteColor(
-                                          SiteColorsCompanion(
-                                            hexCode: Value(colorHexCode),
-                                            site: Value(e.site),
-                                          ),
-                                        );
+                                    final model = SiteColorModel(
+                                      site: e.site,
+                                      hexCode: colorHexCode,
+                                    );
+                                    ref.read(databaseProvider).createSiteColor(model);
                                   },
                                 ),
                               ).then((value)async{
@@ -167,12 +162,11 @@ class _SelectSiteScreenState extends State<SelectSiteScreen> {
                                 title: site.koreaName,
                                 subTitle: "색상을 선택해주세요",
                                 okCallback: (colorHexCode) {
-                                  ref.read(databaseProvider).createSiteColor(
-                                    SiteColorsCompanion(
-                                      hexCode: Value(colorHexCode),
-                                      site: Value(site.koreaName),
-                                    ),
+                                  final model = SiteColorModel(
+                                    site: site.koreaName,
+                                    hexCode: colorHexCode,
                                   );
+                                  ref.read(databaseProvider).createSiteColor(model);
                                 },
                               ),
                               ).then((value)async{

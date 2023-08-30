@@ -5,7 +5,7 @@ import 'package:knu_helper/common/utils/data_utils.dart';
 import 'package:knu_helper/notice/model/site_color.dart';
 import 'package:knu_helper/notice/model/site_enum.dart';
 
-import '../../favorite/provider/user_site_provider.dart';
+import '../../all/provider/user_site_provider.dart';
 
 class ModalBottomSheet extends StatefulWidget {
   const ModalBottomSheet({Key? key}) : super(key: key);

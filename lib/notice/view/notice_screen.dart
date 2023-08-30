@@ -19,8 +19,8 @@ import 'package:knu_helper/notice/provider/notice_provider.dart';
 import 'package:knu_helper/notice/view/search_notice_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../all/provider/user_site_provider.dart';
 import '../../common/const/admob_id.dart';
-import '../../favorite/provider/user_site_provider.dart';
 
 class NoticeScreen extends ConsumerStatefulWidget {
   const NoticeScreen({Key? key}) : super(key: key);

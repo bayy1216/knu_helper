@@ -54,7 +54,11 @@ class LocalDatabase extends _$LocalDatabase {
 
 
 
-  Future<int> createSiteColor(SiteColorsCompanion data) async {
+  Future<int> createSiteColor(SiteColorModel model) async {
+    final data = SiteColorsCompanion(
+      site: Value(model.site),
+      hexCode: Value(model.hexCode),
+    );
     try {
       final result = await into(siteColors).insert(data);
       return result;
@@ -65,7 +69,11 @@ class LocalDatabase extends _$LocalDatabase {
     }
   }
 
-  Future<int> deleteSiteColor(SiteColorsCompanion data) async {
+  Future<int> deleteSiteColor(SiteColorModel model) async {
+    final data = SiteColorsCompanion(
+      site: Value(model.site),
+      hexCode: Value(model.hexCode),
+    );
     try {
       final result = await delete(siteColors).delete(data);
       return result;
