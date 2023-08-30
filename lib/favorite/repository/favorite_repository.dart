@@ -16,4 +16,10 @@ class FavoriteRepository{
     final resp = await localDatabase.getNotices();
     return resp.map((e) => NoticeModel.fromNotice(e)).toList();
   }
+  Future<void> saveFavorite({required NoticeModel model}) async {
+    await localDatabase.insertNotice(model);
+  }
+  Future<void> deleteFavorite({required NoticeModel model}) async {
+    await localDatabase.deleteNotice(model);
+  }
 }

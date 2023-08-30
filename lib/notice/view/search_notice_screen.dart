@@ -6,7 +6,6 @@ import 'package:knu_helper/notice/model/notice_model.dart';
 import 'package:knu_helper/notice/provider/notice_provider.dart';
 
 import '../components/notice_card.dart';
-import '../database/drift_database.dart';
 
 final keywordProvider = StateProvider.autoDispose((ref) => '');
 class SearchNoticeScreen extends ConsumerWidget {
@@ -75,13 +74,11 @@ class SearchNoticeScreen extends ConsumerWidget {
                 return NoticeCard.fromModel(
                   model: searchData.data[index],
                   onStarClick: () {
-                    ref.read(databaseProvider).insertNotice(searchData.data[index]);
                     ref
                         .read(noticeProvider.notifier)
                         .toggleStar(model: searchData.data[index], value: true);
                   },
                   offStarClick: () {
-                    ref.read(databaseProvider).deleteNotice(searchData.data[index]);
                     ref
                         .read(noticeProvider.notifier)
                         .toggleStar(model: searchData.data[index], value: false);

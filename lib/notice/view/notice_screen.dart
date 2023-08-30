@@ -11,7 +11,6 @@ import 'package:knu_helper/common/model/cursor_pagination_model.dart';
 import 'package:knu_helper/common/utils/data_utils.dart';
 import 'package:knu_helper/notice/components/notice_card.dart';
 import 'package:knu_helper/notice/components/modal_bottom_sheet.dart';
-import 'package:knu_helper/notice/database/drift_database.dart';
 import 'package:knu_helper/notice/model/notice_model.dart';
 import 'package:knu_helper/notice/model/site_color.dart';
 import 'package:knu_helper/notice/model/site_enum.dart';
@@ -175,13 +174,11 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
                       NoticeCard.fromModel(
                         model: cp.data[index],
                         onStarClick: () {
-                          ref.read(databaseProvider).insertNotice(cp.data[index]);
                           ref
                               .read(noticeProvider.notifier)
                               .toggleStar(model: cp.data[index], value: true);
                         },
                         offStarClick: () {
-                          ref.read(databaseProvider).deleteNotice(cp.data[index]);
                           ref
                               .read(noticeProvider.notifier)
                               .toggleStar(model: cp.data[index], value: false);
@@ -199,13 +196,11 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
               return NoticeCard.fromModel(
                 model: cp.data[index],
                 onStarClick: () {
-                  ref.read(databaseProvider).insertNotice(cp.data[index]);
                   ref
                       .read(noticeProvider.notifier)
                       .toggleStar(model: cp.data[index], value: true);
                 },
                 offStarClick: () {
-                  ref.read(databaseProvider).deleteNotice(cp.data[index]);
                   ref
                       .read(noticeProvider.notifier)
                       .toggleStar(model: cp.data[index], value: false);

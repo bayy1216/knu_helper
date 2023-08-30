@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knu_helper/common/model/cursor_pagination_model.dart';
+import 'package:knu_helper/favorite/repository/favorite_repository.dart';
 import 'package:knu_helper/notice/database/drift_database.dart';
 import 'package:knu_helper/notice/model/notice_model.dart';
 import 'package:knu_helper/notice/model/site_color.dart';
@@ -7,21 +8,29 @@ import 'package:knu_helper/notice/repository/notice_repository.dart';
 
 import '../../all/provider/user_site_provider.dart';
 
-final noticeProvider = StateNotifierProvider<NoticeStateNotifier, CursorPaginationBase>((ref) {
+final noticeProvider =
+    StateNotifierProvider<NoticeStateNotifier, CursorPaginationBase>((ref) {
   final repo = ref.watch(noticeRepositoryProvider);
+  final favoriteRepo = ref.watch(favoriteRepositoryProvider);
   final db = ref.watch(databaseProvider);
   final siteList = ref.watch(userSiteProvider);
   return NoticeStateNotifier(
-      repository: repo, database: db, siteList: siteList);
+    repository: repo,
+    favoriteRepository: favoriteRepo,
+    database: db,
+    siteList: siteList,
+  );
 });
 
 class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
   final NoticeRepository repository;
+  final FavoriteRepository favoriteRepository;
   final LocalDatabase database;
   final List<SiteColorModel> siteList;
 
   NoticeStateNotifier({
     required this.repository,
+    required this.favoriteRepository,
     required this.database,
     required this.siteList,
   }) : super(CursorPaginationLoading()) {
@@ -31,12 +40,14 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
   toggleStar({required NoticeModel model, required bool value}) {
     final pState = state as CursorPagination<NoticeModel>;
     int idx = pState.data.indexWhere((element) => element.id == model.id);
-    print(pState.data);
-    if (idx == -1) {
-      print("없음");
-      return;
-    }
+    if (idx == -1) return;
+
     pState.isFavorite![idx] = value;
+    if (value) {//즐겨찾기에 추가
+      favoriteRepository.saveFavorite(model: model);
+    } else {//즐겨찾기에서 삭제
+      favoriteRepository.deleteFavorite(model: model);
+    }
     print('누름 $idx, $value');
     state = pState;
   }
@@ -47,7 +58,7 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
         CursorPaginationEnd(data: pState.data, isFavorite: pState.isFavorite);
   }
 
-  searchNotice()async{
+  searchNotice() async {
     if (state is CursorPaginationEnd) {
       return;
     }
@@ -61,7 +72,6 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
     }
     state = CursorPaginationEnd(data: [...resp], isFavorite: [...isFavorite]);
   }
-
 
   Future<int> paginate({
     //-1 진행중,에러 /  0 이상 응답받은 데이터갯수
@@ -79,9 +89,9 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
         return -1;
       }
 
-
-
-      final limit = (state is CursorPagination) ? (state as CursorPagination).data.length + 10: 10;
+      final limit = (state is CursorPagination)
+          ? (state as CursorPagination).data.length + 10
+          : 10;
       if (fetchMore) {
         //기존에 있는 상황
         final pState = state as CursorPagination<NoticeModel>;
@@ -103,7 +113,6 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
         }
       }
 
-
       final resp = await repository.paginate(
         siteList: siteList.map((e) => e.site).toList(),
         limit: limit,
@@ -113,7 +122,6 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
         final isIn = await database.isIn(id: e.id);
         isFavorite.add(isIn);
       }
-
 
       state = CursorPagination(data: [...resp], isFavorite: [...isFavorite]);
 
