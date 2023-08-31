@@ -48,39 +48,40 @@ class NoticeCard extends StatelessWidget {
     );
   }
 
+  void routing(BuildContext context){
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        transitionDuration: Duration(milliseconds: 500),
+        pageBuilder: (context, animation, secondaryAnimation) => NoticeWebView(
+          title: title,
+          url: url,
+          isFavorite: isFavorite,
+          onStarClick: onStarClick,
+        ),
+
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const curve = Curves.ease;
+          final tween = Tween(begin: Offset(0.0, 0.3), end: Offset(0.0, 0.0)).chain(CurveTween(curve: curve));
+          final offsetAnimation = animation.drive(tween);
+          final x= CurvedAnimation(
+            parent: animation,
+            curve: curve,
+          );
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child,
+          );
+
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    bool isSelect = isFavorite;
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            transitionDuration: Duration(milliseconds: 500),
-            pageBuilder: (context, animation, secondaryAnimation) => NoticeWebView(
-              title: title,
-              url: url,
-              isFavorite: isSelect,
-              onStarClick: onStarClick,
-            ),
-
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-              const curve = Curves.ease;
-              final tween = Tween(begin: Offset(0.0, 0.3), end: Offset(0.0, 0.0)).chain(CurveTween(curve: curve));
-              final offsetAnimation = animation.drive(tween);
-              final x= CurvedAnimation(
-                parent: animation,
-                curve: curve,
-              );
-              return SlideTransition(
-                position: offsetAnimation,
-                child: child,
-              );
-
-            },
-          ),
-        );
-      },
+      onTap: () => routing(context),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8.0),
         padding: const EdgeInsets.only(left: 4.0, right: 0.0, top: 8.0),
@@ -143,7 +144,11 @@ class NoticeCard extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(title, style: TextStyle(fontWeight: FontWeight.w600),maxLines: 2,overflow: TextOverflow.ellipsis,),
+              child: Text(
+                title,
+                style: TextStyle(fontWeight: FontWeight.w600),
+                maxLines: 2,overflow: TextOverflow.ellipsis,
+              ),
             ),
             Text(content),
             Row(
@@ -153,7 +158,7 @@ class NoticeCard extends StatelessWidget {
                 Text('조회수 : $views'),
                 Expanded(child: SizedBox()),
                 IconBtn(
-                  isSelect: isSelect,
+                  isFavorite: isFavorite,
                   onStarClick: onStarClick,
                 ),
               ],
@@ -166,30 +171,23 @@ class NoticeCard extends StatelessWidget {
 }
 
 class IconBtn extends StatelessWidget {
-  final bool isSelect;
+  final bool isFavorite;
   final Function(bool) onStarClick;
-  const IconBtn({super.key, required this.isSelect, required this.onStarClick});
+  const IconBtn({super.key, required this.isFavorite, required this.onStarClick});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        onStarClick(isSelect);
-      },
+      onTap: () => onStarClick(isFavorite),
       child: SizedBox(
         height: 45,
         width: 45,
-        child: isSelect
-            ? Icon(
-          Icons.star_rounded,
-          color: Colors.red,
+        child: Icon(isFavorite
+              ? Icons.star_rounded
+              : Icons.star_outline_rounded,
+          color: isFavorite ? Colors.red : Colors.grey,
           size: 30,
         )
-            : Icon(
-          Icons.star_outline_rounded,
-          color: Colors.grey,
-          size: 30,
-        ),
       ),
     );
   }

@@ -26,7 +26,7 @@ class NoticeWebView extends StatelessWidget {
       title: title,
       actions: [
         IconBtn(
-          isSelect: isFavorite,
+          isFavorite: isFavorite,
           onStarClick: onStarClick,
         ),
       ],
