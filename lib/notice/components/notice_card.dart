@@ -182,12 +182,20 @@ class IconBtn extends StatelessWidget {
       child: SizedBox(
         height: 45,
         width: 45,
-        child: Icon(isFavorite
-              ? Icons.star_rounded
-              : Icons.star_outline_rounded,
-          color: isFavorite ? Colors.red : Colors.grey,
-          size: 30,
+        child: Center(
+          child: AnimatedCrossFade(
+            duration: const Duration(milliseconds: 150),
+            crossFadeState: isFavorite ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+            firstChild: Icon(Icons.star_rounded, color: Colors.red, size: 30),
+            secondChild: Icon(Icons.star_outline_rounded, color: Colors.grey, size: 30),
+          ),
         )
+        // child: Icon(isFavorite
+        //       ? Icons.star_rounded
+        //       : Icons.star_outline_rounded,
+        //   color: isFavorite ? Colors.red : Colors.grey,
+        //   size: 30,
+        // )
       ),
     );
   }
