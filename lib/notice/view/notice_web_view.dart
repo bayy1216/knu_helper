@@ -4,7 +4,7 @@ import 'package:knu_helper/common/layout/default_layout.dart';
 
 import '../components/notice_card.dart';
 
-class NoticeWebView extends StatelessWidget {
+class NoticeWebView extends StatefulWidget {
   final String title;
   final String url;
   final bool isFavorite;
@@ -19,19 +19,29 @@ class NoticeWebView extends StatelessWidget {
     required this.onStarClick,
   }) : super(key: key);
 
+  @override
+  State<NoticeWebView> createState() => _NoticeWebViewState();
+}
 
+class _NoticeWebViewState extends State<NoticeWebView> {
+  late bool isFavorite = widget.isFavorite;
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      title: title,
+      title: widget.title,
       actions: [
         IconBtn(
           isFavorite: isFavorite,
-          onStarClick: onStarClick,
+          onStarClick: (value) {
+            widget.onStarClick(value);
+            setState(() {
+              isFavorite = !isFavorite;
+            });
+          },
         ),
       ],
       body: InAppWebView(
-        initialUrlRequest: URLRequest(url: Uri.parse(url)),
+        initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
       ),
     );
   }
