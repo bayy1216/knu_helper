@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knu_helper/common/utils/data_utils.dart';
 import 'package:knu_helper/notice/model/notice_model.dart';
-import 'package:knu_helper/notice/model/site_color.dart';
 import 'package:knu_helper/notice/model/site_enum.dart';
 
 final noticeRepositoryProvider = Provider((ref) => NoticeRepository());
@@ -31,24 +30,13 @@ class NoticeRepository{
       var data = await document.get();
       list.addAll(data.docs.map<NoticeModel>( (e) => NoticeModel.fromJson(e.data()) ).toList());
     }
-    list.sort((a, b) {
-      if(a.day.compareTo(b.day) > 0){
-        return -1;
-      }else if (a.day.compareTo(b.day) == 0){
-        if(a.views < b.views){
-          return -1;
-        }
-        else{
-          return 1;
-        }
-      }else{
-        return 1;
-      }
-    });
+    list.sort(DataUtils.sortNotice);
 
 
     return list;
   }
+
+
 
   Future<List<NoticeModel>> searchNotice({required List<String> siteList})async{
     print("[SiteList] $siteList");
@@ -61,20 +49,7 @@ class NoticeRepository{
       var data = await document.get();
       list.addAll(data.docs.map<NoticeModel>( (e) => NoticeModel.fromJson(e.data()) ).toList());
     }
-    list.sort((a, b) {
-      if(a.day.compareTo(b.day) > 0){
-        return -1;
-      }else if (a.day.compareTo(b.day) == 0){
-        if(a.views < b.views){
-          return -1;
-        }
-        else{
-          return 1;
-        }
-      }else{
-        return 1;
-      }
-    });
+    list.sort(DataUtils.sortNotice);
 
 
     return list;

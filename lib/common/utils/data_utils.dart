@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../notice/model/notice_model.dart';
+
 class DataUtils{
   static String dateTimeToString(DateTime date){
     String year = date.year.toString();
@@ -13,6 +15,21 @@ class DataUtils{
   }
   static String colorToHexCode(Color color){
     return color.value.toRadixString(16).substring(2).toUpperCase();
+  }
+
+  static int sortNotice(NoticeModel a, NoticeModel b) {
+    if(a.day.compareTo(b.day) > 0){
+      return -1;
+    }else if (a.day.compareTo(b.day) == 0){
+      if(a.views < b.views){
+        return -1;
+      }
+      else{
+        return 1;
+      }
+    }else{
+      return 1;
+    }
   }
 
 
