@@ -19,7 +19,7 @@ class AllScreen extends ConsumerWidget {
           icon: const Icon(Icons.settings),
         ),
       ],
-      child: SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

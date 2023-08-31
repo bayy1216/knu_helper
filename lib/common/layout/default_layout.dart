@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DefaultLayout extends StatelessWidget {
-  final Widget child;
+  final Widget body;
   final Color? backgroundColor;
   final String? title;
   final Widget? titleWidget;
@@ -9,7 +9,7 @@ class DefaultLayout extends StatelessWidget {
   final List<Widget>? actions;
   final double elevation;
   const DefaultLayout({
-    required this.child,
+    required this.body,
     this.backgroundColor,
     this.title,
     this.titleWidget,
@@ -24,7 +24,7 @@ class DefaultLayout extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor ?? Colors.white,
       appBar: renderAppBar(),
-      body: child,
+      body: body,
       bottomNavigationBar: bottomNavigationBar,
     );
   }

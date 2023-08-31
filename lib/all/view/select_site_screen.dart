@@ -26,7 +26,7 @@ class _SelectSiteScreenState extends State<SelectSiteScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      child: ListView(
+      body: ListView(
         children: [
           ExpansionPanelList(
             animationDuration: Duration(milliseconds: 300),

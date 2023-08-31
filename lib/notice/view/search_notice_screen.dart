@@ -45,7 +45,7 @@ class SearchNoticeScreen extends ConsumerWidget {
             icon: const Icon(Icons.search),
           )
         ],
-        child: FutureBuilder(
+        body: FutureBuilder(
           future: ref.read(noticeProvider.notifier).searchNotice(),
           builder: (context, snapshot) {
 

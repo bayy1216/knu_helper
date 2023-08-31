@@ -143,7 +143,7 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
             icon: const Icon(Icons.search),
           )
         ],
-        child: RefreshIndicator(
+        body: RefreshIndicator(
           onRefresh: () async {
             ref.read(noticeProvider.notifier).paginate(forceRefetch: true);
           },

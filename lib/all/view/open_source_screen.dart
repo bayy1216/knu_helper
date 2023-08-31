@@ -58,7 +58,7 @@ class _OpensourceScreenState extends State<OpensourceScreen> {
     return DefaultLayout(
       title: 'opensource',
       elevation: 2,
-      child: ListView.separated(
+      body: ListView.separated(
         itemBuilder: (context, index) => OpensourceItem(packageList[index]),
         itemCount: packageList.length,
         separatorBuilder: (BuildContext context, int index) {

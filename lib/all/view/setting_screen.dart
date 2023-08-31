@@ -18,7 +18,7 @@ class SettingScreen extends StatelessWidget {
     return DefaultLayout(
       title: '설정',
       backgroundColor: Colors.white,
-      child: Column(
+      body: Column(
         children: [
           ListTile(
             onTap: () => context.goNamed(OpensourceScreen.routeName),

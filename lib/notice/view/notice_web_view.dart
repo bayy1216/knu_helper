@@ -30,7 +30,7 @@ class NoticeWebView extends StatelessWidget {
           onStarClick: onStarClick,
         ),
       ],
-      child: InAppWebView(
+      body: InAppWebView(
         initialUrlRequest: URLRequest(url: Uri.parse(url)),
       ),
     );

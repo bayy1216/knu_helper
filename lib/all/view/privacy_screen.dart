@@ -9,7 +9,7 @@ class PrivacyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      child : InAppWebView(
+      body : InAppWebView(
         initialUrlRequest: URLRequest(url: Uri.parse('https://bayy1216.github.io/knu_mate_info.html')),
       ),
     );

@@ -42,53 +42,53 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      child: TabBarView(
-        physics: NeverScrollableScrollPhysics(),
+      body: TabBarView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: controller,
-        children: [
+        children: const [
           NoticeScreen(),
           FavoriteScreen(),
-          // Container(child: Text('2'),),
           AllScreen(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedItemColor: PRIMARY_COLOR,
-        unselectedItemColor: BODY_TEXT_COLOR,
-        selectedFontSize: 12,
-        unselectedFontSize: 12,
-        iconSize: 22,
-        type: BottomNavigationBarType.fixed,
-        onTap: (index) {
-          controller.animateTo(index,duration: 200.ms);
-        },
-        currentIndex: index,
-        items: [
-          BottomNavigationBarItem(
-            icon: index == 0
-                ? FaIcon(FontAwesomeIcons.house).animate().scale(duration: 150.ms,begin: Offset(0.95, 0.95))
-                : FaIcon(FontAwesomeIcons.house),
-            label: '홈',
-          ),
-          BottomNavigationBarItem(
-            icon: index == 1
-                ? FaIcon(FontAwesomeIcons.solidStar).animate().scale(duration: 150.ms,begin: Offset(0.95, 0.95))
-                : FaIcon(FontAwesomeIcons.solidStar),
-            label: '즐겨찾기',
-          ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.accessibility),
-          //   label: '',
-          // ),
-          BottomNavigationBarItem(
-            icon: index == 2
-                ? FaIcon(FontAwesomeIcons.bars).animate().scale(duration: 150.ms,begin: Offset(0.95, 0.95))
-                : FaIcon(FontAwesomeIcons.bars),
-            label: '전체',
-          ),
-        ],
+      bottomNavigationBar: Theme(
+        data: ThemeData(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+        ),
+        child: BottomNavigationBar(
+          backgroundColor: Colors.white,
+          selectedItemColor: PRIMARY_COLOR,
+          unselectedItemColor: BODY_TEXT_COLOR,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          iconSize: 22,
+          type: BottomNavigationBarType.fixed,
+          onTap: (index) {
+            controller.animateTo(index,duration: 200.ms);
+          },
+          currentIndex: index,
+          items: BottomNavPage.values.map((e){
+            return BottomNavigationBarItem(icon: index == e.index
+                ? e.faIcon.animate().scale(duration: 150.ms,begin: const Offset(0.9, 0.9))
+                : e.faIcon,
+              label: e.korean,
+            );
+          }).toList()
+        ),
       ),
     );
   }
+}
+
+
+enum BottomNavPage {
+  notice('홈', FaIcon(FontAwesomeIcons.house)),
+  favorite('즐겨찾기', FaIcon(FontAwesomeIcons.solidStar)),
+  all('전체', FaIcon(FontAwesomeIcons.bars));
+
+  final String korean;
+  final FaIcon faIcon;
+
+  const BottomNavPage(this.korean, this.faIcon);
 }
