@@ -28,166 +28,196 @@ class _SelectSiteScreenState extends State<SelectSiteScreen> {
     return DefaultLayout(
       body: ListView(
         children: [
-          ExpansionPanelList(
-            animationDuration: Duration(milliseconds: 300),
-            elevation: 1,
-            expandedHeaderPadding: const EdgeInsets.all(0),
-            expansionCallback: (int index, bool isExpanded) {
+          ListTile(
+            title: const Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: '선택목록',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  TextSpan(
+                    text: '     밀어서 제거',
+                    style: TextStyle(
+                      fontSize: 9.0,
+                      color: BODY_TEXT_COLOR,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            trailing: const Icon(Icons.keyboard_arrow_down_outlined),
+            onTap: () {
               setState(() {
-                isExpandedList[index] = !isExpanded;
+                isExpandedList[0] = !isExpandedList[0];
               });
             },
-            children: [
-              ExpansionPanel(
-                headerBuilder: (BuildContext context, bool isExpanded) {
-                  return const ListTile(
-                    title: Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: '선택목록',
-                            style: TextStyle(fontWeight: FontWeight.w700),
+          ),
+          AnimatedCrossFade(
+            firstChild: Container(),
+            secondChild: Consumer(
+              builder: (context, ref, child) {
+                final siteList = ref.watch(userSiteProvider);
+                return Column(
+                  children: siteList.map((e) {
+                    return Dismissible(
+                      key: Key(e.site),
+                      direction: DismissDirection.horizontal,
+                      confirmDismiss: (direction) {
+                        return Future.value(true);
+                      },
+                      // 오른쪽에서 왼쪽으로 밀어서 실행합니다.
+                      onDismissed: (direction) {
+                        ref.read(databaseProvider).deleteSiteColor(e);
+                        ref.read(userSiteProvider.notifier).getSite();
+                      },
+                      background: Container(
+                        color: PRIMARY_COLOR, // 밀어서 실행하는 배경 색상
+                        child: const Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                            ),
                           ),
-                          TextSpan(
-                            text: '     밀어서 제거',
-                            style: TextStyle(fontSize: 9.0,color: BODY_TEXT_COLOR,fontWeight: FontWeight.w500),
-                          ),
-                        ],
+                        ),
                       ),
-                    )
-                    // Text('선택 목록',
-                    //     style: TextStyle(fontWeight: FontWeight.w700)),
-                  );
-                },
-                body: Consumer(
-                  builder: (context, ref, child) {
-                    final siteList = ref.watch(userSiteProvider);
-                    return Column(
-                      children: siteList.map((e) {
-                        return Dismissible(
-                          key: Key(e.site), // 고유한 키를 설정합니다.
-                          direction: DismissDirection.horizontal, // 오른쪽에서 왼쪽으로 밀어서 실행합니다.
-                          onDismissed: (direction) {
-                            ref.read(databaseProvider).deleteSiteColor(e);
-                            ref.read(userSiteProvider.notifier).getSite();
-                          },
-                          background: Container(
-                            color: PRIMARY_COLOR, // 밀어서 실행하는 배경 색상
-                            child: const Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                                child: Icon(
-                                  Icons.delete,
-                                  color: Colors.white,
-                                ),
+                      child: GestureDetector(
+                        onTap: () async {
+                          await showDialogToSelect(context, e, ref);
+                        },
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(e.site),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(DataUtils.stringToColorCode(e.hexCode)),
+                                    ),
+                                    width: 20,
+                                    height: 20,
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
-                          child: GestureDetector(
-                            onTap: () async {
-                              await showDialog(
-                                context: context,
-                                builder: (context) => MessagePopup(
-                                  color: Color(
-                                      DataUtils.stringToColorCode(e.hexCode)),
-                                  title: e.site,
-                                  subTitle: "색상을 선택해주세요",
-                                  okCallback: (colorHexCode) {
-                                    final model = SiteColorModel(
-                                      site: e.site,
-                                      hexCode: colorHexCode,
-                                    );
-                                    ref.read(databaseProvider).createSiteColor(model);
-                                  },
-                                ),
-                              ).then((value)async{
-                                await Future.delayed(const Duration(milliseconds: 10));
-                                ref.read(userSiteProvider.notifier).getSite();
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0, vertical: 8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(e.site),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Color(
-                                              DataUtils.stringToColorCode(e.hexCode)),
-                                        ),
-                                        width: 20,
-                                        height: 20,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Divider(height: 1.5,color: Colors.grey,thickness: 0.2),
-                              ],
+                            const Divider(
+                              height: 1.5,
+                              color: Colors.grey,
+                              thickness: 0.2,
                             ),
-                          ),
-                        );
-                      }).toList(),
+                          ],
+                        ),
+                      ),
                     );
+                  }).toList(),
+                );
+              },
+            ),
+            crossFadeState: isExpandedList[0] ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+            duration: const Duration(milliseconds: 150),
+          ),
+          Divider(color: Colors.grey, thickness: 0.2, height: 1.5),
+          ...SiteCategory.values.map((category) {
+            return Column(
+              children: [
+                ListTile(
+                  title: Text(
+                    category.koreaName,
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  trailing: const Icon(Icons.keyboard_arrow_down_outlined),
+                  onTap: () {
+                    setState(() {
+                      isExpandedList[category.index + 1] =
+                          !isExpandedList[category.index + 1];
+                    });
                   },
                 ),
-                isExpanded: isExpandedList[0],
-              ),
-              ...SiteCategory.values.map((category) {
-                int categoryIndex = category.index + 1;
-                return ExpansionPanel(
-                  headerBuilder: (BuildContext context, bool isExpanded) {
-                    return ListTile(
-                      title: Text(category.koreaName,
-                          style: TextStyle(fontWeight: FontWeight.w700)),
-                    );
-                  },
-                  body: Column(
+                AnimatedCrossFade(
+                  firstChild: Container(),
+                  secondChild: Column(
                     children: SiteEnum.values
                         .where((element) => element.category == category)
                         .map((site) {
-                      return Consumer(
-                        builder: (context, ref, child) {
-                          return ListTile(
-                            onTap: () async{
-                              await showDialog(
-                                  context: context,
-                                  builder: (context) => MessagePopup(
-                                color: COLOR_SELECT_LIST.first,
-                                title: site.koreaName,
-                                subTitle: "색상을 선택해주세요",
-                                okCallback: (colorHexCode) {
-                                  final model = SiteColorModel(
-                                    site: site.koreaName,
-                                    hexCode: colorHexCode,
-                                  );
-                                  ref.read(databaseProvider).createSiteColor(model);
+                      return Column(
+                        children: [
+                          Consumer(
+                            builder: (context, ref, child) {
+                              return InkWell(
+                                onTap: () async {
+                                  await selectSite(context, site, ref);
                                 },
-                              ),
-                              ).then((value)async{
-                              await Future.delayed(const Duration(milliseconds: 10));
-                              ref.read(userSiteProvider.notifier).getSite();
-                              });
-
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(site.koreaName,style: TextStyle(fontSize: 16.0),),
+                                ),
+                              );
                             },
-                            title: Text(site.koreaName),
-                          );
-                        },
+                          ),
+                        ],
                       );
                     }).toList(),
                   ),
-                  isExpanded: isExpandedList[categoryIndex],
-                );
-              }).toList()
-            ],
-          )
+                  crossFadeState: isExpandedList[category.index + 1]
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst,
+                  duration: const Duration(milliseconds: 150),
+                ),
+                Divider(color: Colors.grey, thickness: 0.2, height: 1.5)
+              ],
+            );
+          }).toList(),
         ],
       ),
     );
+  }
+
+  Future<void> selectSite(BuildContext context, SiteEnum site, WidgetRef ref) async {
+    await showDialog(
+      context: context,
+      builder: (context) => MessagePopup(
+        color: COLOR_SELECT_LIST.first,
+        title: site.koreaName,
+        subTitle: "색상을 선택해주세요",
+        okCallback: (colorHexCode) {
+          final model = SiteColorModel(
+            site: site.koreaName,
+            hexCode: colorHexCode,
+          );
+          ref.read(databaseProvider).createSiteColor(model);
+        },
+      ),
+    );
+    await Future.delayed(const Duration(milliseconds: 10));
+    ref.read(userSiteProvider.notifier).getSite();
+  }
+
+  Future<void> showDialogToSelect(BuildContext context, SiteColorModel e, WidgetRef ref) async {
+    await showDialog(
+      context: context,
+      builder: (context) => MessagePopup(
+        color: Color(DataUtils.stringToColorCode(e.hexCode)),
+        title: e.site,
+        subTitle: "색상을 선택해주세요",
+        okCallback: (colorHexCode) {
+          final model = SiteColorModel(
+            site: e.site,
+            hexCode: colorHexCode,
+          );
+          ref.read(databaseProvider).createSiteColor(model);
+        },
+      ),
+    );
+    await Future.delayed(const Duration(milliseconds: 10));
+    ref.read(userSiteProvider.notifier).getSite();
   }
 }
