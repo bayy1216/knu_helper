@@ -97,19 +97,25 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: NotoSans
+    - family: Pretendard
       fonts:
-        - asset: asset/fonts/NotoSansKR-Black.otf
+        - asset: asset/fonts/Pretendard-Black.otf
           weight: 900
-        - asset: asset/fonts/NotoSansKR-Bold.otf
+        - asset: asset/fonts/Pretendard-ExtraBold.otf
+          weight: 800
+        - asset: asset/fonts/Pretendard-Bold.otf
           weight: 700
-        - asset: asset/fonts/NotoSansKR-Medium.otf
+        - asset: asset/fonts/Pretendard-SemiBold.otf
+          weight: 600
+        - asset: asset/fonts/Pretendard-Medium.otf
           weight: 500
-        - asset: asset/fonts/NotoSansKR-Regular.otf
+        - asset: asset/fonts/Pretendard-Regular.otf
           weight: 400
-        - asset: asset/fonts/NotoSansKR-Light.otf
+        - asset: asset/fonts/Pretendard-Light.otf
           weight: 300
-        - asset: asset/fonts/NotoSansKR-Thin.otf
+        - asset: asset/fonts/Pretendard-ExtraLight.otf
+          weight: 200
+        - asset: asset/fonts/Pretendard-Thin.otf
           weight: 100
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

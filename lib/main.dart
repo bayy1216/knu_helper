@@ -30,7 +30,7 @@ class _App extends ConsumerWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'KNU Mate',
-      theme: ThemeData(fontFamily: 'NotoSans'),
+      theme: ThemeData(fontFamily: 'Pretendard'),
       routerConfig: router,
     );
   }
