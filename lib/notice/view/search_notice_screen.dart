@@ -19,7 +19,6 @@ class SearchNoticeScreen extends ConsumerWidget {
     FocusNode searchFocusNode = FocusNode();
     return SafeArea(
       child: DefaultLayout(
-        elevation: 3,
         title: '',
         titleWidget: TextField(
           focusNode: searchFocusNode,

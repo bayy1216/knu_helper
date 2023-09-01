@@ -134,12 +134,15 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
 
     return SafeArea(
       child: DefaultLayout(
-        title: '검색하기',
+        title: '공지사항',
         actions: [
           IconButton(
+            tooltip: '검색',
             onPressed: () {
               context.goNamed(SearchNoticeScreen.routeName);
             },
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
             icon: const Icon(Icons.search),
           )
         ],

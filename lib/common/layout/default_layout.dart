@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:knu_helper/common/const/text_style.dart';
 
 class DefaultLayout extends StatelessWidget {
   final Widget body;
@@ -39,10 +40,7 @@ class DefaultLayout extends StatelessWidget {
       elevation: elevation,
       title: titleWidget ?? Text(
         title!,
-        style: TextStyle(
-          fontSize: 16.0,
-          fontWeight: FontWeight.w500,
-        ),
+        style: titleStyle,
       ),
       centerTitle: true,
       foregroundColor: Colors.black,

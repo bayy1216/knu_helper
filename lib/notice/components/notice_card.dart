@@ -6,6 +6,8 @@ import 'package:knu_helper/notice/database/drift_database.dart';
 import 'package:knu_helper/notice/model/notice_model.dart';
 import 'package:knu_helper/notice/view/notice_web_view.dart';
 
+import '../../common/const/text_style.dart';
+
 class NoticeCard extends StatelessWidget {
   final String content;
   final String title;
@@ -114,49 +116,35 @@ class NoticeCard extends StatelessWidget {
                             final hexCode = snapshot.data;
                             color = Color(DataUtils.stringToColorCode(hexCode!));
                           }
-
-                          return Container(
-                            padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-                            decoration: BoxDecoration(
-                              color: color,
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            child: Text(site, style: TextStyle(color: Colors.white, fontSize: 12)),
-                          );
+                          return chipContainer(text: site, color: color,);
                         },
                       );
                     },
                   ),
-                  SizedBox(width: 6.0),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 4.0, horizontal: 8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    child: Text(type, style: TextStyle(color: Colors.white,fontSize: 12)),
-                  ),
-                  Expanded(child: SizedBox()),
-                  Text(DataUtils.dateTimeToString(day))
+                  const SizedBox(width: 6.0),
+                  chipContainer(text: type, color: Colors.grey),
+                  const Expanded(child: SizedBox()),
+                  Text(DataUtils.dateTimeToString(day),style: contentStyle,)
                 ],
               ),
             ),
+            const SizedBox(height: 4.0),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
                 title,
-                style: TextStyle(fontWeight: FontWeight.w600),
+                style: titleStyle,
                 maxLines: 2,overflow: TextOverflow.ellipsis,
               ),
             ),
             Text(content),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(width: 4.0),
-                Text('조회수 : $views'),
-                Expanded(child: SizedBox()),
+                const SizedBox(width: 8.0),
+                Text('조회수 : $views',style: contentStyle,),
+                const Expanded(child: SizedBox()),
                 IconBtn(
                   isFavorite: isFavorite,
                   onStarClick: onStarClick,
@@ -166,6 +154,20 @@ class NoticeCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Container chipContainer({required String text, required Color color}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        vertical: 4.0,
+        horizontal: 10.0,
+      ),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Text(text, style: chipStyle),
     );
   }
 }
@@ -180,8 +182,8 @@ class IconBtn extends StatelessWidget {
     return GestureDetector(
       onTap: () => onStarClick(isFavorite),
       child: SizedBox(
-        height: 45,
-        width: 45,
+        height: 40,
+        width: 40,
         child: Center(
           child: AnimatedCrossFade(
             duration: const Duration(milliseconds: 150),
