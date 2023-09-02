@@ -8,37 +8,48 @@ import 'package:knu_helper/notice/provider/notice_provider.dart';
 import '../components/notice_card.dart';
 
 final keywordProvider = StateProvider.autoDispose((ref) => '');
+
 class SearchNoticeScreen extends ConsumerWidget {
   static String get routeName => 'search_notice';
-  const SearchNoticeScreen({Key? key}) : super(key: key);
+
+  SearchNoticeScreen({Key? key}) : super(key: key);
+
+  final searchController = TextEditingController();
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final keyword = ref.watch(keywordProvider);
-    final searchController = TextEditingController();
     FocusNode searchFocusNode = FocusNode();
+
     return SafeArea(
       child: DefaultLayout(
         title: '',
+        elevation: 1,
         titleWidget: TextField(
           focusNode: searchFocusNode,
           controller: searchController,
+
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
+              borderSide: BorderSide.none,
             ),
-            contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+            filled: true,
+            fillColor: Colors.grey.shade300,
+            contentPadding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
             hintText: '검색어를 입력하세요',
-            hintStyle: TextStyle(color: Colors.grey),
+            hintStyle: const TextStyle(color: Colors.black54),
           ),
-          onSubmitted: (text){
+          onSubmitted: (text) {
             ref.read(keywordProvider.notifier).update((state) => text);
           },
         ),
         actions: [
           IconButton(
             onPressed: () {
-              ref.read(keywordProvider.notifier).update((state) => searchController.text);
+              ref
+                  .read(keywordProvider.notifier)
+                  .update((state) => searchController.text);
               searchFocusNode.unfocus(); // 키보드 숨기기
             },
             icon: const Icon(Icons.search),
@@ -47,11 +58,9 @@ class SearchNoticeScreen extends ConsumerWidget {
         body: FutureBuilder(
           future: ref.read(noticeProvider.notifier).searchNotice(),
           builder: (context, snapshot) {
-
             if (!snapshot.hasData) {
               return Container(color: Colors.transparent);
-            }
-            else if (snapshot.hasError) {
+            } else if (snapshot.hasError) {
               return const Center(
                 child: Text(
                   'Error',
@@ -60,29 +69,32 @@ class SearchNoticeScreen extends ConsumerWidget {
               );
             }
 
+            final searchData =
+                ref.read(noticeProvider) as CursorPagination<NoticeModel>;
 
-            final searchData = ref.read(noticeProvider) as CursorPagination<NoticeModel>;
-
-
-              return ListView.separated(
+            return ListView.builder(
               itemCount: searchData.data.length,
               itemBuilder: (context, index) {
-                if(!searchData.data[index].title.contains(keyword) || keyword == ''){
+                if (!searchData.data[index].title.contains(keyword) ||
+                    keyword == '') {
                   return const SizedBox.shrink();
                 }
-                return NoticeCard.fromModel(
-                  model: searchData.data[index],
-                  isFavorite: searchData.isFavorite![index],
-                  onStarClick: (value) {
-                    ref.read(noticeProvider.notifier).toggleStar(model: searchData.data[index], value: value);
-                  },
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: NoticeCard.fromModel(
+                    model: searchData.data[index],
+                    isFavorite: searchData.isFavorite![index],
+                    onStarClick: (value) {
+                      ref.read(noticeProvider.notifier).toggleStar(
+                            model: searchData.data[index],
+                            value: value,
+                          );
+                    },
+                  ),
                 );
               },
-              separatorBuilder: (context, index) {
-                return const SizedBox(height: 8.0);
-              },
             );
-          }
+          },
         ),
       ),
     );

@@ -59,19 +59,21 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
         CursorPaginationEnd(data: pState.data, isFavorite: pState.isFavorite);
   }
 
-  searchNotice() async {
+  Future<bool> searchNotice() async {
     if (state is CursorPaginationEnd) {
-      return;
+      return true;
     }
     final resp = await repository.searchNotice(
       siteList: siteList.map((e) => e.site).toList(),
     );
+    print(resp.length);
     final List<bool> isFavorite = [];
     for (var e in resp) {
       final isIn = await database.isIn(id: e.id);
       isFavorite.add(isIn);
     }
     state = CursorPaginationEnd(data: [...resp], isFavorite: [...isFavorite]);
+    return true;
   }
 
   Future<int> paginate({
