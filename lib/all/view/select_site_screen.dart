@@ -47,7 +47,9 @@ class _SelectSiteScreenState extends State<SelectSiteScreen> {
                 ],
               ),
             ),
-            trailing: const Icon(Icons.keyboard_arrow_down_outlined),
+            trailing: isExpandedList[0] ?
+              const Icon(Icons.keyboard_arrow_up_outlined) :
+              const Icon(Icons.keyboard_arrow_down_outlined),
             onTap: () {
               setState(() {
                 isExpandedList[0] = !isExpandedList[0];
@@ -133,7 +135,9 @@ class _SelectSiteScreenState extends State<SelectSiteScreen> {
                     category.koreaName,
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
-                  trailing: const Icon(Icons.keyboard_arrow_down_outlined),
+                  trailing: isExpandedList[category.index + 1] ?
+                  const Icon(Icons.keyboard_arrow_up_outlined) :
+                  const Icon(Icons.keyboard_arrow_down_outlined),
                   onTap: () {
                     setState(() {
                       isExpandedList[category.index + 1] =
