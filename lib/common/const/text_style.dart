@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+const contentCommandStyle = TextStyle(
+    color: Colors.grey,
+    fontSize: 18,
+);
+
 const titleStyle = TextStyle(
   fontSize: 15,
   fontWeight: FontWeight.w600,

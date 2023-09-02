@@ -5,21 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:knu_helper/common/const/color.dart';
+import 'package:knu_helper/all/provider/user_site_provider.dart';
+import 'package:knu_helper/common/components/cow_item.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:knu_helper/common/model/cursor_pagination_model.dart';
-import 'package:knu_helper/common/utils/data_utils.dart';
 import 'package:knu_helper/notice/components/notice_card.dart';
-import 'package:knu_helper/notice/components/modal_bottom_sheet.dart';
 import 'package:knu_helper/notice/model/notice_model.dart';
-import 'package:knu_helper/notice/model/site_color.dart';
-import 'package:knu_helper/notice/model/site_enum.dart';
 import 'package:knu_helper/notice/provider/notice_provider.dart';
 import 'package:knu_helper/notice/view/search_notice_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../all/provider/user_site_provider.dart';
+
 import '../../common/const/admob_id.dart';
+
 
 class NoticeScreen extends ConsumerStatefulWidget {
   const NoticeScreen({Key? key}) : super(key: key);
@@ -36,7 +33,6 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
 
   @override
   void initState() {
-    init();
     super.initState();
     controller.addListener(listener);
     BannerAd(
@@ -58,30 +54,6 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
     ).load();
   }
 
-  Future<void> init() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool isFirst = prefs.getBool('isFirst') ?? true;
-    if (isFirst) {
-      await prefs.setBool('isFirst', false);
-
-      if(mounted){
-        showModalBottomSheet(
-          context: context,
-          useSafeArea: true,
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
-          builder: (context) => ModalBottomSheet(),
-        ).then((value) async {
-          await ref.read(userSiteProvider.notifier).saveSite(
-            model: SiteColorModel(
-              site: SiteEnum.knu.koreaName,
-              hexCode: DataUtils.colorToHexCode(COLOR_SELECT_LIST[0]),
-            ),
-          );
-        });
-      }
-    }
-  }
 
   void listener() async {
     if (controller.offset > controller.position.maxScrollExtent - 300) {
@@ -104,7 +76,9 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     final state = ref.watch(noticeProvider);
+    final userSite = ref.watch(userSiteProvider);
     print("[noti]REBUILD");
     if (state is CursorPaginationLoading) {
       return Container(color: Colors.transparent);
@@ -132,6 +106,7 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
     }
     final cp = state as CursorPagination<NoticeModel>;
 
+
     return SafeArea(
       child: DefaultLayout(
         title: '공지사항',
@@ -150,7 +125,7 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
           onRefresh: () async {
             ref.read(noticeProvider.notifier).paginate(forceRefetch: true);
           },
-          child: ListView.separated(
+          child: userSite.isEmpty ?  const CowItem(content: '설정에서 원하는 사이트를 추가해 보세요') : ListView.separated(
             controller: controller,
             itemCount: cp.data.length + 1,
             itemBuilder: (context, index) {
@@ -160,8 +135,8 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
                       horizontal: 16.0, vertical: 8.0),
                   child: Center(
                     child: cp is CursorPaginationRefetchingMore
-                        ? CircularProgressIndicator()
-                        : Text('마지막 데이터 입니다.'),
+                        ? const CircularProgressIndicator()
+                        : const Text('마지막 데이터 입니다.'),
                   ),
                 );
               }
@@ -206,3 +181,5 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
     );
   }
 }
+
+

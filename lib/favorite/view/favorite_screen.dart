@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:knu_helper/common/components/cow_item.dart';
 import 'package:knu_helper/notice/components/notice_card.dart';
 import 'package:knu_helper/favorite/provider/favorite_provider.dart';
 import 'package:knu_helper/notice/provider/notice_provider.dart';
@@ -23,16 +24,7 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
     final state = ref.watch(favoriteProvider);
     print("[favo]REBUILD");
     if(state.isEmpty){
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('asset/images/knu_cow_old.png',width: 160),
-            SizedBox(height: 10.0),
-            Text('즐겨찾기를 추가해 보세요',style: TextStyle(color: Colors.grey,fontSize: 18)),
-          ],
-        ),
-      );
+      return const CowItem(content:'즐겨찾기를 추가해 보세요');
     }
 
     return ListView.separated(
