@@ -54,7 +54,7 @@ class NoticeCard extends StatelessWidget {
     Navigator.push(
       context,
       PageRouteBuilder(
-        transitionDuration: Duration(milliseconds: 500),
+        transitionDuration: Duration(milliseconds: 300),
         pageBuilder: (context, animation, secondaryAnimation) => NoticeWebView(
           title: title,
           url: url,
@@ -63,13 +63,10 @@ class NoticeCard extends StatelessWidget {
         ),
 
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const curve = Curves.ease;
-          final tween = Tween(begin: Offset(0.0, 0.3), end: Offset(0.0, 0.0)).chain(CurveTween(curve: curve));
+          const curve = Curves.easeInOut;
+          final tween = Tween(begin: Offset(0.0, 0.2), end: Offset(0.0, 0.0)).chain(CurveTween(curve: curve));
           final offsetAnimation = animation.drive(tween);
-          final x= CurvedAnimation(
-            parent: animation,
-            curve: curve,
-          );
+
           return SlideTransition(
             position: offsetAnimation,
             child: child,
