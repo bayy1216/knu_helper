@@ -117,5 +117,9 @@ flutter:
           weight: 200
         - asset: asset/fonts/Pretendard-Thin.otf
           weight: 100
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages
+    - family: Pyeongchangpeace
+      fonts:
+        - asset: asset/fonts/pyeongchangpeace_light.otf
+          weight: 500
+        - asset: asset/fonts/pyeongchangpeace_bold.otf
+          weight: 700
