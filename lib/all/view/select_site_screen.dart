@@ -4,7 +4,6 @@ import 'package:knu_helper/all/component/message_popup.dart';
 import 'package:knu_helper/common/const/color.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:knu_helper/common/utils/data_utils.dart';
-import 'package:knu_helper/notice/database/drift_database.dart';
 import 'package:knu_helper/notice/model/site_enum.dart';
 
 import '../../notice/model/site_color.dart';
@@ -71,8 +70,7 @@ class _SelectSiteScreenState extends State<SelectSiteScreen> {
                       },
                       // 오른쪽에서 왼쪽으로 밀어서 실행합니다.
                       onDismissed: (direction) {
-                        ref.read(databaseProvider).deleteSiteColor(e);
-                        ref.read(userSiteProvider.notifier).getSite();
+                        ref.read(userSiteProvider.notifier).deleteSite(model: e);
                       },
                       background: Container(
                         color: PRIMARY_COLOR, // 밀어서 실행하는 배경 색상
@@ -197,7 +195,7 @@ class _SelectSiteScreenState extends State<SelectSiteScreen> {
             site: site.koreaName,
             hexCode: colorHexCode,
           );
-          ref.read(databaseProvider).createSiteColor(model);
+          ref.read(userSiteProvider.notifier).saveSite(model: model);
         },
       ),
     );
@@ -217,7 +215,7 @@ class _SelectSiteScreenState extends State<SelectSiteScreen> {
             site: e.site,
             hexCode: colorHexCode,
           );
-          ref.read(databaseProvider).createSiteColor(model);
+          ref.read(userSiteProvider.notifier).saveSite(model: model);
         },
       ),
     );

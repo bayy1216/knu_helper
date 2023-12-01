@@ -46,6 +46,18 @@ class NoticeModel {
       day: notice.day,
     );
   }
+  NoticesCompanion toCompanion(){
+    return NoticesCompanion(
+      id: Value(id),
+      content: Value(content),
+      title: Value(title),
+      site: Value(site),
+      type: Value(type),
+      url: Value(url),
+      views: Value(views),
+      day: Value(day),
+    );
+  }
 
 }
 

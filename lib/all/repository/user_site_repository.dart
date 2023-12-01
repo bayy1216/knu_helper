@@ -31,11 +31,11 @@ class UserSiteRepository {
 
   Future<void> saveSite({required SiteColorModel model}) async {
     await FirebaseMessaging.instance.subscribeToTopic(SiteEnum.getType[model.site]!.englishName);
-    database.createSiteColor(model);
+    database.createSiteColor(model.toCompanion());
   }
 
   Future<void> deleteSite({required SiteColorModel model}) async {
     await FirebaseMessaging.instance.unsubscribeFromTopic(SiteEnum.getType[model.site]!.englishName);
-    database.deleteSiteColor(model);
+    database.deleteSiteColor(model.toCompanion());
   }
 }

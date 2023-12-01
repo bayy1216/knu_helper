@@ -19,31 +19,11 @@ final databaseProvider = Provider<LocalDatabase>((ref) => LocalDatabase());
 class LocalDatabase extends _$LocalDatabase {
   LocalDatabase() : super(_openConnection());
 
-  Future<int> insertNotice(NoticeModel model) {
-    final data = NoticesCompanion(
-      url: Value(model.url),
-      site: Value(model.site),
-      content: Value(model.content),
-      title: Value(model.title),
-      day: Value(model.day),
-      views: Value(model.views),
-      type: Value(model.type),
-      id: Value(model.id),
-    );
+  Future<int> insertNotice(NoticesCompanion data) {
     return into(notices).insert(data);
   }
 
-  Future<int> deleteNotice(NoticeModel model) {
-    final data = NoticesCompanion(
-      url: Value(model.url),
-      site: Value(model.site),
-      content: Value(model.content),
-      title: Value(model.title),
-      day: Value(model.day),
-      views: Value(model.views),
-      type: Value(model.type),
-      id: Value(model.id),
-    );
+  Future<int> deleteNotice(NoticesCompanion data) {
     return delete(notices).delete(data);
   }
 
@@ -54,11 +34,7 @@ class LocalDatabase extends _$LocalDatabase {
 
 
 
-  Future<int> createSiteColor(SiteColorModel model) async {
-    final data = SiteColorsCompanion(
-      site: Value(model.site),
-      hexCode: Value(model.hexCode),
-    );
+  Future<int> createSiteColor(SiteColorsCompanion data) async {
     try {
       final result = await into(siteColors).insert(data);
       return result;
@@ -69,11 +45,7 @@ class LocalDatabase extends _$LocalDatabase {
     }
   }
 
-  Future<int> deleteSiteColor(SiteColorModel model) async {
-    final data = SiteColorsCompanion(
-      site: Value(model.site),
-      hexCode: Value(model.hexCode),
-    );
+  Future<int> deleteSiteColor(SiteColorsCompanion data) async {
     try {
       final result = await delete(siteColors).delete(data);
       return result;
