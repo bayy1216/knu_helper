@@ -12,12 +12,10 @@ final noticeProvider =
     StateNotifierProvider<NoticeStateNotifier, CursorPaginationBase>((ref) {
   final repo = ref.watch(noticeRepositoryProvider);
   final favoriteRepo = ref.watch(favoriteRepositoryProvider);
-  final db = ref.watch(databaseProvider);
   final siteList = ref.watch(userSiteProvider);
   return NoticeStateNotifier(
     repository: repo,
     favoriteRepository: favoriteRepo,
-    database: db,
     siteList: siteList,
   );
 });
@@ -25,13 +23,11 @@ final noticeProvider =
 class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
   final NoticeRepository repository;
   final FavoriteRepository favoriteRepository;
-  final LocalDatabase database;
   final List<SiteColorModel> siteList;
 
   NoticeStateNotifier({
     required this.repository,
     required this.favoriteRepository,
-    required this.database,
     required this.siteList,
   }) : super(CursorPaginationLoading()) {
     paginate();
@@ -69,7 +65,7 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
     print(resp.length);
     final List<bool> isFavorite = [];
     for (var e in resp) {
-      final isIn = await database.isIn(id: e.id);
+      final isIn = await favoriteRepository.isIn(id: e.id);
       isFavorite.add(isIn);
     }
     state = CursorPaginationEnd(data: [...resp], isFavorite: [...isFavorite]);
@@ -122,7 +118,7 @@ class NoticeStateNotifier extends StateNotifier<CursorPaginationBase> {
       );
       final List<bool> isFavorite = [];
       for (var e in resp) {
-        final isIn = await database.isIn(id: e.id);
+        final isIn = await favoriteRepository.isIn(id: e.id);
         isFavorite.add(isIn);
       }
 

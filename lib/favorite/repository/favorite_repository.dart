@@ -24,4 +24,12 @@ class FavoriteRepository{
     final data = model.toCompanion();
     await localDatabase.deleteNotice(data);
   }
+
+  Future<bool> isIn({required String id}){
+    return localDatabase.isIn(id: id);
+  }
+
+  Future<String> getColorOfSite({required String siteName}){
+    return localDatabase.getColorOfSite(siteName: siteName);
+  }
 }
