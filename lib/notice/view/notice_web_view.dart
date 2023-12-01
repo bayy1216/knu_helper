@@ -3,6 +3,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 
 import '../components/notice_card.dart';
+import '../components/star_icon_button.dart';
 
 class NoticeWebView extends StatefulWidget {
   final String title;
@@ -30,7 +31,7 @@ class _NoticeWebViewState extends State<NoticeWebView> {
     return DefaultLayout(
       title: widget.title,
       actions: [
-        IconBtn(
+        StarIconButton(
           isFavorite: isFavorite,
           onStarClick: (value) {
             widget.onStarClick(value);

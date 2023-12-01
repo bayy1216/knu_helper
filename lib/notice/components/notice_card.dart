@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knu_helper/common/const/color.dart';
 import 'package:knu_helper/common/utils/data_utils.dart';
 import 'package:knu_helper/favorite/repository/favorite_repository.dart';
+import 'package:knu_helper/notice/components/chip_item.dart';
+import 'package:knu_helper/notice/components/star_icon_button.dart';
 import 'package:knu_helper/notice/model/notice_model.dart';
 import 'package:knu_helper/notice/view/notice_web_view.dart';
 
@@ -113,13 +115,13 @@ class NoticeCard extends StatelessWidget {
                             final hexCode = snapshot.data;
                             color = Color(DataUtils.stringToColorCode(hexCode!));
                           }
-                          return chipContainer(text: site, color: color,);
+                          return ChipItem(text: site, color: color,);
                         },
                       );
                     },
                   ),
                   const SizedBox(width: 6.0),
-                  chipContainer(text: type, color: Colors.grey),
+                  ChipItem(text: type, color: Colors.grey),
                   const Expanded(child: SizedBox()),
                   Text(DataUtils.dateTimeToString(day),style: contentStyle,)
                 ],
@@ -142,7 +144,7 @@ class NoticeCard extends StatelessWidget {
                 const SizedBox(width: 8.0),
                 Text('조회수 : $views',style: contentStyle,),
                 const Expanded(child: SizedBox()),
-                IconBtn(
+                StarIconButton(
                   isFavorite: isFavorite,
                   onStarClick: onStarClick,
                 ),
@@ -150,51 +152,6 @@ class NoticeCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Container chipContainer({required String text, required Color color}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        vertical: 4.0,
-        horizontal: 10.0,
-      ),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Text(text, style: chipStyle),
-    );
-  }
-}
-
-class IconBtn extends StatelessWidget {
-  final bool isFavorite;
-  final Function(bool) onStarClick;
-  const IconBtn({super.key, required this.isFavorite, required this.onStarClick});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => onStarClick(isFavorite),
-      child: SizedBox(
-        height: 40,
-        width: 40,
-        child: Center(
-          child: AnimatedCrossFade(
-            duration: const Duration(milliseconds: 150),
-            crossFadeState: isFavorite ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-            firstChild: Icon(Icons.star_rounded, color: Colors.red, size: 30),
-            secondChild: Icon(Icons.star_outline_rounded, color: Colors.grey, size: 30),
-          ),
-        )
-        // child: Icon(isFavorite
-        //       ? Icons.star_rounded
-        //       : Icons.star_outline_rounded,
-        //   color: isFavorite ? Colors.red : Colors.grey,
-        //   size: 30,
-        // )
       ),
     );
   }
