@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 
-import '../database/drift_database.dart';
+import '../../common/database/drift_database.dart';
 
 class SiteColorModel {
   final String site;

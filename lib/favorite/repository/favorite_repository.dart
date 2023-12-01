@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../notice/database/drift_database.dart';
+import '../../common/database/drift_database.dart';
 import '../../notice/model/notice_model.dart';
 
 final favoriteRepositoryProvider = Provider<FavoriteRepository>((ref) {

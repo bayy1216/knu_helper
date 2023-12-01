@@ -2,7 +2,9 @@
 import 'package:drift/drift.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../database/drift_database.dart';
+import '../../common/database/drift_database.dart';
+
+
 
 part 'notice_model.g.dart';
 

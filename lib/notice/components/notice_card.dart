@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knu_helper/common/const/color.dart';
 import 'package:knu_helper/common/utils/data_utils.dart';
-import 'package:knu_helper/notice/database/drift_database.dart';
 import 'package:knu_helper/notice/model/notice_model.dart';
 import 'package:knu_helper/notice/view/notice_web_view.dart';
 
 import '../../common/const/text_style.dart';
+import '../../common/database/drift_database.dart';
 
 class NoticeCard extends StatelessWidget {
   final String content;

@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../notice/database/drift_database.dart';
+import '../../common/database/drift_database.dart';
 import '../../notice/model/site_color.dart';
 import '../../notice/model/site_enum.dart';
 
