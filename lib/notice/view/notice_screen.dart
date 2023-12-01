@@ -80,6 +80,9 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
     final state = ref.watch(noticeProvider);
     final userSite = ref.watch(userSiteProvider);
     print("[noti]REBUILD");
+    if(userSite.isEmpty){
+      return const CowItem(content: '설정에서 원하는 사이트를 추가해 보세요');
+    }
     if (state is CursorPaginationLoading) {
       return Container(color: Colors.transparent);
     }
@@ -125,7 +128,7 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
           onRefresh: () async {
             ref.read(noticeProvider.notifier).paginate(forceRefetch: true);
           },
-          child: userSite.isEmpty ?  const CowItem(content: '설정에서 원하는 사이트를 추가해 보세요') : ListView.separated(
+          child: ListView.separated(
             controller: controller,
             itemCount: cp.data.length + 1,
             itemBuilder: (context, index) {
@@ -140,27 +143,23 @@ class _NoticeScreenState extends ConsumerState<NoticeScreen> {
                   ),
                 );
               }
-              if (index == 4) {
-                if (_bannerAd  != null) {
-                  return Column(
-                    children: [
-                      Container(
-                        width: _bannerAd!.size.width.toDouble(),
-                        height: _bannerAd!.size.height.toDouble(),
-                        child: AdWidget(ad: _bannerAd!),
-                      ),
-                      NoticeCard.fromModel(
-                        model: cp.data[index],
-                        isFavorite: cp.isFavorite![index],
-                        onStarClick: (value) {
-                          ref.read(noticeProvider.notifier).toggleStar(model: cp.data[index], value: value);
-                        },
-                      ),
-                    ],
-                  );
-                } else {
-                  return Container(); // 광고 로드 실패 시 빈 컨테이너를 반환하거나 다른 처리를 수행합니다.
-                }
+              if (index == 4 &&_bannerAd != null) {
+                return Column(
+                  children: [
+                    Container(
+                      width: _bannerAd!.size.width.toDouble(),
+                      height: _bannerAd!.size.height.toDouble(),
+                      child: AdWidget(ad: _bannerAd!),
+                    ),
+                    NoticeCard.fromModel(
+                      model: cp.data[index],
+                      isFavorite: cp.isFavorite![index],
+                      onStarClick: (value) {
+                        ref.read(noticeProvider.notifier).toggleStar(model: cp.data[index], value: value);
+                      },
+                    ),
+                  ],
+                );
               }
 
 
