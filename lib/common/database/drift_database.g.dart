@@ -23,9 +23,10 @@ class $SiteColorsTable extends SiteColors
   @override
   List<GeneratedColumn> get $columns => [site, hexCode];
   @override
-  String get aliasedName => _alias ?? 'site_colors';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'site_colors';
+  String get actualTableName => $name;
+  static const String $name = 'site_colors';
   @override
   VerificationContext validateIntegrity(Insertable<SiteColor> instance,
       {bool isInserting = false}) {
@@ -236,9 +237,10 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
   List<GeneratedColumn> get $columns =>
       [id, title, site, type, url, views, day, content];
   @override
-  String get aliasedName => _alias ?? 'notices';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'notices';
+  String get actualTableName => $name;
+  static const String $name = 'notices';
   @override
   VerificationContext validateIntegrity(Insertable<Notice> instance,
       {bool isInserting = false}) {

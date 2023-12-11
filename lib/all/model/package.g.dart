@@ -6,21 +6,22 @@ part of 'package.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Package _$$_PackageFromJson(Map<String, dynamic> json) => _$_Package(
-  name: json['name'] as String,
-  description: json['description'] as String,
-  homepage: json['homepage'] as String?,
-  repository: json['repository'] as String?,
-  authors:
-  (json['authors'] as List<dynamic>).map((e) => e as String).toList(),
-  version: json['version'] as String,
-  license: json['license'] as String?,
-  isMarkdown: json['isMarkdown'] as bool,
-  isSdk: json['isSdk'] as bool,
-  isDirectDependency: json['isDirectDependency'] as bool,
-);
+_$PackageImpl _$$PackageImplFromJson(Map<String, dynamic> json) =>
+    _$PackageImpl(
+      name: json['name'] as String,
+      description: json['description'] as String,
+      homepage: json['homepage'] as String?,
+      repository: json['repository'] as String?,
+      authors:
+          (json['authors'] as List<dynamic>).map((e) => e as String).toList(),
+      version: json['version'] as String,
+      license: json['license'] as String?,
+      isMarkdown: json['isMarkdown'] as bool,
+      isSdk: json['isSdk'] as bool,
+      isDirectDependency: json['isDirectDependency'] as bool,
+    );
 
-Map<String, dynamic> _$$_PackageToJson(_$_Package instance) =>
+Map<String, dynamic> _$$PackageImplToJson(_$PackageImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
       'description': instance.description,

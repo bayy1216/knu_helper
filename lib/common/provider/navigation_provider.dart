@@ -7,6 +7,7 @@ import 'package:knu_helper/all/view/select_site_screen.dart';
 import 'package:knu_helper/all/view/setting_screen.dart';
 import 'package:knu_helper/notice/view/search_notice_screen.dart';
 
+import '../../user/provider/user_provider.dart';
 import '../view/root_tab.dart';
 
 final navigationProvider = ChangeNotifierProvider<NavigationProvider>((ref) {
@@ -62,6 +63,10 @@ class NavigationProvider extends ChangeNotifier {
           ],
         ),
       ];
+
+  void logout() {
+    ref.read(userProvider.notifier).logout();
+  }
 
   String? redirectLogic(BuildContext context, GoRouterState state) {
     return null;
