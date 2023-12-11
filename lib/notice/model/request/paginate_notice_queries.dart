@@ -1,16 +1,16 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../../common/model/base_paginate_queries.dart';
+
 part 'paginate_notice_queries.g.dart';
 
 @JsonSerializable()
-class PaginateNoticeQueries{
-  final int page;
-  final int size;
+class PaginateNoticeQueries extends BasePaginationQuires{
 
   PaginateNoticeQueries({
-    required this.page,
-    required this.size,
+    required super.page,
+    required super.size,
   });
 
   factory PaginateNoticeQueries.fromJson(Map<String,dynamic> json) => _$PaginateNoticeQueriesFromJson(json);
