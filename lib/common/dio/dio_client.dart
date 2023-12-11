@@ -1,14 +1,18 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knu_helper/common/dio/dio.dart';
+import 'package:knu_helper/notice/model/request/paginate_notice_queries.dart';
 import 'package:retrofit/retrofit.dart';
 
+
+import '../../notice/model/response/notice_model.dart';
 import '../../user/model/request/delete_user_subscribed_site_request.dart';
 import '../../user/model/request/user_subscribed_site_request.dart';
 import '../../user/model/request/uuid_signup_request.dart';
 import '../../user/model/response/jwt_token.dart';
 import '../../user/model/response/user_subscribed_site_response.dart';
 import '../const/data.dart';
+import '../model/offset_pagination_model.dart';
 
 part 'dio_client.g.dart';
 
@@ -44,6 +48,9 @@ abstract class DioClient {
   Future<void> deleteUserFavoriteSite(@Body() DeleteUserSubscribedSiteRequest request);
 
   ////////////////////////////////
+
+  @GET('/notice')
+  Future<OffsetPagination<NoticeModel>> paginateNotice(@Queries() PaginateNoticeQueries queries);
 
 
 }
