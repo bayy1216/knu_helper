@@ -6,7 +6,9 @@ sealed class OffsetPaginationBase{}
 
 class OffsetPaginationError extends OffsetPaginationBase{
   final String message;
-  OffsetPaginationError(this.message);
+  OffsetPaginationError({
+    required this.message,
+  });
 }
 
 class OffsetPaginationLoading extends OffsetPaginationBase{}

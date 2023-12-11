@@ -1,9 +1,17 @@
-abstract class BasePaginationQuires{
-  final int page;
-  final int size;
+class BasePaginationQuires{
+  int page;
+  int size;
 
-  const BasePaginationQuires({
+  BasePaginationQuires({
     required this.page,
     required this.size,
   });
+
+  updateQuires({
+    int? page,
+    int? size,
+  }){
+    this.page = page ?? this.page;
+    this.size = size ?? this.size;
+  }
 }
