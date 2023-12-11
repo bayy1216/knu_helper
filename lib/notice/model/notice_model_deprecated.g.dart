@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'notice_model.dart';
+part of 'notice_model_deprecated.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

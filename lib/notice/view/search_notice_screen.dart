@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:knu_helper/common/model/cursor_pagination_model.dart';
-import 'package:knu_helper/notice/model/notice_model.dart';
+import 'package:knu_helper/notice/model/notice_model_deprecated.dart';
 import 'package:knu_helper/notice/provider/notice_provider.dart';
 
 import '../components/notice_card.dart';

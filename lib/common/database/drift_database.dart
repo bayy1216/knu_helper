@@ -3,10 +3,11 @@ import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:knu_helper/notice/model/notice_model.dart';
 import 'package:knu_helper/notice/model/site_color.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+
+import '../../notice/model/notice_model_deprecated.dart';
 
 part 'drift_database.g.dart';
 

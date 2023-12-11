@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../notice/model/notice_model.dart';
+import '../../notice/model/notice_model_deprecated.dart';
 
 class DataUtils{
   static String dateTimeToString(DateTime date){

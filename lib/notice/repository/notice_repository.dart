@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knu_helper/common/utils/data_utils.dart';
-import 'package:knu_helper/notice/model/notice_model.dart';
+import 'package:knu_helper/notice/model/notice_model_deprecated.dart';
 import 'package:knu_helper/notice/model/site_enum.dart';
 
 final noticeRepositoryProvider = Provider((ref) => NoticeRepository());

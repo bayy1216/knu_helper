@@ -10,7 +10,7 @@ import 'package:knu_helper/common/components/cow_item.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:knu_helper/common/model/cursor_pagination_model.dart';
 import 'package:knu_helper/notice/components/notice_card.dart';
-import 'package:knu_helper/notice/model/notice_model.dart';
+import 'package:knu_helper/notice/model/notice_model_deprecated.dart';
 import 'package:knu_helper/notice/provider/notice_provider.dart';
 import 'package:knu_helper/notice/view/search_notice_screen.dart';
 

@@ -5,7 +5,7 @@ import 'package:knu_helper/common/utils/data_utils.dart';
 import 'package:knu_helper/favorite/repository/favorite_repository.dart';
 import 'package:knu_helper/notice/components/chip_item.dart';
 import 'package:knu_helper/notice/components/star_icon_button.dart';
-import 'package:knu_helper/notice/model/notice_model.dart';
+import 'package:knu_helper/notice/model/notice_model_deprecated.dart';
 import 'package:knu_helper/notice/view/notice_web_view.dart';
 
 import '../../common/const/text_style.dart';

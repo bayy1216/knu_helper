@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/database/drift_database.dart';
-import '../../notice/model/notice_model.dart';
+import '../../notice/model/notice_model_deprecated.dart';
 
 final favoriteRepositoryProvider = Provider<FavoriteRepository>((ref) {
   final db = ref.watch(databaseProvider);

@@ -6,9 +6,10 @@ import '../../common/database/drift_database.dart';
 
 
 
-part 'notice_model.g.dart';
+part 'notice_model_deprecated.g.dart';
 
 @JsonSerializable()
+@Deprecated('firebase에서 server로 데이터 유형을 변경함')
 class NoticeModel {
   final String id;
   final String content;

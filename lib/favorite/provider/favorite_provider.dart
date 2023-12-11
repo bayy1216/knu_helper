@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knu_helper/favorite/repository/favorite_repository.dart';
 
-import 'package:knu_helper/notice/model/notice_model.dart';
+import 'package:knu_helper/notice/model/notice_model_deprecated.dart';
 
 final favoriteProvider =
     StateNotifierProvider<FavoriteStateNotifier, List<NoticeModel>>((ref) {
