@@ -6,6 +6,9 @@ import 'package:uuid/uuid.dart';
 
 import '../../common/const/data.dart';
 import '../../common/secure_storage/secure_storage.dart';
+import '../model/request/delete_user_subscribed_site_request.dart';
+import '../model/request/user_subscribed_site_request.dart';
+import '../model/response/user_subscribed_site_response.dart';
 import '../model/user_model.dart';
 import '../repository/auth_repository.dart';
 import '../repository/user_repository.dart';
@@ -40,15 +43,58 @@ class UserStateNotifier extends StateNotifier<UserInfoBase?> {
     final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
 
     if (refreshToken == null || accessToken == null) {
+      //로그인 안한 상태
       state = null;
       return;
     }
-    state = UserInfoModel();
+    final resp = await userRepository.getUserFavoriteSite();
+    state = UserInfoModel(subscribedSites: resp.data);
   }
+
+  Future<void> addUserFavoriteSite({
+    required String site,
+    required String color,
+    required bool alarm,
+  }) async {
+    //긍정적 응답
+    final sites = (state as UserInfoModel).subscribedSites;
+    final pSites = sites..add(UserSubscribedSiteModel(site: site, color: color, isAlarm: alarm));
+    state = (state as UserInfoModel).copyWith(subscribedSites: pSites);
+
+    final request = UserSubscribedSiteRequest(site: site, color: color, alarm: alarm);
+    await userRepository.addUserFavoriteSite(request: request);
+  }
+
+  Future<void> updateUserFavoriteSite({
+    required String site,
+    required String color,
+    required bool isAlarm,
+  }) async {
+    //긍적적 응답
+    final sites = (state as UserInfoModel).subscribedSites;
+    final updateSite = UserSubscribedSiteModel(site: site, color: color, isAlarm: isAlarm);
+    final pSites = sites.map((e) => e.site == site ? updateSite : e).toList();
+    state = (state as UserInfoModel).copyWith(subscribedSites: pSites);
+
+    final request = UserSubscribedSiteRequest(site: site, color: color, alarm: isAlarm);
+    await userRepository.updateUserFavoriteSite(request: request);
+  }
+
+  Future<void> deleteUserFavoriteSite({
+    required String site,
+  }) async {
+    //긍정적 응답
+    final sites = (state as UserInfoModel).subscribedSites;
+    final pSites = sites.where((e) => e.site != site).toList();
+    state = (state as UserInfoModel).copyWith(subscribedSites: pSites);
+
+    final request = DeleteUserSubscribedSiteRequest(site: site);
+    await userRepository.deleteUserFavoriteSite(request: request);
+  }
+
 
   Future<void> signUp() async {
     final uuid = const Uuid().v4();
-
     await storage.write(key: UUID_KEY, value: uuid);
     final fcmToken = await FirebaseMessaging.instance.getToken();
 
@@ -74,30 +120,7 @@ class UserStateNotifier extends StateNotifier<UserInfoBase?> {
     await getMe();
   }
 
-  // Future<UserInfoBase> login({
-  //   required String code,
-  //   required String password,
-  // }) async {
-  //   try {
-  //     state = UserInfoLoading();
-  //
-  //     final fcmToken = await FirebaseMessaging.instance.getToken();
-  //     final resp = await authRepository.login(
-  //       loginRequest: LoginRequest(code: code, password: password, fcmToken: fcmToken!),
-  //     );
-  //     //
-  //     await storage.write(key: REFRESH_TOKEN_KEY, value: resp.refreshToken);
-  //     await storage.write(key: ACCESS_TOKEN_KEY, value: resp.accessToken);
-  //
-  //     final userResp = await userRepository.getUserInfo();
-  //
-  //     state = userResp;
-  //     return userResp;
-  //   } catch (e) {
-  //     state = UserInfoError(message: '로그인에 실패했습니다.');
-  //     return Future.value(state);
-  //   }
-  // }
+
 
   Future<void> logout() async {
     state = null;
