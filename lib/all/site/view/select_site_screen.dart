@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:knu_helper/all/component/message_popup.dart';
+import 'package:knu_helper/all/site/component/message_popup.dart';
 import 'package:knu_helper/common/const/color.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:knu_helper/common/utils/data_utils.dart';
 import 'package:knu_helper/notice/model/site_enum.dart';
 
-import '../../notice/model/site_color.dart';
+import '../../../notice/model/site_color.dart';
 import '../provider/user_site_provider.dart';
 
 class SelectSiteScreen extends StatefulWidget {

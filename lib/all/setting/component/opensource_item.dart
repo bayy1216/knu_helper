@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:knu_helper/all/model/package.dart';
+
+import '../model/package.dart';
+
 
 /// flutter pub run flutter_oss_licenses:generate.dart -o asset/json/licenses.json --json
 class OpensourceItem extends StatelessWidget {

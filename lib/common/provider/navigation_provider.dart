@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:knu_helper/all/view/open_source_screen.dart';
-import 'package:knu_helper/all/view/privacy_screen.dart';
-import 'package:knu_helper/all/view/select_site_screen.dart';
-import 'package:knu_helper/all/view/setting_screen.dart';
+import 'package:knu_helper/all/setting/view/open_source_screen.dart';
+import 'package:knu_helper/all/setting/view/privacy_screen.dart';
+import 'package:knu_helper/all/site/view/select_site_screen.dart';
 import 'package:knu_helper/notice/view/search_notice_screen.dart';
 import 'package:knu_helper/user/model/user_model.dart';
 
+import '../../all/setting/view/setting_screen.dart';
 import '../../user/provider/user_provider.dart';
 import '../../user/view/login_screen.dart';
 import '../../user/view/splash_screen.dart';

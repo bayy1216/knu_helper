@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:knu_helper/all/component/opensource_item.dart';
-import 'package:knu_helper/all/model/package.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
+
+import '../component/opensource_item.dart';
+import '../model/package.dart';
 
 class OpensourceScreen extends StatefulWidget {
   static String get routeName => 'opensource';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:knu_helper/all/view/open_source_screen.dart';
-import 'package:knu_helper/all/view/privacy_screen.dart';
+import 'package:knu_helper/all/setting/view/open_source_screen.dart';
+import 'package:knu_helper/all/setting/view/privacy_screen.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:package_info/package_info.dart';
 

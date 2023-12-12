@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:knu_helper/all/view/select_site_screen.dart';
-import 'package:knu_helper/all/view/setting_screen.dart';
+import 'package:knu_helper/all/site/view/select_site_screen.dart';
 import 'package:knu_helper/common/const/color.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
+
+import '../setting/view/setting_screen.dart';
 
 class AllScreen extends ConsumerWidget {
   const AllScreen({Key? key}) : super(key: key);
