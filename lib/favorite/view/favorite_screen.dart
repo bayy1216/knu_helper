@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:knu_helper/common/components/cow_item.dart';
+import 'package:knu_helper/common/component/cow_item.dart';
 import 'package:knu_helper/notice/components/notice_card.dart';
 import 'package:knu_helper/favorite/provider/favorite_provider.dart';
 import 'package:knu_helper/notice/provider/notice_provider.dart';
@@ -34,7 +34,6 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
           model: state[index],
           isFavorite: true,
           onStarClick: (value) {
-            ref.read(noticeProvider.notifier).toggleStar(model: state[index], value: value);
             ref.read(favoriteProvider.notifier).getFavorite();
           },
         );

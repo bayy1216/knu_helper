@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:knu_helper/all/provider/user_site_provider.dart';
-import 'package:knu_helper/common/components/cow_item.dart';
+import 'package:knu_helper/common/component/cow_item.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:knu_helper/common/model/cursor_pagination_model.dart';
 import 'package:knu_helper/notice/components/notice_card.dart';
