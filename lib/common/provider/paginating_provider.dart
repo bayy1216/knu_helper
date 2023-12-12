@@ -7,7 +7,7 @@ import '../repository/base_pagination_repository.dart';
 class PaginationProvider<T, R extends IBasePaginationRepository>
     extends StateNotifier<OffsetPaginationBase> {
   final R repository;
-  final BasePaginationQuires baseQuires;
+  final BasePaginationQueries baseQuires;
   int page = 0;
 
   PaginationProvider({
@@ -56,7 +56,7 @@ class PaginationProvider<T, R extends IBasePaginationRepository>
       );
 
       final resp = await repository.paginate(
-        quires: baseQuires,
+        queries: baseQuires,
       );
 
       if (isLoading || forceRefetch) {

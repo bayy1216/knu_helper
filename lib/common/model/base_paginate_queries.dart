@@ -1,8 +1,8 @@
-class BasePaginationQuires{
+class BasePaginationQueries{
   int page;
   int size;
 
-  BasePaginationQuires({
+  BasePaginationQueries({
     required this.page,
     required this.size,
   });

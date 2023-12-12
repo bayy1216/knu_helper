@@ -6,7 +6,7 @@ import '../../../common/model/base_paginate_queries.dart';
 part 'paginate_notice_queries.g.dart';
 
 @JsonSerializable()
-class PaginateNoticeQueries extends BasePaginationQuires{
+class PaginateNoticeQueries extends BasePaginationQueries{
 
   PaginateNoticeQueries({
     required super.page,
