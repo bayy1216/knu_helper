@@ -5,8 +5,9 @@ import 'package:knu_helper/common/provider/navigation_provider.dart';
 final routerProvider = Provider<GoRouter>((ref) {
   final provider = ref.read(navigationProvider);
   return GoRouter(
+    debugLogDiagnostics: true,
     routes: provider.routes,
-    initialLocation: '/',
+    initialLocation: '/splash',
     refreshListenable: provider,
     redirect: provider.redirectLogic,
   );
