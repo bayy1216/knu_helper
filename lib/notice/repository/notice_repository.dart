@@ -1,59 +1,29 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:knu_helper/common/utils/data_utils.dart';
-import 'package:knu_helper/notice/model/notice_model_deprecated.dart';
-import 'package:knu_helper/notice/model/site_enum.dart';
+import 'package:knu_helper/common/dio/dio_client.dart';
+import 'package:knu_helper/common/model/base_paginate_queries.dart';
+import 'package:knu_helper/common/model/offset_pagination_model.dart';
+import 'package:knu_helper/common/repository/base_pagination_repository.dart';
+import 'package:knu_helper/notice/model/request/paginate_notice_queries.dart';
 
-final noticeRepositoryProvider = Provider((ref) => NoticeRepository());
+import '../model/response/notice_model.dart';
 
-class NoticeRepository{
+final noticeRepositoryProvider = Provider((ref) {
+  final dioClient = ref.watch(dioClientProvider);
+  return NoticeRepository(dioClient: dioClient);
+});
 
-  Future<List<NoticeModel>> getNotice()async{
-    var document = FirebaseFirestore.instance
-        .collection('notice')
-        .orderBy('day',descending: true);
-    var data = await document.get();
-    return data.docs.map<NoticeModel>( (e) => NoticeModel.fromJson(e.data()) ).toList();
+class NoticeRepository
+    extends IBasePaginationRepository<NoticeModel, PaginateNoticeQueries> {
+  final DioClient _dioClient;
+
+  NoticeRepository({
+    required DioClient dioClient,
+  }) : _dioClient = dioClient;
+
+  @override
+  Future<OffsetPagination<NoticeModel>> paginate({
+    required PaginateNoticeQueries queries,
+  }) {
+    return _dioClient.paginateNotice(queries);
   }
-
-
-  Future<List<NoticeModel>> paginate({required List<String> siteList,required int limit})async{
-    //파이어베이스 페이지내이션을 커서로 하게되면 사용량에 모든 데이터를 검색했다고 인식하여 어쩔수없다
-    print("[SiteList] $siteList");
-    final List<NoticeModel> list = [];
-
-    for(var site in siteList){
-      print(SiteEnum.getType[site]!.englishName);
-      var document = FirebaseFirestore.instance
-          .collection('notice').doc('notice_category').collection(SiteEnum.getType[site]!.englishName)
-          .orderBy('day',descending: true).orderBy('views',descending: false).limit(limit);
-      var data = await document.get();
-      list.addAll(data.docs.map<NoticeModel>( (e) => NoticeModel.fromJson(e.data()) ).toList());
-    }
-    list.sort(DataUtils.sortNotice);
-
-
-    return list;
-  }
-
-
-
-  Future<List<NoticeModel>> searchNotice({required List<String> siteList})async{
-    print("[SiteList] $siteList");
-    final List<NoticeModel> list = [];
-
-    for(var site in siteList){
-      print(SiteEnum.getType[site]!.englishName);
-      var document = FirebaseFirestore.instance
-          .collection('notice').doc('notice_category').collection(SiteEnum.getType[site]!.englishName);
-      var data = await document.get();
-      list.addAll(data.docs.map<NoticeModel>( (e) => NoticeModel.fromJson(e.data()) ).toList());
-    }
-    list.sort(DataUtils.sortNotice);
-
-
-    return list;
-  }
-
-
 }

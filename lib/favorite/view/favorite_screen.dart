@@ -30,13 +30,14 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
     return ListView.separated(
       itemCount: state.length,
       itemBuilder: (context, index) {
-        return NoticeCard.fromModel(
-          model: state[index],
-          isFavorite: true,
-          onStarClick: (value) {
-            ref.read(favoriteProvider.notifier).getFavorite();
-          },
-        );
+        return SizedBox();
+        // return NoticeCard.fromModel(
+        //   model: state[index],
+        //   isFavorite: true,
+        //   onStarClick: (value) {
+        //     ref.read(favoriteProvider.notifier).getFavorite();
+        //   },
+        // );
       },
       separatorBuilder: (context, index) {
         return SizedBox(height: 10);
