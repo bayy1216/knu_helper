@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 const PRIMARY_COLOR = Color(0xFFF2511B);
+const Color DIVIDIER_GREY = Color(0xFFb0b0b0);
 const BODY_TEXT_COLOR = Color(0xFF868686);
 const List<Color> COLOR_SELECT_LIST = [
   Color(0xFFE2B2E7),
