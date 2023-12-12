@@ -78,7 +78,7 @@ class CustomInterceptor extends Interceptor {
         final resp = await dio.get('http://$ip/auth/token',
           options: Options(
             headers: {
-              'Authorization' : refreshToken,
+              'Authorization' : 'Bearer $refreshToken',
             },
           ),
           // data: {
@@ -87,10 +87,10 @@ class CustomInterceptor extends Interceptor {
         );
 
 
-        final accessToken = resp.data['accessToken'];
+        final accessToken = resp.data['accessToken'] as String;
         final options = err.requestOptions;
         options.headers.addAll({
-          'Authorization' : '$accessToken',
+          'Authorization' : 'Bearer $accessToken',
         });
         await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
 
