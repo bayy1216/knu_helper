@@ -8,6 +8,5 @@ part of 'site_model.dart';
 
 SiteModel _$SiteModelFromJson(Map<String, dynamic> json) => SiteModel(
       site: json['site'] as String,
-      siteKorean: json['siteKorean'] as String,
       siteCategoryKorean: json['siteCategoryKorean'] as String,
     );

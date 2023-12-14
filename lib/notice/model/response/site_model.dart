@@ -5,12 +5,10 @@ part 'site_model.g.dart';
 @JsonSerializable(createToJson: false)
 class SiteModel{
   final String site;
-  final String siteKorean;
   final String siteCategoryKorean;
 
   SiteModel({
     required this.site,
-    required this.siteKorean,
     required this.siteCategoryKorean,
   });
 
