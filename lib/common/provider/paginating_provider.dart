@@ -4,7 +4,7 @@ import 'package:knu_helper/common/model/offset_pagination_model.dart';
 
 import '../repository/base_pagination_repository.dart';
 
-class PaginationProvider<T, R extends IBasePaginationRepository>
+class PaginationProvider<T, R extends IBasePaginationRepository<T, BasePaginationQueries>>
     extends StateNotifier<OffsetPaginationBase> {
   final R repository;
   final BasePaginationQueries baseQuires;
@@ -77,6 +77,7 @@ class PaginationProvider<T, R extends IBasePaginationRepository>
       page++;
       return;
     } catch (e) {
+      print(e);
       state = OffsetPaginationError(message: "데이터를 가져오지 못했습니다.");
       return;
     }
