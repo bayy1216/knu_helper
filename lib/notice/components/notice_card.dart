@@ -10,6 +10,7 @@ import '../../common/const/text_style.dart';
 import '../model/response/notice_model.dart';
 
 class NoticeCard extends StatelessWidget {
+  final Color color;
   final String title;
   final String site;
   final String type;
@@ -21,6 +22,7 @@ class NoticeCard extends StatelessWidget {
 
   const NoticeCard({
     Key? key,
+    required this.color,
     required this.title,
     required this.site,
     required this.type,
@@ -32,11 +34,13 @@ class NoticeCard extends StatelessWidget {
   }) : super(key: key);
 
   factory NoticeCard.fromModel({
+    required Color color,
     required NoticeModel model,
     required Function(bool) onStarClick,
     bool isFavorite = false,
   }) {
     return NoticeCard(
+      color: color,
       title: model.title,
       site: model.site,
       type: model.type,
@@ -73,21 +77,7 @@ class NoticeCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
               children: [
-                Consumer(
-                  builder: (context, ref, child) {
-                    return FutureBuilder<String>(
-                      future: ref.read(favoriteRepositoryProvider).getColorOfSite(siteName: site),
-                      builder: (context, snapshot) {
-                        Color color = PRIMARY_COLOR;
-                        if (snapshot.hasData) {
-                          final hexCode = snapshot.data;
-                          color = Color(DataUtils.stringToColorCode(hexCode!));
-                        }
-                        return ChipItem(text: site, color: color,);
-                      },
-                    );
-                  },
-                ),
+                ChipItem(text: site, color: color,),
                 const SizedBox(width: 6.0),
                 ChipItem(text: type, color: Colors.grey),
                 const Expanded(child: SizedBox()),

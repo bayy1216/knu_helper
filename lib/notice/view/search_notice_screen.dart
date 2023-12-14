@@ -83,6 +83,7 @@ class SearchNoticeScreen extends ConsumerWidget {
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4.0),
                   child: NoticeCard.fromModel(
+                    color: Colors.grey.shade300,
                     model: searchData.data[index],
                     isFavorite: searchData.isFavorite![index],
                     onStarClick: (value) {
