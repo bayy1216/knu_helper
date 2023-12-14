@@ -26,14 +26,13 @@ class _SelectSiteScreenState extends ConsumerState<SelectSiteScreen> {
 
 
 
-  late List<bool> isExpandedList = [true];
+  late bool userSelectExpanded = true;
+  late List<bool> isExpandedList = [];
 
 
   @override
   Widget build(BuildContext context) {
     final siteNotifier = ref.watch(asyncSiteNotifier);
-
-
 
     return DefaultLayout(
       body: ListView(
@@ -57,12 +56,12 @@ class _SelectSiteScreenState extends ConsumerState<SelectSiteScreen> {
                 ],
               ),
             ),
-            trailing: isExpandedList[0] ?
+            trailing: userSelectExpanded ?
               const Icon(Icons.keyboard_arrow_up_outlined) :
               const Icon(Icons.keyboard_arrow_down_outlined),
             onTap: () {
               setState(() {
-                isExpandedList[0] = !isExpandedList[0];
+                userSelectExpanded = !userSelectExpanded;
               });
             },
           ),
@@ -98,7 +97,7 @@ class _SelectSiteScreenState extends ConsumerState<SelectSiteScreen> {
                       ),
                       child: GestureDetector(
                         onTap: () async {
-                          //await showDialogToSelect(context, e, ref);
+                          await selectSite(context, e.site, ref,update: true);
                         },
                         child: Column(
                           children: [
@@ -132,7 +131,7 @@ class _SelectSiteScreenState extends ConsumerState<SelectSiteScreen> {
                 );
               },
             ),
-            crossFadeState: isExpandedList[0] ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+            crossFadeState: userSelectExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
             duration: const Duration(milliseconds: 150),
           ),
           Divider(color: Colors.grey, thickness: 0.2, height: 1.5),
@@ -142,16 +141,17 @@ class _SelectSiteScreenState extends ConsumerState<SelectSiteScreen> {
 
               Map<String, List<SiteModel>> siteMap = {};
               data.forEach((e) {
-                if(siteMap[e.siteCategoryKorean] == null) siteMap[e.siteCategoryKorean] = [];
-                siteMap[e.siteCategoryKorean]?.add(e);
+                siteMap.putIfAbsent(e.siteCategoryKorean, () => []);
+                siteMap[e.siteCategoryKorean]!.add(e);
               });
               final siteCategory = siteMap.keys;
-              isExpandedList.addAll(List.generate(siteCategory.length, (index) => false));
+              final tempList = List.generate(siteCategory.length, (index) => false);
+              if(isExpandedList.isEmpty) isExpandedList.addAll(tempList);
 
 
               return Column(
                 children: siteCategory.map((category){
-                  final index = siteCategory.toList().indexOf(category) + 1;
+                  final index = siteCategory.toList().indexOf(category);
 
                   return Column(
                     children: [
@@ -173,19 +173,19 @@ class _SelectSiteScreenState extends ConsumerState<SelectSiteScreen> {
                       AnimatedCrossFade(
                         firstChild: Container(),
                         secondChild: Column(
-                          children: siteMap[category]!.map((site) {
+                          children: siteMap[category]!.map((model) {
                             return Column(
                               children: [
                                 Consumer(
                                   builder: (context, ref, child) {
                                     return InkWell(
                                       onTap: () async {
-                                        await selectSite(context, site, ref);
+                                        await selectSite(context, model.site, ref);
                                       },
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
                                         alignment: Alignment.centerLeft,
-                                        child: Text(site.siteKorean,style: TextStyle(fontSize: 16.0),),
+                                        child: Text(model.site,style: TextStyle(fontSize: 16.0),),
                                       ),
                                     );
                                   },
@@ -215,16 +215,22 @@ class _SelectSiteScreenState extends ConsumerState<SelectSiteScreen> {
     );
   }
 
-  Future<void> selectSite(BuildContext context, SiteModel model, WidgetRef ref) async {
+  Future<void> selectSite(BuildContext context, String site, WidgetRef ref,{bool update = false}) async {
     await showDialog(
       context: context,
       builder: (context) => MessagePopup(
         color: COLOR_SELECT_LIST.first,
-        title: model.siteKorean,
+        title: site,
         subTitle: "색상을 선택해주세요",
         okCallback: (colorHexCode) {
+          if(update){
+            ref.read(userProvider.notifier).updateUserFavoriteSite(
+              site: site, color: colorHexCode, isAlarm: true,
+            );
+            return;
+          }
           ref.read(userProvider.notifier).addUserFavoriteSite(
-            site: model.site, color: colorHexCode, alarm: true,
+            site: site, color: colorHexCode, alarm: true,
           );
           //ref.read(userSiteProvider.notifier).saveSite(model: model);
         },
@@ -232,26 +238,6 @@ class _SelectSiteScreenState extends ConsumerState<SelectSiteScreen> {
     );
     // await Future.delayed(const Duration(milliseconds: 10));
     // ref.read(userSiteProvider.notifier).getSite();
-  }
-
-  Future<void> showDialogToSelect(BuildContext context, SiteColorModel e, WidgetRef ref) async {
-    await showDialog(
-      context: context,
-      builder: (context) => MessagePopup(
-        color: Color(DataUtils.stringToColorCode(e.hexCode)),
-        title: e.site,
-        subTitle: "색상을 선택해주세요",
-        okCallback: (colorHexCode) {
-          final model = SiteColorModel(
-            site: e.site,
-            hexCode: colorHexCode,
-          );
-          ref.read(userSiteProvider.notifier).saveSite(model: model);
-        },
-      ),
-    );
-    await Future.delayed(const Duration(milliseconds: 10));
-    ref.read(userSiteProvider.notifier).getSite();
   }
 
 
