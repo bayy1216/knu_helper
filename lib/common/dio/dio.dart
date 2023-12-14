@@ -75,7 +75,7 @@ class CustomInterceptor extends Interceptor {
       try{
 
         //final fcmToken = await FirebaseMessaging.instance.getToken();
-        final resp = await dio.get('http://$ip/auth/token',
+        final resp = await dio.post('http://$ip/auth/token',
           options: Options(
             headers: {
               'Authorization' : 'Bearer $refreshToken',
