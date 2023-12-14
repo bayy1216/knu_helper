@@ -6,24 +6,35 @@ import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:knu_helper/common/utils/data_utils.dart';
 import 'package:knu_helper/notice/model/site_enum.dart';
 
+import '../../../notice/model/response/site_model.dart';
 import '../../../notice/model/site_color.dart';
+import '../../../user/model/user_model.dart';
+import '../../../user/provider/user_provider.dart';
+import '../provider/site_provider.dart';
 import '../provider/user_site_provider.dart';
 
-class SelectSiteScreen extends StatefulWidget {
+class SelectSiteScreen extends ConsumerStatefulWidget {
   static String get routeName => 'select_site';
 
   const SelectSiteScreen({Key? key}) : super(key: key);
 
   @override
-  State<SelectSiteScreen> createState() => _SelectSiteScreenState();
+  ConsumerState<SelectSiteScreen> createState() => _SelectSiteScreenState();
 }
 
-class _SelectSiteScreenState extends State<SelectSiteScreen> {
-  List<bool> isExpandedList = List.generate(
-      SiteCategory.values.length + 1, (index) => index == 0 ? true : false);
+class _SelectSiteScreenState extends ConsumerState<SelectSiteScreen> {
+
+
+
+  late List<bool> isExpandedList = [true];
+
 
   @override
   Widget build(BuildContext context) {
+    final siteNotifier = ref.watch(asyncSiteNotifier);
+
+
+
     return DefaultLayout(
       body: ListView(
         children: [
@@ -59,7 +70,7 @@ class _SelectSiteScreenState extends State<SelectSiteScreen> {
             firstChild: Container(),
             secondChild: Consumer(
               builder: (context, ref, child) {
-                final siteList = ref.watch(userSiteProvider);
+                final siteList = (ref.watch(userProvider) as UserInfoModel).subscribedSites;
                 return Column(
                   children: siteList.map((e) {
                     return Dismissible(
@@ -70,7 +81,7 @@ class _SelectSiteScreenState extends State<SelectSiteScreen> {
                       },
                       // 오른쪽에서 왼쪽으로 밀어서 실행합니다.
                       onDismissed: (direction) {
-                        ref.read(userSiteProvider.notifier).deleteSite(model: e);
+                        ref.read(userProvider.notifier).deleteUserFavoriteSite(site: e.site);
                       },
                       background: Container(
                         color: PRIMARY_COLOR, // 밀어서 실행하는 배경 색상
@@ -87,7 +98,7 @@ class _SelectSiteScreenState extends State<SelectSiteScreen> {
                       ),
                       child: GestureDetector(
                         onTap: () async {
-                          await showDialogToSelect(context, e, ref);
+                          //await showDialogToSelect(context, e, ref);
                         },
                         child: Column(
                           children: [
@@ -100,7 +111,7 @@ class _SelectSiteScreenState extends State<SelectSiteScreen> {
                                   Container(
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: Color(DataUtils.stringToColorCode(e.hexCode)),
+                                      color: Color(DataUtils.stringToColorCode(e.color)),
                                     ),
                                     width: 20,
                                     height: 20,
@@ -125,82 +136,102 @@ class _SelectSiteScreenState extends State<SelectSiteScreen> {
             duration: const Duration(milliseconds: 150),
           ),
           Divider(color: Colors.grey, thickness: 0.2, height: 1.5),
-          ...SiteCategory.values.map((category) {
-            return Column(
-              children: [
-                ListTile(
-                  title: Text(
-                    category.koreaName,
-                    style: TextStyle(fontWeight: FontWeight.w700),
-                  ),
-                  trailing: isExpandedList[category.index + 1] ?
-                  const Icon(Icons.keyboard_arrow_up_outlined) :
-                  const Icon(Icons.keyboard_arrow_down_outlined),
-                  onTap: () {
-                    setState(() {
-                      isExpandedList[category.index + 1] =
-                          !isExpandedList[category.index + 1];
-                    });
-                  },
-                ),
-                AnimatedCrossFade(
-                  firstChild: Container(),
-                  secondChild: Column(
-                    children: SiteEnum.values
-                        .where((element) => element.category == category)
-                        .map((site) {
-                      return Column(
-                        children: [
-                          Consumer(
-                            builder: (context, ref, child) {
-                              return InkWell(
-                                onTap: () async {
-                                  await selectSite(context, site, ref);
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(site.koreaName,style: TextStyle(fontSize: 16.0),),
+          siteNotifier.when(
+            data: (List<SiteModel> data) {
+
+
+              Map<String, List<SiteModel>> siteMap = {};
+              data.forEach((e) {
+                if(siteMap[e.siteCategoryKorean] == null) siteMap[e.siteCategoryKorean] = [];
+                siteMap[e.siteCategoryKorean]?.add(e);
+              });
+              final siteCategory = siteMap.keys;
+              isExpandedList.addAll(List.generate(siteCategory.length, (index) => false));
+
+
+              return Column(
+                children: siteCategory.map((category){
+                  final index = siteCategory.toList().indexOf(category) + 1;
+
+                  return Column(
+                    children: [
+                      ListTile(
+                        title: Text(
+                          category,
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                        trailing: isExpandedList[index] ?
+                        const Icon(Icons.keyboard_arrow_up_outlined) :
+                        const Icon(Icons.keyboard_arrow_down_outlined),
+                        onTap: () {
+                          setState(() {
+                            isExpandedList[index] =
+                            !isExpandedList[index];
+                          });
+                        },
+                      ),
+                      AnimatedCrossFade(
+                        firstChild: Container(),
+                        secondChild: Column(
+                          children: siteMap[category]!.map((site) {
+                            return Column(
+                              children: [
+                                Consumer(
+                                  builder: (context, ref, child) {
+                                    return InkWell(
+                                      onTap: () async {
+                                        await selectSite(context, site, ref);
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(site.siteKorean,style: TextStyle(fontSize: 16.0),),
+                                      ),
+                                    );
+                                  },
                                 ),
-                              );
-                            },
-                          ),
-                        ],
-                      );
-                    }).toList(),
-                  ),
-                  crossFadeState: isExpandedList[category.index + 1]
-                      ? CrossFadeState.showSecond
-                      : CrossFadeState.showFirst,
-                  duration: const Duration(milliseconds: 150),
-                ),
-                Divider(color: Colors.grey, thickness: 0.2, height: 1.5)
-              ],
-            );
-          }).toList(),
+                              ],
+                            );
+                          }).toList(),
+                        ),
+                        crossFadeState: isExpandedList[index]
+                            ? CrossFadeState.showSecond
+                            : CrossFadeState.showFirst,
+                        duration: const Duration(milliseconds: 150),
+                      ),
+                      Divider(color: Colors.grey, thickness: 0.2, height: 1.5)
+                    ],
+                  );
+                }).toList(),
+              );
+
+            },
+            error: (error, stackTrace) => const SizedBox(),
+            loading: () => const SizedBox(),
+          ),
+
         ],
       ),
     );
   }
 
-  Future<void> selectSite(BuildContext context, SiteEnum site, WidgetRef ref) async {
+  Future<void> selectSite(BuildContext context, SiteModel model, WidgetRef ref) async {
     await showDialog(
       context: context,
       builder: (context) => MessagePopup(
         color: COLOR_SELECT_LIST.first,
-        title: site.koreaName,
+        title: model.siteKorean,
         subTitle: "색상을 선택해주세요",
         okCallback: (colorHexCode) {
-          final model = SiteColorModel(
-            site: site.koreaName,
-            hexCode: colorHexCode,
+          ref.read(userProvider.notifier).addUserFavoriteSite(
+            site: model.site, color: colorHexCode, alarm: true,
           );
-          ref.read(userSiteProvider.notifier).saveSite(model: model);
+          //ref.read(userSiteProvider.notifier).saveSite(model: model);
         },
       ),
     );
-    await Future.delayed(const Duration(milliseconds: 10));
-    ref.read(userSiteProvider.notifier).getSite();
+    // await Future.delayed(const Duration(milliseconds: 10));
+    // ref.read(userSiteProvider.notifier).getSite();
   }
 
   Future<void> showDialogToSelect(BuildContext context, SiteColorModel e, WidgetRef ref) async {
@@ -222,4 +253,6 @@ class _SelectSiteScreenState extends State<SelectSiteScreen> {
     await Future.delayed(const Duration(milliseconds: 10));
     ref.read(userSiteProvider.notifier).getSite();
   }
+
+
 }
