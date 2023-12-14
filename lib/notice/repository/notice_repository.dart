@@ -6,6 +6,7 @@ import 'package:knu_helper/common/repository/base_pagination_repository.dart';
 import 'package:knu_helper/notice/model/request/paginate_notice_queries.dart';
 
 import '../model/response/notice_model.dart';
+import '../model/response/site_info_response.dart';
 
 final noticeRepositoryProvider = Provider((ref) {
   final dioClient = ref.watch(dioClientProvider);
@@ -25,5 +26,9 @@ class NoticeRepository
     required PaginateNoticeQueries queries,
   }) {
     return _dioClient.paginateNotice(queries);
+  }
+
+  Future<SiteInfoResponse> getSiteInfo() {
+    return _dioClient.getSiteInfo();
   }
 }

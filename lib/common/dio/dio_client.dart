@@ -6,6 +6,7 @@ import 'package:retrofit/retrofit.dart';
 
 
 import '../../notice/model/response/notice_model.dart';
+import '../../notice/model/response/site_info_response.dart';
 import '../../user/model/request/delete_user_subscribed_site_request.dart';
 import '../../user/model/request/user_subscribed_site_request.dart';
 import '../../user/model/request/uuid_signup_request.dart';
@@ -51,6 +52,8 @@ abstract class DioClient {
 
   @GET('/notice')
   Future<OffsetPagination<NoticeModel>> paginateNotice(@Queries() PaginateNoticeQueries queries);
-
+  
+  @GET('/notice/site-info')
+  Future<SiteInfoResponse> getSiteInfo();
 
 }
