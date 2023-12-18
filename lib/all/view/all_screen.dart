@@ -8,6 +8,7 @@ import 'package:knu_helper/common/layout/default_layout.dart';
 import '../setting/view/setting_screen.dart';
 
 class AllScreen extends ConsumerWidget {
+  static String get routeName => 'all';
   const AllScreen({Key? key}) : super(key: key);
 
   @override

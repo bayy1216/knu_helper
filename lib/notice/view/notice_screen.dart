@@ -11,6 +11,7 @@ import 'package:knu_helper/notice/view/search_notice_screen.dart';
 import '../../common/utils/data_utils.dart';
 import '../../user/model/user_model.dart';
 import '../../user/provider/user_provider.dart';
+import 'notice_web_view.dart';
 
 
 class NoticeScreen extends ConsumerWidget {
@@ -40,11 +41,19 @@ class NoticeScreen extends ConsumerWidget {
           final colorHexcode = subScribedSites.firstWhere((element) => element.site == model.site).color;
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-            child: NoticeCard.fromModel(
-              color: Color(DataUtils.stringToColorCode(colorHexcode)),
-              model: model,
-              isFavorite: false,
-              onStarClick: (value) {},
+            child: GestureDetector(
+              onTap: () {
+                context.goNamed(
+                  NoticeWebView.routeName,
+                  pathParameters: {'url': model.url},
+                );
+              },
+              child: NoticeCard.fromModel(
+                color: Color(DataUtils.stringToColorCode(colorHexcode)),
+                model: model,
+                isFavorite: false,
+                onStarClick: (value) {},
+              ),
             ),
           );
         },

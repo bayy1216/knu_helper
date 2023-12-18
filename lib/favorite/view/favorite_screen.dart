@@ -6,6 +6,7 @@ import 'package:knu_helper/favorite/provider/favorite_provider.dart';
 import 'package:knu_helper/notice/provider/notice_provider.dart';
 
 class FavoriteScreen extends ConsumerStatefulWidget {
+  static const routeName = 'favorite';
   const FavoriteScreen({Key? key}) : super(key: key);
 
   @override

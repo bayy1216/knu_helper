@@ -6,18 +6,12 @@ import '../components/notice_card.dart';
 import '../components/star_icon_button.dart';
 
 class NoticeWebView extends StatefulWidget {
-  final String title;
   final String url;
-  final bool isFavorite;
-  final Function(bool) onStarClick;
   static String get routeName => 'notice_web_view';
 
   const NoticeWebView({
     Key? key,
-    required this.title,
     required this.url,
-    required this.isFavorite,
-    required this.onStarClick,
   }) : super(key: key);
 
   @override
@@ -25,16 +19,15 @@ class NoticeWebView extends StatefulWidget {
 }
 
 class _NoticeWebViewState extends State<NoticeWebView> {
-  late bool isFavorite = widget.isFavorite;
+  late bool isFavorite = false;
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      title: widget.title,
+      title: '',
       actions: [
         StarIconButton(
           isFavorite: isFavorite,
           onStarClick: (value) {
-            widget.onStarClick(value);
             setState(() {
               isFavorite = !isFavorite;
             });
