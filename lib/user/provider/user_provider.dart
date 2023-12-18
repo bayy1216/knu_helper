@@ -6,6 +6,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../common/const/data.dart';
 import '../../common/secure_storage/secure_storage.dart';
+import '../../notice/provider/notice_provider.dart';
 import '../model/request/delete_user_subscribed_site_request.dart';
 import '../model/request/user_subscribed_site_request.dart';
 import '../model/response/user_subscribed_site_response.dart';
@@ -22,6 +23,7 @@ final userProvider = StateNotifierProvider<UserStateNotifier,UserInfoBase?>((ref
     authRepository: authRepository,
     userRepository: userRepository,
     storage: storage,
+    ref: ref,
   );
 });
 
@@ -29,11 +31,13 @@ class UserStateNotifier extends StateNotifier<UserInfoBase?> {
   final AuthRepository authRepository;
   final UserRepository userRepository;
   final FlutterSecureStorage storage;
+  final Ref ref;
 
   UserStateNotifier({
     required this.authRepository,
     required this.userRepository,
     required this.storage,
+    required this.ref,
   }) : super(UserInfoLoading()){
     getMe();
   }
@@ -63,6 +67,7 @@ class UserStateNotifier extends StateNotifier<UserInfoBase?> {
 
     final request = UserSubscribedSiteRequest(site: site, color: color, alarm: alarm);
     await userRepository.addUserFavoriteSite(request: request);
+    ref.read(noticeProvider.notifier).paginate(forceRefetch: true);
   }
 
   Future<void> updateUserFavoriteSite({
@@ -90,6 +95,7 @@ class UserStateNotifier extends StateNotifier<UserInfoBase?> {
 
     final request = DeleteUserSubscribedSiteRequest(site: site);
     await userRepository.deleteUserFavoriteSite(request: request);
+    ref.read(noticeProvider.notifier).paginate(forceRefetch: true);
   }
 
 
