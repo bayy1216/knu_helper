@@ -1,21 +1,30 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knu_helper/favorite/repository/favorite_repository.dart';
 
-import 'package:knu_helper/notice/model/notice_model_deprecated.dart';
+import '../../notice/model/response/notice_model.dart';
 
-final favoriteProvider =
-    StateNotifierProvider<FavoriteStateNotifier, List<NoticeModel>>((ref) {
-  final repo = ref.watch(favoriteRepositoryProvider);
-  return FavoriteStateNotifier(repository: repo);
-});
+final favoriteStreamProvider = StreamNotifierProvider<FavoriteNotifier, List<NoticeModel>>(FavoriteNotifier.new);
 
-class FavoriteStateNotifier extends StateNotifier<List<NoticeModel>> {
-  final FavoriteRepository repository;
+class FavoriteNotifier extends StreamNotifier<List<NoticeModel>> {
+  late final FavoriteRepository _repository = ref.read(favoriteRepositoryProvider);
+  @override
+  Stream<List<NoticeModel>> build() {
+    return _repository.watchFavorite();
+  }
 
-  FavoriteStateNotifier({required this.repository}) : super([]);
+  Future<void> starClick({required NoticeModel model, required bool isDelete}) async {
+    if (isDelete) {
+      await deleteFavorite(model: model);
+    } else {
+      await saveFavorite(model: model);
+    }
+  }
 
-  getFavorite() async {
-    final resp = await repository.getFavorite();
-    state = resp;
+  Future<void> saveFavorite({required NoticeModel model}) async {
+    final resp = await _repository.saveFavorite(model: model);
+  }
+
+  Future<void> deleteFavorite({required NoticeModel model}) async {
+    final resp = await _repository.deleteFavorite(model: model);
   }
 }

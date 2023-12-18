@@ -9,6 +9,7 @@ import 'package:knu_helper/notice/provider/notice_provider.dart';
 import 'package:knu_helper/notice/view/search_notice_screen.dart';
 
 import '../../common/utils/data_utils.dart';
+import '../../favorite/provider/favorite_provider.dart';
 import '../../user/model/user_model.dart';
 import '../../user/provider/user_provider.dart';
 import 'notice_web_view.dart';
@@ -52,7 +53,9 @@ class NoticeScreen extends ConsumerWidget {
                 color: Color(DataUtils.stringToColorCode(colorHexcode)),
                 model: model,
                 isFavorite: false,
-                onStarClick: (value) {},
+                onStarClick: (value) {
+                  ref.read(favoriteStreamProvider.notifier).starClick(model: model, isDelete: value);
+                },
               ),
             ),
           );
