@@ -7,7 +7,6 @@ import 'package:knu_helper/common/utils/data_utils.dart';
 import 'package:knu_helper/notice/model/site_enum.dart';
 
 import '../../../notice/model/response/site_model.dart';
-import '../../../notice/model/site_color.dart';
 import '../../../user/model/user_model.dart';
 import '../../../user/provider/user_provider.dart';
 import '../provider/site_provider.dart';

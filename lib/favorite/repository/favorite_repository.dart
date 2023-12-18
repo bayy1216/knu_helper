@@ -29,7 +29,4 @@ class FavoriteRepository{
     return localDatabase.isIn(id: id);
   }
 
-  Future<String> getColorOfSite({required String siteName}){
-    return localDatabase.getColorOfSite(siteName: siteName);
-  }
 }
