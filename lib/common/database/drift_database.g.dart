@@ -3,184 +3,352 @@
 part of 'drift_database.dart';
 
 // ignore_for_file: type=lint
-class $SiteColorsTable extends SiteColors
-    with TableInfo<$SiteColorsTable, SiteColor> {
+class $NoticeEntitiesTable extends NoticeEntities
+    with TableInfo<$NoticeEntitiesTable, NoticeEntity> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $SiteColorsTable(this.attachedDatabase, [this._alias]);
+  $NoticeEntitiesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+      'title', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _siteMeta = const VerificationMeta('site');
   @override
   late final GeneratedColumn<String> site = GeneratedColumn<String>(
       'site', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _hexCodeMeta =
-      const VerificationMeta('hexCode');
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
   @override
-  late final GeneratedColumn<String> hexCode = GeneratedColumn<String>(
-      'hex_code', aliasedName, false,
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+      'type', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _urlMeta = const VerificationMeta('url');
   @override
-  List<GeneratedColumn> get $columns => [site, hexCode];
+  late final GeneratedColumn<String> url = GeneratedColumn<String>(
+      'url', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _viewsMeta = const VerificationMeta('views');
   @override
-  String get aliasedName => _alias ?? 'site_colors';
+  late final GeneratedColumn<int> views = GeneratedColumn<int>(
+      'views', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _dayMeta = const VerificationMeta('day');
   @override
-  String get actualTableName => 'site_colors';
+  late final GeneratedColumn<DateTime> day = GeneratedColumn<DateTime>(
+      'day', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
   @override
-  VerificationContext validateIntegrity(Insertable<SiteColor> instance,
+  List<GeneratedColumn> get $columns =>
+      [id, title, site, type, url, views, day];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'notice_entities';
+  @override
+  VerificationContext validateIntegrity(Insertable<NoticeEntity> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
     if (data.containsKey('site')) {
       context.handle(
           _siteMeta, site.isAcceptableOrUnknown(data['site']!, _siteMeta));
     } else if (isInserting) {
       context.missing(_siteMeta);
     }
-    if (data.containsKey('hex_code')) {
-      context.handle(_hexCodeMeta,
-          hexCode.isAcceptableOrUnknown(data['hex_code']!, _hexCodeMeta));
+    if (data.containsKey('type')) {
+      context.handle(
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
     } else if (isInserting) {
-      context.missing(_hexCodeMeta);
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('url')) {
+      context.handle(
+          _urlMeta, url.isAcceptableOrUnknown(data['url']!, _urlMeta));
+    } else if (isInserting) {
+      context.missing(_urlMeta);
+    }
+    if (data.containsKey('views')) {
+      context.handle(
+          _viewsMeta, views.isAcceptableOrUnknown(data['views']!, _viewsMeta));
+    } else if (isInserting) {
+      context.missing(_viewsMeta);
+    }
+    if (data.containsKey('day')) {
+      context.handle(
+          _dayMeta, day.isAcceptableOrUnknown(data['day']!, _dayMeta));
+    } else if (isInserting) {
+      context.missing(_dayMeta);
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {site};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  SiteColor map(Map<String, dynamic> data, {String? tablePrefix}) {
+  NoticeEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return SiteColor(
+    return NoticeEntity(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      title: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
       site: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}site'])!,
-      hexCode: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}hex_code'])!,
+      type: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type'])!,
+      url: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}url'])!,
+      views: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}views'])!,
+      day: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}day'])!,
     );
   }
 
   @override
-  $SiteColorsTable createAlias(String alias) {
-    return $SiteColorsTable(attachedDatabase, alias);
+  $NoticeEntitiesTable createAlias(String alias) {
+    return $NoticeEntitiesTable(attachedDatabase, alias);
   }
 }
 
-class SiteColor extends DataClass implements Insertable<SiteColor> {
+class NoticeEntity extends DataClass implements Insertable<NoticeEntity> {
+  final int id;
+  final String title;
   final String site;
-  final String hexCode;
-  const SiteColor({required this.site, required this.hexCode});
+  final String type;
+  final String url;
+  final int views;
+  final DateTime day;
+  const NoticeEntity(
+      {required this.id,
+      required this.title,
+      required this.site,
+      required this.type,
+      required this.url,
+      required this.views,
+      required this.day});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['title'] = Variable<String>(title);
     map['site'] = Variable<String>(site);
-    map['hex_code'] = Variable<String>(hexCode);
+    map['type'] = Variable<String>(type);
+    map['url'] = Variable<String>(url);
+    map['views'] = Variable<int>(views);
+    map['day'] = Variable<DateTime>(day);
     return map;
   }
 
-  SiteColorsCompanion toCompanion(bool nullToAbsent) {
-    return SiteColorsCompanion(
+  NoticeEntitiesCompanion toCompanion(bool nullToAbsent) {
+    return NoticeEntitiesCompanion(
+      id: Value(id),
+      title: Value(title),
       site: Value(site),
-      hexCode: Value(hexCode),
+      type: Value(type),
+      url: Value(url),
+      views: Value(views),
+      day: Value(day),
     );
   }
 
-  factory SiteColor.fromJson(Map<String, dynamic> json,
+  factory NoticeEntity.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return SiteColor(
+    return NoticeEntity(
+      id: serializer.fromJson<int>(json['id']),
+      title: serializer.fromJson<String>(json['title']),
       site: serializer.fromJson<String>(json['site']),
-      hexCode: serializer.fromJson<String>(json['hexCode']),
+      type: serializer.fromJson<String>(json['type']),
+      url: serializer.fromJson<String>(json['url']),
+      views: serializer.fromJson<int>(json['views']),
+      day: serializer.fromJson<DateTime>(json['day']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'title': serializer.toJson<String>(title),
       'site': serializer.toJson<String>(site),
-      'hexCode': serializer.toJson<String>(hexCode),
+      'type': serializer.toJson<String>(type),
+      'url': serializer.toJson<String>(url),
+      'views': serializer.toJson<int>(views),
+      'day': serializer.toJson<DateTime>(day),
     };
   }
 
-  SiteColor copyWith({String? site, String? hexCode}) => SiteColor(
+  NoticeEntity copyWith(
+          {int? id,
+          String? title,
+          String? site,
+          String? type,
+          String? url,
+          int? views,
+          DateTime? day}) =>
+      NoticeEntity(
+        id: id ?? this.id,
+        title: title ?? this.title,
         site: site ?? this.site,
-        hexCode: hexCode ?? this.hexCode,
+        type: type ?? this.type,
+        url: url ?? this.url,
+        views: views ?? this.views,
+        day: day ?? this.day,
       );
   @override
   String toString() {
-    return (StringBuffer('SiteColor(')
+    return (StringBuffer('NoticeEntity(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
           ..write('site: $site, ')
-          ..write('hexCode: $hexCode')
+          ..write('type: $type, ')
+          ..write('url: $url, ')
+          ..write('views: $views, ')
+          ..write('day: $day')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(site, hexCode);
+  int get hashCode => Object.hash(id, title, site, type, url, views, day);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is SiteColor &&
+      (other is NoticeEntity &&
+          other.id == this.id &&
+          other.title == this.title &&
           other.site == this.site &&
-          other.hexCode == this.hexCode);
+          other.type == this.type &&
+          other.url == this.url &&
+          other.views == this.views &&
+          other.day == this.day);
 }
 
-class SiteColorsCompanion extends UpdateCompanion<SiteColor> {
+class NoticeEntitiesCompanion extends UpdateCompanion<NoticeEntity> {
+  final Value<int> id;
+  final Value<String> title;
   final Value<String> site;
-  final Value<String> hexCode;
-  final Value<int> rowid;
-  const SiteColorsCompanion({
+  final Value<String> type;
+  final Value<String> url;
+  final Value<int> views;
+  final Value<DateTime> day;
+  const NoticeEntitiesCompanion({
+    this.id = const Value.absent(),
+    this.title = const Value.absent(),
     this.site = const Value.absent(),
-    this.hexCode = const Value.absent(),
-    this.rowid = const Value.absent(),
+    this.type = const Value.absent(),
+    this.url = const Value.absent(),
+    this.views = const Value.absent(),
+    this.day = const Value.absent(),
   });
-  SiteColorsCompanion.insert({
+  NoticeEntitiesCompanion.insert({
+    this.id = const Value.absent(),
+    required String title,
     required String site,
-    required String hexCode,
-    this.rowid = const Value.absent(),
-  })  : site = Value(site),
-        hexCode = Value(hexCode);
-  static Insertable<SiteColor> custom({
+    required String type,
+    required String url,
+    required int views,
+    required DateTime day,
+  })  : title = Value(title),
+        site = Value(site),
+        type = Value(type),
+        url = Value(url),
+        views = Value(views),
+        day = Value(day);
+  static Insertable<NoticeEntity> custom({
+    Expression<int>? id,
+    Expression<String>? title,
     Expression<String>? site,
-    Expression<String>? hexCode,
-    Expression<int>? rowid,
+    Expression<String>? type,
+    Expression<String>? url,
+    Expression<int>? views,
+    Expression<DateTime>? day,
   }) {
     return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (title != null) 'title': title,
       if (site != null) 'site': site,
-      if (hexCode != null) 'hex_code': hexCode,
-      if (rowid != null) 'rowid': rowid,
+      if (type != null) 'type': type,
+      if (url != null) 'url': url,
+      if (views != null) 'views': views,
+      if (day != null) 'day': day,
     });
   }
 
-  SiteColorsCompanion copyWith(
-      {Value<String>? site, Value<String>? hexCode, Value<int>? rowid}) {
-    return SiteColorsCompanion(
+  NoticeEntitiesCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? title,
+      Value<String>? site,
+      Value<String>? type,
+      Value<String>? url,
+      Value<int>? views,
+      Value<DateTime>? day}) {
+    return NoticeEntitiesCompanion(
+      id: id ?? this.id,
+      title: title ?? this.title,
       site: site ?? this.site,
-      hexCode: hexCode ?? this.hexCode,
-      rowid: rowid ?? this.rowid,
+      type: type ?? this.type,
+      url: url ?? this.url,
+      views: views ?? this.views,
+      day: day ?? this.day,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
     if (site.present) {
       map['site'] = Variable<String>(site.value);
     }
-    if (hexCode.present) {
-      map['hex_code'] = Variable<String>(hexCode.value);
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
+    if (url.present) {
+      map['url'] = Variable<String>(url.value);
+    }
+    if (views.present) {
+      map['views'] = Variable<int>(views.value);
+    }
+    if (day.present) {
+      map['day'] = Variable<DateTime>(day.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('SiteColorsCompanion(')
+    return (StringBuffer('NoticeEntitiesCompanion(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
           ..write('site: $site, ')
-          ..write('hexCode: $hexCode, ')
-          ..write('rowid: $rowid')
+          ..write('type: $type, ')
+          ..write('url: $url, ')
+          ..write('views: $views, ')
+          ..write('day: $day')
           ..write(')'))
         .toString();
   }
@@ -236,9 +404,10 @@ class $NoticesTable extends Notices with TableInfo<$NoticesTable, Notice> {
   List<GeneratedColumn> get $columns =>
       [id, title, site, type, url, views, day, content];
   @override
-  String get aliasedName => _alias ?? 'notices';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'notices';
+  String get actualTableName => $name;
+  static const String $name = 'notices';
   @override
   VerificationContext validateIntegrity(Insertable<Notice> instance,
       {bool isInserting = false}) {
@@ -588,11 +757,11 @@ class NoticesCompanion extends UpdateCompanion<Notice> {
 
 abstract class _$LocalDatabase extends GeneratedDatabase {
   _$LocalDatabase(QueryExecutor e) : super(e);
-  late final $SiteColorsTable siteColors = $SiteColorsTable(this);
+  late final $NoticeEntitiesTable noticeEntities = $NoticeEntitiesTable(this);
   late final $NoticesTable notices = $NoticesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [siteColors, notices];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [noticeEntities, notices];
 }

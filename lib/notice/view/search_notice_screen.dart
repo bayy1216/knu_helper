@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:knu_helper/common/model/cursor_pagination_model.dart';
-import 'package:knu_helper/notice/model/notice_model.dart';
 import 'package:knu_helper/notice/provider/notice_provider.dart';
 
 import '../components/notice_card.dart';
+import '../model/response/notice_model.dart';
 
 final keywordProvider = StateProvider.autoDispose((ref) => '');
 
@@ -56,7 +56,8 @@ class SearchNoticeScreen extends ConsumerWidget {
           )
         ],
         body: FutureBuilder(
-          future: ref.read(noticeProvider.notifier).searchNotice(),
+          //future: ref.read(noticeProvider.notifier).searchNotice(),\
+          future: Future.delayed(const Duration(seconds: 1)),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Container(color: Colors.transparent);
@@ -82,13 +83,14 @@ class SearchNoticeScreen extends ConsumerWidget {
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4.0),
                   child: NoticeCard.fromModel(
+                    color: Colors.grey.shade300,
                     model: searchData.data[index],
                     isFavorite: searchData.isFavorite![index],
                     onStarClick: (value) {
-                      ref.read(noticeProvider.notifier).toggleStar(
-                            model: searchData.data[index],
-                            value: value,
-                          );
+                      // ref.read(noticeProvider.notifier).toggleStar(
+                      //       model: searchData.data[index],
+                      //       value: value,
+                      //     );
                     },
                   ),
                 );

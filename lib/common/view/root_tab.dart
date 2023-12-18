@@ -1,56 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:knu_helper/all/view/all_screen.dart';
 import 'package:knu_helper/common/const/color.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 import 'package:knu_helper/favorite/view/favorite_screen.dart';
 import 'package:knu_helper/notice/view/notice_screen.dart';
 
-class RootTab extends StatefulWidget {
+class RootTab extends StatelessWidget {
   static String get routeName => 'root';
+  final StatefulNavigationShell navigationShell;
 
-  const RootTab({Key? key}) : super(key: key);
-
-  @override
-  State<RootTab> createState() => _RootTabState();
-}
-
-class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
-  late TabController controller;
-  int index = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = TabController(length: 3, vsync: this);
-    controller.addListener(tabListener);
-  }
-
-  @override
-  void dispose() {
-    controller.removeListener(tabListener);
-    super.dispose();
-  }
-
-  void tabListener() {
-    setState(() {
-      index = controller.index;
-    });
-  }
+  const RootTab({
+    Key? key,
+    required this.navigationShell,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final index = navigationShell.currentIndex;
     return DefaultLayout(
-      body: TabBarView(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: controller,
-        children: const [
-          NoticeScreen(),
-          FavoriteScreen(),
-          AllScreen(),
-        ],
-      ),
+      body: navigationShell,
       bottomNavigationBar: Theme(
         data: ThemeData(
           splashColor: Colors.transparent,
@@ -65,7 +36,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           iconSize: 22,
           type: BottomNavigationBarType.fixed,
           onTap: (index) {
-            controller.animateTo(index,duration: 200.ms);
+            _goBranch(index);
           },
           currentIndex: index,
           items: BottomNavPage.values.map((e){
@@ -79,8 +50,12 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
       ),
     );
   }
-}
 
+  void _goBranch(int index) {
+    navigationShell.goBranch(index,
+        initialLocation: index == navigationShell.currentIndex);
+  }
+}
 
 enum BottomNavPage {
   notice('홈', FaIcon(FontAwesomeIcons.house)),
