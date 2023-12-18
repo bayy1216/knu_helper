@@ -4,26 +4,38 @@ import 'package:knu_helper/common/layout/default_layout.dart';
 
 import '../provider/user_provider.dart';
 
-class LoginScreen extends ConsumerWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   static String get routeName => 'login';
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(userProvider.notifier).signUp();
+  }
+@override
+  Widget build(BuildContext context) {
     print('login_screen');
     return DefaultLayout(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              ref.read(userProvider.notifier).signUp();
-            },
-            child: Text('시작하기'),
-          ),
-          Text('이미 계정이 있으신가요?'),
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                ref.read(userProvider.notifier).signUp();
+              },
+              child: Text('시작하기'),
+            ),
+            Text('이미 계정이 있으신가요?'),
+          ],
+        ),
       ),
     );
   }
