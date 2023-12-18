@@ -100,7 +100,7 @@ class PaginationListViewState<T> extends ConsumerState<PaginationListView<T>> {
       onRefresh: () async {
         await forceRefetch();
       },
-      child: ListView.separated(
+      child: ListView.builder(
         controller: controller,
         itemCount: cp.data.length + 1,
         itemBuilder: (context, index) {
@@ -118,12 +118,6 @@ class PaginationListViewState<T> extends ConsumerState<PaginationListView<T>> {
 
           return widget.itemBuilder(context, index, pItem);
 
-        },
-        separatorBuilder: (context, index) {
-          return const Divider(
-            color: DIVIDIER_GREY,
-            thickness: 0.5,
-          );
         },
       ),
     );
