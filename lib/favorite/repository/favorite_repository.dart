@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/database/drift_database.dart';
-import '../../notice/model/notice_model_deprecated.dart';
+import '../../notice/model/response/notice_model.dart';
 
 final favoriteRepositoryProvider = Provider<FavoriteRepository>((ref) {
   final db = ref.watch(databaseProvider);
@@ -13,20 +13,20 @@ class FavoriteRepository{
 
   FavoriteRepository({required this.localDatabase});
   Future<List<NoticeModel>> getFavorite() async {
-    final resp = await localDatabase.getNotices();
-    return resp.map((e) => NoticeModel.fromNotice(e)).toList();
+    final resp = await localDatabase.getNoticeEntities();
+    return resp.map((e) => NoticeModel.fromEntity(e)).toList();
   }
-  Future<void> saveFavorite({required NoticeModel model}) async {
+  Future<int> saveFavorite({required NoticeModel model}) async {
     final data = model.toCompanion();
-    await localDatabase.insertNotice(data);
+    return localDatabase.insertNoticeEntity(data);
   }
-  Future<void> deleteFavorite({required NoticeModel model}) async {
+  Future<int> deleteFavorite({required NoticeModel model}) async {
     final data = model.toCompanion();
-    await localDatabase.deleteNotice(data);
+    return localDatabase.deleteNoticeEntity(data);
   }
 
-  Future<bool> isIn({required String id}){
-    return localDatabase.isIn(id: id);
+  Stream <List<NoticeModel>> watchFavorite() {
+    return localDatabase.watchNoticeEntities().map((event) => event.map((e) => NoticeModel.fromEntity(e)).toList());
   }
 
 }
