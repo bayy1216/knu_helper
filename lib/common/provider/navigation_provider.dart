@@ -82,7 +82,17 @@ class NavigationProvider extends ChangeNotifier {
                   path: '/favorite',
                   name: FavoriteScreen.routeName,
                   builder: (context, state) => const FavoriteScreen(),
-                  routes: const [],
+                  routes: [
+                    GoRoute(
+                      parentNavigatorKey: rootNavigatorKey,
+                      path: 'notice_web_view/:url',
+                      name: 'favorite_notice_web_view',
+                      builder: (context, state){
+                        final url = state.pathParameters['url']!;
+                        return NoticeWebView(url: url);
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),

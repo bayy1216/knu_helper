@@ -38,7 +38,7 @@ class FavoriteScreen extends ConsumerWidget {
               child: GestureDetector(
                 onTap: () {
                   context.goNamed(
-                    NoticeWebView.routeName,
+                    NoticeWebView.favoriteRouteName,
                     pathParameters: {'url': model.url},
                   );
                 },
