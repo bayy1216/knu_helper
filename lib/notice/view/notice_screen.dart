@@ -38,11 +38,14 @@ class NoticeScreen extends ConsumerWidget {
         provider: noticeProvider,
         itemBuilder: (BuildContext context, int index, model) {
           final colorHexcode = subScribedSites.firstWhere((element) => element.site == model.site).color;
-          return NoticeCard.fromModel(
-            color: Color(DataUtils.stringToColorCode(colorHexcode)),
-            model: model,
-            isFavorite: false,
-            onStarClick: (value) {},
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+            child: NoticeCard.fromModel(
+              color: Color(DataUtils.stringToColorCode(colorHexcode)),
+              model: model,
+              isFavorite: false,
+              onStarClick: (value) {},
+            ),
           );
         },
       ),
