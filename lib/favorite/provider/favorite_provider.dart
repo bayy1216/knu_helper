@@ -27,4 +27,9 @@ class FavoriteNotifier extends StreamNotifier<List<NoticeModel>> {
   Future<void> deleteFavorite({required NoticeModel model}) async {
     final resp = await _repository.deleteFavorite(model: model);
   }
+
+  Future<bool> isFavorite({required int id})async{
+    final f = await future;
+    return f.any((element) => element.id == id);
+  }
 }

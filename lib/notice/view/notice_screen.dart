@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -14,7 +13,6 @@ import '../../user/model/user_model.dart';
 import '../../user/provider/user_provider.dart';
 import 'notice_web_view.dart';
 
-
 class NoticeScreen extends ConsumerWidget {
   static String get routeName => 'notice';
 
@@ -22,7 +20,13 @@ class NoticeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final subScribedSites = (ref.watch(userProvider) as UserInfoModel).subscribedSites;
+    final subScribedSites =
+        (ref.watch(userProvider) as UserInfoModel).subscribedSites;
+    final List<int> favoriteState = ref.watch(favoriteStreamProvider).when(
+      data: (data) => data.map((e) => e.id).toList(),
+      error: (error, stackTrace) => [],
+      loading: () => [],
+    );
     return DefaultLayout(
       title: '공지사항',
       actions: [
@@ -39,7 +43,9 @@ class NoticeScreen extends ConsumerWidget {
       body: PaginationListView(
         provider: noticeProvider,
         itemBuilder: (BuildContext context, int index, model) {
-          final colorHexcode = subScribedSites.firstWhere((element) => element.site == model.site).color;
+          final colorHexcode = subScribedSites
+              .firstWhere((element) => element.site == model.site)
+              .color;
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
             child: GestureDetector(
@@ -52,9 +58,11 @@ class NoticeScreen extends ConsumerWidget {
               child: NoticeCard.fromModel(
                 color: Color(DataUtils.stringToColorCode(colorHexcode)),
                 model: model,
-                isFavorite: false,
+                isFavorite: favoriteState.contains(model.id),
                 onStarClick: (value) {
-                  ref.read(favoriteStreamProvider.notifier).starClick(model: model, isDelete: value);
+                  ref
+                      .read(favoriteStreamProvider.notifier)
+                      .starClick(model: model, isDelete: value);
                 },
               ),
             ),
