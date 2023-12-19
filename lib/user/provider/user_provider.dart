@@ -51,6 +51,7 @@ class UserStateNotifier extends StateNotifier<UserInfoBase?> {
       state = null;
       return;
     }
+    state = UserInfoModel(subscribedSites: []);
     final resp = await userRepository.getUserFavoriteSite();
     state = UserInfoModel(subscribedSites: resp.data);
   }
