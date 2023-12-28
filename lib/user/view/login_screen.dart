@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
 
+import '../../common/component/cow_item.dart';
 import '../provider/user_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -27,12 +28,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                ref.read(userProvider.notifier).signUp();
-              },
-              child: Text('시작하기'),
-            ),
+            CowItem(content: "시작하기"),
+            CircularProgressIndicator(),
           ],
         ),
       ),
