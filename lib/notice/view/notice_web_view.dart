@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knu_helper/common/layout/default_layout.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../common/model/offset_pagination_model.dart';
 import '../../favorite/provider/favorite_provider.dart';
@@ -12,7 +13,9 @@ import '../provider/notice_provider.dart';
 
 class NoticeWebView extends ConsumerWidget {
   final String url;
+
   static String get routeName => 'notice_web_view';
+
   static String get favoriteRouteName => 'favorite_notice_web_view';
 
   const NoticeWebView({
@@ -20,10 +23,11 @@ class NoticeWebView extends ConsumerWidget {
     required this.url,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notice = (ref.watch(noticeProvider) as OffsetPagination<NoticeModel>).data.firstWhere((e) => e.url == url);
+    final notice = (ref.watch(noticeProvider) as OffsetPagination<NoticeModel>)
+        .data
+        .firstWhere((e) => e.url == url);
 
     final favorite = ref.watch(favoriteStreamProvider);
     final bool favoriteState = favorite.when(
@@ -37,7 +41,19 @@ class NoticeWebView extends ConsumerWidget {
         StarIconButton(
           isFavorite: favoriteState,
           onStarClick: (value) {
-            ref.read(favoriteStreamProvider.notifier).starClick(model: notice, isDelete: value);
+            ref
+                .read(favoriteStreamProvider.notifier)
+                .starClick(model: notice, isDelete: value);
+          },
+        ),
+        IconButton(
+          icon: const Icon(Icons.public),
+          tooltip: '브라우저에서 열기',
+          onPressed: () {
+            launchUrl(
+              Uri.parse(url),
+              mode: LaunchMode.externalApplication,
+            );
           },
         ),
       ],
@@ -47,5 +63,3 @@ class NoticeWebView extends ConsumerWidget {
     );
   }
 }
-
-
