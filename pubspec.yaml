@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.3.0+13
+version: 2.0.0+14
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
@@ -39,7 +39,7 @@ dependencies:
   firebase_messaging: ^14.6.5
   cloud_firestore: ^4.8.3
   flutter_riverpod: ^2.1.3
-  go_router: ^8.2.0
+  go_router: ^10.0.0
   json_annotation: ^4.8.0
   flutter_inappwebview: ^5.7.2+3
 
@@ -52,9 +52,16 @@ dependencies:
   freezed_annotation: ^2.2.0
   package_info: ^2.0.2
   flutter_animate: ^4.2.0
-  font_awesome_flutter: ^10.5.0
   google_mobile_ads: ^3.0.0
 
+  retrofit: '>=4.0.0 <5.0.0'
+  dio: ^5.3.1
+  logger: ^2.0.1
+  flutter_secure_storage: ^8.0.0
+  pretty_dio_logger: ^1.3.1
+  uuid: ^3.0.6
+  flutter_svg: ^2.0.7
+  url_launcher: ^6.2.2
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +77,10 @@ dev_dependencies:
   drift_dev: ^2.10.0
   build_runner: ^2.4.6
   flutter_oss_licenses: ^2.0.1
+  retrofit_generator: ">=5.0.0 <6.0.0"
+  mockito: ^5.4.2
+  custom_lint: ^0.4.0
+  riverpod_lint: ^1.4.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -78,6 +89,7 @@ flutter:
   assets:
     - asset/images/
     - asset/json/
+    - asset/icons/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -99,10 +111,6 @@ flutter:
   fonts:
     - family: Pretendard
       fonts:
-        - asset: asset/fonts/Pretendard-Black.otf
-          weight: 900
-        - asset: asset/fonts/Pretendard-ExtraBold.otf
-          weight: 800
         - asset: asset/fonts/Pretendard-Bold.otf
           weight: 700
         - asset: asset/fonts/Pretendard-SemiBold.otf
@@ -111,11 +119,9 @@ flutter:
           weight: 500
         - asset: asset/fonts/Pretendard-Regular.otf
           weight: 400
-        - asset: asset/fonts/Pretendard-Light.otf
-          weight: 300
-        - asset: asset/fonts/Pretendard-ExtraLight.otf
-          weight: 200
-        - asset: asset/fonts/Pretendard-Thin.otf
-          weight: 100
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages
+#    - family: Pyeongchangpeace
+#      fonts:
+#        - asset: asset/fonts/pyeongchangpeace_light.otf
+#          weight: 500
+#        - asset: asset/fonts/pyeongchangpeace_bold.otf
+#          weight: 700
