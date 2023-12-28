@@ -33,7 +33,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               },
               child: Text('시작하기'),
             ),
-            Text('이미 계정이 있으신가요?'),
           ],
         ),
       ),
