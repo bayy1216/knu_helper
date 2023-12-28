@@ -9,6 +9,7 @@ import 'package:knu_helper/notice/view/search_notice_screen.dart';
 
 import '../../common/utils/data_utils.dart';
 import '../../favorite/provider/favorite_provider.dart';
+import '../../user/model/response/user_subscribed_site_response.dart';
 import '../../user/model/user_model.dart';
 import '../../user/provider/user_provider.dart';
 import 'notice_web_view.dart';
@@ -23,10 +24,10 @@ class NoticeScreen extends ConsumerWidget {
     final subScribedSites =
         (ref.watch(userProvider) as UserInfoModel).subscribedSites;
     final List<int> favoriteState = ref.watch(favoriteStreamProvider).when(
-      data: (data) => data.map((e) => e.id).toList(),
-      error: (error, stackTrace) => [],
-      loading: () => [],
-    );
+          data: (data) => data.map((e) => e.id).toList(),
+          error: (error, stackTrace) => [],
+          loading: () => [],
+        );
     return DefaultLayout(
       title: '공지사항',
       actions: [
@@ -44,7 +45,11 @@ class NoticeScreen extends ConsumerWidget {
         provider: noticeProvider,
         itemBuilder: (BuildContext context, int index, model) {
           final colorHexcode = subScribedSites
-              .firstWhere((element) => element.site == model.site)
+              .firstWhere(
+                (element) => element.site == model.site,
+                orElse: () => UserSubscribedSiteModel(
+                    site: '', color: 'FFFFFF', isAlarm: false),
+              )
               .color;
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
