@@ -12,6 +12,8 @@ class AsyncSiteNotifier extends AsyncNotifier<List<SiteModel>>{
 
   @override
   Future<List<SiteModel>> build() async{
+    final local = await _noticeRepository.getLocalSiteInfo();
+    state = AsyncData(local.siteInfoList);
     final resp = await _noticeRepository.getSiteInfo();
     return resp.siteInfoList;
   }

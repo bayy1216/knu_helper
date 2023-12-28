@@ -1,0 +1,408 @@
+{
+  "siteInfoList": [
+    {
+      "site": "국어국문학과",
+      "siteCategoryKorean": "인문대학"
+    },
+    {
+      "site": "영어영문학과",
+      "siteCategoryKorean": "인문대학"
+    },
+    {
+      "site": "사학과",
+      "siteCategoryKorean": "인문대학"
+    },
+    {
+      "site": "철학과",
+      "siteCategoryKorean": "인문대학"
+    },
+    {
+      "site": "불어불문학과",
+      "siteCategoryKorean": "인문대학"
+    },
+    {
+      "site": "독어독문학과",
+      "siteCategoryKorean": "인문대학"
+    },
+    {
+      "site": "고고인류학과",
+      "siteCategoryKorean": "인문대학"
+    },
+    {
+      "site": "한문학과",
+      "siteCategoryKorean": "인문대학"
+    },
+    {
+      "site": "정치외교학과",
+      "siteCategoryKorean": "사회과학대학"
+    },
+    {
+      "site": "사회학과",
+      "siteCategoryKorean": "사회과학대학"
+    },
+    {
+      "site": "지리학과",
+      "siteCategoryKorean": "사회과학대학"
+    },
+    {
+      "site": "문헌정보학과",
+      "siteCategoryKorean": "사회과학대학"
+    },
+    {
+      "site": "심리학과",
+      "siteCategoryKorean": "사회과학대학"
+    },
+    {
+      "site": "사회복지학부",
+      "siteCategoryKorean": "사회과학대학"
+    },
+    {
+      "site": "미디어커뮤니케이션학과",
+      "siteCategoryKorean": "사회과학대학"
+    },
+    {
+      "site": "수학과",
+      "siteCategoryKorean": "자연과학대학"
+    },
+    {
+      "site": "물리학과",
+      "siteCategoryKorean": "자연과학대학"
+    },
+    {
+      "site": "화학과",
+      "siteCategoryKorean": "자연과학대학"
+    },
+    {
+      "site": "통계학과",
+      "siteCategoryKorean": "자연과학대학"
+    },
+    {
+      "site": "경제통상학부",
+      "siteCategoryKorean": "경상대학"
+    },
+    {
+      "site": "경영학부",
+      "siteCategoryKorean": "경상대학"
+    },
+    {
+      "site": "신소재공학부",
+      "siteCategoryKorean": "공과대학"
+    },
+    {
+      "site": "기계공학부",
+      "siteCategoryKorean": "공과대학"
+    },
+    {
+      "site": "건축학부",
+      "siteCategoryKorean": "공과대학"
+    },
+    {
+      "site": "토목공학과",
+      "siteCategoryKorean": "공과대학"
+    },
+    {
+      "site": "응용화학과",
+      "siteCategoryKorean": "공과대학"
+    },
+    {
+      "site": "화학공학과",
+      "siteCategoryKorean": "공과대학"
+    },
+    {
+      "site": "고분자공학과",
+      "siteCategoryKorean": "공과대학"
+    },
+    {
+      "site": "섬유시스템공학과",
+      "siteCategoryKorean": "공과대학"
+    },
+    {
+      "site": "환경공학과",
+      "siteCategoryKorean": "공과대학"
+    },
+    {
+      "site": "에너지공학부",
+      "siteCategoryKorean": "공과대학"
+    },
+    {
+      "site": "전자공학부",
+      "siteCategoryKorean": "IT대학"
+    },
+    {
+      "site": "모바일공학전공",
+      "siteCategoryKorean": "IT대학"
+    },
+    {
+      "site": "전기공학과",
+      "siteCategoryKorean": "IT대학"
+    },
+    {
+      "site": "인공지능전공",
+      "siteCategoryKorean": "IT대학"
+    },
+    {
+      "site": "컴퓨터학부",
+      "siteCategoryKorean": "IT대학"
+    },
+    {
+      "site": "환경생명화학전공",
+      "siteCategoryKorean": "농업생명과학대학"
+    },
+    {
+      "site": "식물생명화학전공",
+      "siteCategoryKorean": "농업생명과학대학"
+    },
+    {
+      "site": "식물의학과",
+      "siteCategoryKorean": "농업생명과학대학"
+    },
+    {
+      "site": "식품공학부",
+      "siteCategoryKorean": "농업생명과학대학"
+    },
+    {
+      "site": "임산공학전공",
+      "siteCategoryKorean": "농업생명과학대학"
+    },
+    {
+      "site": "원예과학과",
+      "siteCategoryKorean": "농업생명과학대학"
+    },
+    {
+      "site": "바이오섬유소재학과",
+      "siteCategoryKorean": "농업생명과학대학"
+    },
+    {
+      "site": "농업토목공학전공",
+      "siteCategoryKorean": "농업생명과학대학"
+    },
+    {
+      "site": "생물산업기계공학전공",
+      "siteCategoryKorean": "농업생명과학대학"
+    },
+    {
+      "site": "식품자원경제학과",
+      "siteCategoryKorean": "농업생명과학대학"
+    },
+    {
+      "site": "농산업학과",
+      "siteCategoryKorean": "농업생명과학대학"
+    },
+    {
+      "site": "음악학과",
+      "siteCategoryKorean": "예술대학"
+    },
+    {
+      "site": "국악학과",
+      "siteCategoryKorean": "예술대학"
+    },
+    {
+      "site": "미술학과",
+      "siteCategoryKorean": "예술대학"
+    },
+    {
+      "site": "디자인학과",
+      "siteCategoryKorean": "예술대학"
+    },
+    {
+      "site": "교육학과",
+      "siteCategoryKorean": "사범대학"
+    },
+    {
+      "site": "국어교육과",
+      "siteCategoryKorean": "사범대학"
+    },
+    {
+      "site": "영어교육과",
+      "siteCategoryKorean": "사범대학"
+    },
+    {
+      "site": "독어교육전공",
+      "siteCategoryKorean": "사범대학"
+    },
+    {
+      "site": "불어교육전공",
+      "siteCategoryKorean": "사범대학"
+    },
+    {
+      "site": "역사교육과",
+      "siteCategoryKorean": "사범대학"
+    },
+    {
+      "site": "지리교육과",
+      "siteCategoryKorean": "사범대학"
+    },
+    {
+      "site": "일반사회교육과",
+      "siteCategoryKorean": "사범대학"
+    },
+    {
+      "site": "윤리교육과",
+      "siteCategoryKorean": "사범대학"
+    },
+    {
+      "site": "수학교육과",
+      "siteCategoryKorean": "사범대학"
+    },
+    {
+      "site": "물리교육과",
+      "siteCategoryKorean": "사범대학"
+    },
+    {
+      "site": "화학교육과",
+      "siteCategoryKorean": "사범대학"
+    },
+    {
+      "site": "생물교육과",
+      "siteCategoryKorean": "사범대학"
+    },
+    {
+      "site": "지구과학교육과",
+      "siteCategoryKorean": "사범대학"
+    },
+    {
+      "site": "가정교육과",
+      "siteCategoryKorean": "사범대학"
+    },
+    {
+      "site": "체육교육과",
+      "siteCategoryKorean": "사범대학"
+    },
+    {
+      "site": "수의과대학",
+      "siteCategoryKorean": "수의과대학"
+    },
+    {
+      "site": "아동학부",
+      "siteCategoryKorean": "생활과학대학"
+    },
+    {
+      "site": "의류학과",
+      "siteCategoryKorean": "생활과학대학"
+    },
+    {
+      "site": "식품영양학과",
+      "siteCategoryKorean": "생활과학대학"
+    },
+    {
+      "site": "간호학과",
+      "siteCategoryKorean": "간호대학"
+    },
+    {
+      "site": "약학과",
+      "siteCategoryKorean": "약학대학"
+    },
+    {
+      "site": "산림생태보호학과",
+      "siteCategoryKorean": "생태환경대학"
+    },
+    {
+      "site": "식물자원학과",
+      "siteCategoryKorean": "생태환경대학"
+    },
+    {
+      "site": "곤충생명과학과",
+      "siteCategoryKorean": "생태환경대학"
+    },
+    {
+      "site": "관광학과",
+      "siteCategoryKorean": "생태환경대학"
+    },
+    {
+      "site": "체육학과",
+      "siteCategoryKorean": "생태환경대학"
+    },
+    {
+      "site": "축산학과",
+      "siteCategoryKorean": "생태환경대학"
+    },
+    {
+      "site": "동물생명공학과",
+      "siteCategoryKorean": "생태환경대학"
+    },
+    {
+      "site": "말/특수동물학과",
+      "siteCategoryKorean": "생태환경대학"
+    },
+    {
+      "site": "건선방재공학과",
+      "siteCategoryKorean": "과학기술대학"
+    },
+    {
+      "site": "환경안전공학과",
+      "siteCategoryKorean": "과학기술대학"
+    },
+    {
+      "site": "정밀기계공학과",
+      "siteCategoryKorean": "과학기술대학"
+    },
+    {
+      "site": "자동차공학부",
+      "siteCategoryKorean": "과학기술대학"
+    },
+    {
+      "site": "소프트웨어학과",
+      "siteCategoryKorean": "과학기술대학"
+    },
+    {
+      "site": "에너지화학공학전공",
+      "siteCategoryKorean": "과학기술대학"
+    },
+    {
+      "site": "식품외식산업학과",
+      "siteCategoryKorean": "과학기술대학"
+    },
+    {
+      "site": "섬유공학전공",
+      "siteCategoryKorean": "과학기술대학"
+    },
+    {
+      "site": "패션디자인전공",
+      "siteCategoryKorean": "과학기술대학"
+    },
+    {
+      "site": "위치정보시스템학과",
+      "siteCategoryKorean": "과학기술대학"
+    },
+    {
+      "site": "스마트플랜트공학과",
+      "siteCategoryKorean": "과학기술대학"
+    },
+    {
+      "site": "치위생학과",
+      "siteCategoryKorean": "과학기술대학"
+    },
+    {
+      "site": "행정학부",
+      "siteCategoryKorean": "행정학부"
+    },
+    {
+      "site": "자율전공부",
+      "siteCategoryKorean": "자율전공"
+    },
+    {
+      "site": "경북대",
+      "siteCategoryKorean": "경북대"
+    },
+    {
+      "site": "진로취업과",
+      "siteCategoryKorean": "경북대"
+    },
+    {
+      "site": "인공지능",
+      "siteCategoryKorean": "경북대"
+    },
+    {
+      "site": "KNUCUBE",
+      "siteCategoryKorean": "경북대"
+    },
+    {
+      "site": "국제교류처",
+      "siteCategoryKorean": "경북대"
+    },
+    {
+      "site": "소프트웨어교육원",
+      "siteCategoryKorean": "소프트웨어교육원"
+    }
+  ]
+}
