@@ -52,7 +52,6 @@ dependencies:
   freezed_annotation: ^2.2.0
   package_info: ^2.0.2
   flutter_animate: ^4.2.0
-  font_awesome_flutter: ^10.5.0
   google_mobile_ads: ^3.0.0
 
   retrofit: '>=4.0.0 <5.0.0'
@@ -61,6 +60,7 @@ dependencies:
   flutter_secure_storage: ^8.0.0
   pretty_dio_logger: ^1.3.1
   uuid: ^3.0.6
+  flutter_svg: ^2.0.7
 
 dev_dependencies:
   flutter_test:
@@ -88,6 +88,7 @@ flutter:
   assets:
     - asset/images/
     - asset/json/
+    - asset/icons/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -117,9 +118,9 @@ flutter:
           weight: 500
         - asset: asset/fonts/Pretendard-Regular.otf
           weight: 400
-    - family: Pyeongchangpeace
-      fonts:
-        - asset: asset/fonts/pyeongchangpeace_light.otf
-          weight: 500
-        - asset: asset/fonts/pyeongchangpeace_bold.otf
-          weight: 700
+#    - family: Pyeongchangpeace
+#      fonts:
+#        - asset: asset/fonts/pyeongchangpeace_light.otf
+#          weight: 500
+#        - asset: asset/fonts/pyeongchangpeace_bold.otf
+#          weight: 700

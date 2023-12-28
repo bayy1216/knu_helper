@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:knu_helper/all/view/all_screen.dart';
 import 'package:knu_helper/common/const/color.dart';
@@ -33,16 +33,17 @@ class RootTab extends StatelessWidget {
           unselectedItemColor: BODY_TEXT_COLOR,
           selectedFontSize: 12,
           unselectedFontSize: 12,
-          iconSize: 22,
+          iconSize: 24,
           type: BottomNavigationBarType.fixed,
           onTap: (index) {
             _goBranch(index);
           },
           currentIndex: index,
           items: BottomNavPage.values.map((e){
+            final icon = BottomNavPage.getIcon(e.index, index);
             return BottomNavigationBarItem(icon: index == e.index
-                ? e.faIcon.animate().scale(duration: 150.ms,begin: const Offset(0.9, 0.9))
-                : e.faIcon,
+                ? icon.animate().scale(duration: 150.ms,begin: const Offset(0.9, 0.9))
+                : icon,
               label: e.korean,
             );
           }).toList()
@@ -58,12 +59,18 @@ class RootTab extends StatelessWidget {
 }
 
 enum BottomNavPage {
-  notice('홈', FaIcon(FontAwesomeIcons.house)),
-  favorite('즐겨찾기', FaIcon(FontAwesomeIcons.solidStar)),
-  all('전체', FaIcon(FontAwesomeIcons.bars));
+  home('홈'),
+  favorite('즐겨찾기'),
+  all('전체');
 
   final String korean;
-  final FaIcon faIcon;
-
-  const BottomNavPage(this.korean, this.faIcon);
+  static SvgPicture getIcon(int index,int currentIndex){
+    Color color = index == currentIndex ? PRIMARY_COLOR : const Color(0xff818181);
+    return SvgPicture.asset(
+      'asset/icons/${BottomNavPage.values[index].name}.svg',
+      width: 21,
+      colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+    );
+  }
+  const BottomNavPage(this.korean);
 }
