@@ -45,6 +45,7 @@ class UserStateNotifier extends StateNotifier<UserInfoBase?> {
   Future<void> getMe() async {
     final refreshToken = await storage.read(key: REFRESH_TOKEN_KEY);
     final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
+    print(accessToken);
 
     if (refreshToken == null || accessToken == null) {
       //로그인 안한 상태
@@ -61,9 +62,14 @@ class UserStateNotifier extends StateNotifier<UserInfoBase?> {
     required String color,
     required bool alarm,
   }) async {
+    final model = UserSubscribedSiteModel(site: site, color: color, isAlarm: alarm);
     //긍정적 응답
     final sites = (state as UserInfoModel).subscribedSites;
-    final pSites = sites..add(UserSubscribedSiteModel(site: site, color: color, isAlarm: alarm));
+    if(sites.any((element) => element.site == site)){
+      await updateUserFavoriteSite(site: site, color: color, isAlarm: alarm);
+      return;
+    }
+    final pSites = sites..add(model);
     state = (state as UserInfoModel).copyWith(subscribedSites: pSites);
 
     final request = UserSubscribedSiteRequest(site: site, color: color, alarm: alarm);
