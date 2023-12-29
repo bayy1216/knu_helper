@@ -16,7 +16,7 @@ class DefaultLayout extends StatelessWidget {
     this.titleWidget,
     this.actions,
     this.bottomNavigationBar,
-    this.elevation = 0,
+    this.elevation = 1.5,
     Key? key
   }) : super(key: key);
 
@@ -40,9 +40,14 @@ class DefaultLayout extends StatelessWidget {
       elevation: elevation,
       title: titleWidget ?? Text(
         title!,
-        style: titleStyle,
+        style: const TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+
+        ),
       ),
-      centerTitle: true,
+      centerTitle: false,
       foregroundColor: Colors.black,
       actions: actions,
     );
