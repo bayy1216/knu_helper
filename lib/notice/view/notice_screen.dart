@@ -8,6 +8,7 @@ import 'package:knu_helper/notice/provider/notice_provider.dart';
 import 'package:knu_helper/notice/view/search_notice_screen.dart';
 
 import '../../common/component/cow_item.dart';
+import '../../common/model/offset_pagination_model.dart';
 import '../../common/utils/data_utils.dart';
 import '../../favorite/provider/favorite_provider.dart';
 import '../../favorite/view/favorite_screen.dart';
@@ -33,7 +34,7 @@ class NoticeScreen extends ConsumerWidget {
           error: (error, stackTrace) => [],
           loading: () => [],
         );
-
+    final state = ref.watch(noticeProvider);
 
     final filterSite = ref.watch(noticeFilterProvider);
     return DefaultLayout(
@@ -178,7 +179,7 @@ class NoticeScreen extends ConsumerWidget {
           icon: const Icon(Icons.search),
         )
       ],
-      body: subScribedSites.isEmpty
+      body: (subScribedSites.isEmpty && ref.watch(noticeProvider) is OffsetPagination)
           ? const CowItem(content: '원하는 사이트를 추가해 보세요')
           : PaginationListView(
               provider: noticeProvider,
