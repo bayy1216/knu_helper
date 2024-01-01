@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../common/component/cow_item.dart';
 import '../../notice/components/notice_card.dart';
+import '../../user/model/response/user_subscribed_site_response.dart';
 import '../provider/favorite_provider.dart';
 
 import '../../common/layout/default_layout.dart';
@@ -190,12 +191,17 @@ class FavoriteScreen extends ConsumerWidget {
           if (data.isEmpty) {
             return const CowItem(content: '즐겨찾기를 추가해 보세요.');
           }
+          print("data.length : ${data.length}");
           return ListView.builder(
             itemCount: data.length,
             itemBuilder: (context, index) {
               final model = data[index];
               final colorHexcode = subScribedSites
-                  .firstWhere((element) => element.site == model.site)
+                  .firstWhere(
+                      (element) => element.site == model.site,
+                      orElse: () => UserSubscribedSiteModel(
+                          site: '', color: 'ACD9FE', isAlarm: false)
+                  )
                   .color;
               return Padding(
                 padding:
