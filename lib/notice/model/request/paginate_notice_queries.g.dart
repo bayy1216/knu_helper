@@ -11,11 +11,22 @@ PaginateNoticeQueries _$PaginateNoticeQueriesFromJson(
     PaginateNoticeQueries(
       page: json['page'] as int,
       size: json['size'] as int,
+      site: json['site'] as String?,
     );
 
 Map<String, dynamic> _$PaginateNoticeQueriesToJson(
-        PaginateNoticeQueries instance) =>
-    <String, dynamic>{
-      'page': instance.page,
-      'size': instance.size,
-    };
+    PaginateNoticeQueries instance) {
+  final val = <String, dynamic>{
+    'page': instance.page,
+    'size': instance.size,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('site', instance.site);
+  return val;
+}
