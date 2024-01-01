@@ -170,6 +170,7 @@ class NoticeScreen extends ConsumerWidget {
         IconButton(
           tooltip: '검색',
           onPressed: () {
+            ref.read(keywordProvider.notifier).update((state) => '');
             context.goNamed(SearchNoticeScreen.routeName);
           },
           splashColor: Colors.transparent,
