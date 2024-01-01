@@ -10,10 +10,12 @@ part 'paginate_notice_queries.g.dart';
 )
 class PaginateNoticeQueries extends BasePaginationQueries{
   final String? site;
+  final String? title;
   PaginateNoticeQueries({
     required super.page,
     required super.size,
     this.site,
+    this.title,
   });
 
   factory PaginateNoticeQueries.fromJson(Map<String,dynamic> json) => _$PaginateNoticeQueriesFromJson(json);
