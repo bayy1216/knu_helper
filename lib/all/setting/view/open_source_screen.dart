@@ -25,33 +25,35 @@ class _OpensourceScreenState extends State<OpensourceScreen> {
     super.initState();
   }
 
-  Future<String> getJsonString(String filePath) async {
-    return await rootBundle.loadString('asset/$filePath');
-  }
 
-  T _tryConverting<T>(Map<String,dynamic> json) {
-    switch (T) {
-      case Package:
-        return Package.fromJson(json) as T;
-      default:
-        throw Exception("Please check _tryConverting method");
-    }
-  }
 
-  Future<List<T>> getObjectList<T>(String filePath) async {
-    final string = await getJsonString(filePath);
+  Future<List<Package>> getObjectList(String filePath) async {
+    final string = await rootBundle.loadString(filePath);
     final json = jsonDecode(string);
-    if (json is List<Map<String, dynamic>>) {
-      return json.map<T>((e) => _tryConverting(e)).toList();
+    if(json is !List){
+      print("json is not List");
+    }else{
+      List<Package> list = [];
+      print(json[0].runtimeType);
+      for(var i = 0; i < json.length; i++){
+        if(json[i] is Map<String, dynamic>) {
+          final x= Package.fromJson(json[i] as Map<String, dynamic>);
+          list.add(x);
+        }
+
+      }
+      print(json[1].runtimeType);
+      return list;
     }
     return [];
   }
 
   void initData() async {
-    final list = await getObjectList<Package>("json/licenses.json");
+    final list = await getObjectList("asset/json/licenses.json");
     setState(() {
       packageList = list;
     });
+    print(list.length);
   }
 
   @override

@@ -191,7 +191,6 @@ class FavoriteScreen extends ConsumerWidget {
           if (data.isEmpty) {
             return const CowItem(content: '즐겨찾기를 추가해 보세요.');
           }
-          print("data.length : ${data.length}");
           return ListView.builder(
             itemCount: data.length,
             itemBuilder: (context, index) {
