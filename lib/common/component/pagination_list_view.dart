@@ -1,7 +1,11 @@
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+import '../const/admob_id.dart';
 import '../const/color.dart';
 import '../model/offset_pagination_model.dart';
 import '../provider/paginating_provider.dart';
@@ -30,12 +34,29 @@ class PaginationListView<T> extends ConsumerStatefulWidget {
 
 class PaginationListViewState<T> extends ConsumerState<PaginationListView<T>> {
   final ScrollController controller = ScrollController();
-
+  BannerAd? _bannerAd;
   @override
   void initState() {
     super.initState();
 
     controller.addListener(listener);
+    BannerAd(
+      adUnitId: Platform.isIOS ? '' : androidAdmobId,
+      size: AdSize.banner,
+      request: AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          print('Ad loaded.');
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          print('Ad failed to load: $error');
+          ad.dispose();
+        },
+      ),
+    ).load();
   }
 
   Future<void> forceRefetch()async{
@@ -59,6 +80,7 @@ class PaginationListViewState<T> extends ConsumerState<PaginationListView<T>> {
   void dispose() {
     controller.removeListener(listener);
     controller.dispose();
+    _bannerAd?.dispose();
     super.dispose();
   }
 
@@ -104,6 +126,19 @@ class PaginationListViewState<T> extends ConsumerState<PaginationListView<T>> {
         controller: controller,
         itemCount: cp.data.length + 1,
         itemBuilder: (context, index) {
+          if(index == 4 && _bannerAd != null){
+            return Column(
+              children: [
+                Container(
+                  width: _bannerAd!.size.width.toDouble(),
+                  height: _bannerAd!.size.height.toDouble(),
+                  child: AdWidget(ad: _bannerAd!),
+                ),
+                widget.itemBuilder(context, index, cp.data[index]),
+              ],
+            );
+          }
+
           if(index == cp.data.length){
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 8.0),
