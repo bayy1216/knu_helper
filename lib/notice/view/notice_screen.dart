@@ -34,14 +34,13 @@ class NoticeScreen extends ConsumerWidget {
           error: (error, stackTrace) => [],
           loading: () => [],
         );
-    final state = ref.watch(noticeProvider);
 
     final filterSite = ref.watch(noticeFilterProvider);
     return DefaultLayout(
       title: '공지사항',
       titleWidget: Row(
         children: [
-          filterSite == null ? Text(
+          filterSite == null ? const Text(
             '공지사항',
             style: TextStyle(
               color: Colors.black,
@@ -52,7 +51,7 @@ class NoticeScreen extends ConsumerWidget {
             filterSite,
             style: TextStyle(
               color: Color(DataUtils.stringToColorCode(
-                  subScribedSites.firstWhere((element) => element.site == filterSite).color)),
+                  subScribedSites.firstWhere((element) => element.site == filterSite).color),),
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
@@ -65,70 +64,7 @@ class NoticeScreen extends ConsumerWidget {
                 context: context,
                 builder: (context) {
                   const vertical = 12.0;
-                  final childd = Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: vertical),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              ref
-                                  .read(noticeFilterProvider.notifier)
-                                  .change(null);
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.symmetric(
-                                vertical: vertical,
-                                horizontal: 18.0,
-                              ),
-                              child: const Text(
-                                '전체',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ),
-                          ...subScribedSites.map((e) {
-                            return InkWell(
-                              onTap: () {
-                                ref
-                                    .read(noticeFilterProvider.notifier)
-                                    .change(e.site);
-                                Navigator.pop(context);
-                              },
-                              child: Container(
-                                width: double.infinity,
-                                padding: EdgeInsets.symmetric(
-                                  vertical: vertical,
-                                  horizontal: 18.0,
-                                ),
-                                child: Text(
-                                  e.site,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(
-                                        DataUtils.stringToColorCode(e.color)),
-                                  ),
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        ],
-                      ),
-                    ),
-                  );
-                  final DialogTheme dialogTheme = DialogTheme.of(context);
+                  final siteDialogChild = SitesDialogChild(vertical: vertical, subScribedSites: subScribedSites);
                   final dialogChild = Align(
                     alignment: Alignment.topLeft,
                     child: ConstrainedBox(
@@ -141,14 +77,14 @@ class NoticeScreen extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(4.0),
                         elevation: 0,
                         type: MaterialType.card,
-                        child: childd,
+                        child: siteDialogChild,
                       ),
                     ),
                   );
 
                   return AnimatedPadding(
                     padding: MediaQuery.viewInsetsOf(context) +
-                        (EdgeInsets.only(left: 12, top: 55)),
+                        (const EdgeInsets.only(left: 12, top: 55)),
                     duration: Duration.zero,
                     curve: Curves.decelerate,
                     child: MediaQuery.removeViewInsets(
@@ -163,7 +99,7 @@ class NoticeScreen extends ConsumerWidget {
                 },
               );
             },
-            child: Icon(Icons.keyboard_arrow_down_outlined),
+            child: const Icon(Icons.keyboard_arrow_down_outlined),
           ),
         ],
       ),
@@ -177,7 +113,7 @@ class NoticeScreen extends ConsumerWidget {
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
           icon: const Icon(Icons.search),
-        )
+        ),
       ],
       body: (subScribedSites.isEmpty && ref.watch(noticeProvider) is OffsetPagination)
           ? const CowItem(content: '원하는 사이트를 추가해 보세요')
@@ -188,12 +124,12 @@ class NoticeScreen extends ConsumerWidget {
                     .firstWhere(
                       (element) => element.site == model.site,
                       orElse: () => UserSubscribedSiteModel(
-                          site: '', color: 'FFFFFF', isAlarm: false),
+                          site: '', color: 'FFFFFF', isAlarm: false,),
                     )
                     .color;
                 return Padding(
                   padding: const EdgeInsets.symmetric(
-                      vertical: 4.0, horizontal: 8.0),
+                      vertical: 4.0, horizontal: 8.0,),
                   child: GestureDetector(
                     onTap: () {
                       context.goNamed(
@@ -218,3 +154,83 @@ class NoticeScreen extends ConsumerWidget {
     );
   }
 }
+
+class SitesDialogChild extends ConsumerWidget {
+  const SitesDialogChild({
+    super.key,
+    required this.vertical,
+    required this.subScribedSites,
+  });
+
+  final double vertical;
+  final List<UserSubscribedSiteModel> subScribedSites;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: vertical),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InkWell(
+              onTap: () {
+                ref
+                    .read(noticeFilterProvider.notifier)
+                    .change(null);
+                Navigator.pop(context);
+              },
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(
+                  vertical: vertical,
+                  horizontal: 18.0,
+                ),
+                child: const Text(
+                  '전체',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
+            ...subScribedSites.map((e) {
+              return InkWell(
+                onTap: () {
+                  ref
+                      .read(noticeFilterProvider.notifier)
+                      .change(e.site);
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(
+                    vertical: vertical,
+                    horizontal: 18.0,
+                  ),
+                  child: Text(
+                    e.site,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(
+                          DataUtils.stringToColorCode(e.color),),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
