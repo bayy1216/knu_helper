@@ -4,6 +4,13 @@ import 'package:knu_helper/common/model/offset_pagination_model.dart';
 
 import '../repository/base_pagination_repository.dart';
 
+/// 페이징 처리를 위한 [StateNotifier] <p>
+/// [T] : 데이터 타입 <p>
+/// [R] : Repository 타입 <p>
+/// [baseQuires] : 페이징을 위한 쿼리, [BasePaginationQueries]를 상속하면 이에 맞는 쿼리를 사용할 수 있다. <p>
+/// [baseQuires]는 final로 선언되어있어 해당 쿼리를 외부에서 변경시 [StateNotifier]가 재생성되어 [page]는 0으로 된다.
+///
+/// [page], [OffsetPaginationBase]의 값을 내부에 상태로 가지고 있는다.
 class PaginationProvider<T, R extends IBasePaginationRepository<T, BasePaginationQueries>>
     extends StateNotifier<OffsetPaginationBase> {
   final R repository;
